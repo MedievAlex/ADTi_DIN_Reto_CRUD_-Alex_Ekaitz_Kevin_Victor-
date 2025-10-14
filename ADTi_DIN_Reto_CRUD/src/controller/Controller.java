@@ -10,7 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import view.WindowLoginController;
+import view.LoginWindowController;
 
 /**
  *
@@ -27,7 +27,7 @@ public class Controller {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/WindowLogin.fxml"));
         Parent root = loader.load();
 
-        WindowLoginController loginController = loader.getController();
+        LoginWindowController loginController = loader.getController();
         loginController.setController(this);
 
         Scene scene = new Scene(root);
