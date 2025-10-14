@@ -1,14 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package main;
 
+import controller.Controller;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
@@ -17,14 +10,16 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
     
+    /**
+     * Crea el controlador y llama al método para abrir la ventana de login.
+     *
+     * @param stage
+     * @exception Exception
+     */
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
-        
-        Scene scene = new Scene(root);
-        
-        stage.setScene(scene);
-        stage.show();
+        Controller controller = new Controller();
+        controller.showWindow(stage);
     }
 
     /**

@@ -5,6 +5,7 @@
  */
 package view;
 
+import controller.Controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -16,10 +17,20 @@ import javafx.scene.control.Label;
  *
  * @author 2dami
  */
-public class FXMLDocumentController implements Initializable {
+public class WindowLoginController implements Initializable {
+    private Controller controller;
     
     @FXML
     private Label label;
+    
+    
+    /**
+     * Asigna el controlador principal.
+     * @param controller
+     */
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
     
     @FXML
     private void handleButtonAction(ActionEvent event) {
