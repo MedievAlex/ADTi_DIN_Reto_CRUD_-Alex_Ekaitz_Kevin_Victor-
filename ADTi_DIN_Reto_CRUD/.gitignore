@@ -2,4 +2,4 @@
 **/build/
 **/dist/
 
-*.dio
+**/*.dio
