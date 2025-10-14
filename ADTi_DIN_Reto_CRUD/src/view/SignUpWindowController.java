@@ -17,7 +17,7 @@ import javafx.scene.control.Label;
  *
  * @author 2dami
  */
-public class WindowUserController implements Initializable {
+public class SignUpWindowController implements Initializable {
     private Controller controller;
     
     @FXML

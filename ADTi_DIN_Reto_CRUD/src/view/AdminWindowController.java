@@ -17,7 +17,7 @@ import javafx.scene.control.Label;
  *
  * @author 2dami
  */
-public class WindowAdminController implements Initializable {
+public class AdminWindowController implements Initializable {
     private Controller controller;
     
     @FXML
