@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="429.0" prefWidth="602.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.WindowLoginController">
+   <children>
+      <Button layoutX="308.0" layoutY="367.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="95.0" text="SIGN UP" />
+      <RadioButton layoutX="216.0" layoutY="286.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="95.0" text="MALE" />
+      <RadioButton layoutX="312.0" layoutY="287.0" mnemonicParsing="false" text="FEMALE" />
+      <RadioButton layoutX="407.0" layoutY="287.0" mnemonicParsing="false" text="OTHER" />
+      <Label layoutX="40.0" layoutY="79.0" prefHeight="18.0" prefWidth="126.0" text="USERNAME" />
+      <Label layoutX="39.0" layoutY="107.0" prefHeight="18.0" prefWidth="126.0" text="EMAIL" />
+      <Label layoutX="39.0" layoutY="135.0" prefHeight="18.0" prefWidth="126.0" text="PASSSWORD" />
+      <Label layoutX="40.0" layoutY="167.0" prefHeight="18.0" prefWidth="126.0" text="CONFIRM PASSWORD" />
+      <Label layoutX="40.0" layoutY="196.0" prefHeight="18.0" prefWidth="126.0" text="NAME" />
+      <Label layoutX="40.0" layoutY="223.0" prefHeight="18.0" prefWidth="126.0" text="LASTNAME" />
+      <Label layoutX="40.0" layoutY="259.0" prefHeight="18.0" prefWidth="126.0" text="TELEPHONE" />
+      <Label layoutX="40.0" layoutY="286.0" prefHeight="18.0" prefWidth="126.0" text="GENDER" />
+      <Label layoutX="40.0" layoutY="321.0" prefHeight="18.0" prefWidth="126.0" text="CARD NUMBER" />
+      <TextField layoutX="216.0" layoutY="76.0" prefHeight="26.0" prefWidth="286.0" />
+      <TextField layoutX="216.0" layoutY="103.0" prefHeight="26.0" prefWidth="286.0" />
+      <TextField layoutX="216.0" layoutY="192.0" prefHeight="26.0" prefWidth="286.0" />
+      <TextField layoutX="216.0" layoutY="219.0" prefHeight="26.0" prefWidth="286.0" />
+      <TextField layoutX="216.0" layoutY="255.0" prefHeight="26.0" prefWidth="286.0" />
+      <TextField layoutX="216.0" layoutY="317.0" prefHeight="26.0" prefWidth="286.0" />
+      <PasswordField layoutX="216.0" layoutY="131.0" prefHeight="26.0" prefWidth="286.0" />
+      <TextField layoutX="216.0" layoutY="163.0" prefHeight="26.0" prefWidth="286.0" />
+   </children>
+</AnchorPane>
