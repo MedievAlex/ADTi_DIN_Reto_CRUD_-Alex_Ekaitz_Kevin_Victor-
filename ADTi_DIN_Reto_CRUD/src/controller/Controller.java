@@ -24,7 +24,7 @@ public class Controller {
      * @throws IOException
      */
     public void showWindow(Stage stage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/WindowLogin.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LoginWindow.fxml"));
         Parent root = loader.load();
 
         LoginWindowController loginController = loader.getController();
