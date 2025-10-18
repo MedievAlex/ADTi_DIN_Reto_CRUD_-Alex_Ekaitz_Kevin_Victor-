@@ -11,9 +11,9 @@ public abstract class Profile {
     protected String p_password;
     protected String p_name;
     protected String p_lastname;
-    protected String p_telephone;
+    protected int p_telephone;
     
-    public Profile(int p_id, String p_email, String p_username, String p_password, String p_name, String p_lastname, String p_telephone) {
+    public Profile(int p_id, String p_email, String p_username, String p_password, String p_name, String p_lastname, int p_telephone) {
         this.p_id = p_id;
         this.p_email = p_email;
         this.p_username = p_username;
@@ -23,7 +23,7 @@ public abstract class Profile {
         this.p_telephone = p_telephone;
     }
     
-    public Profile(String p_email, String p_username, String p_password, String p_name, String p_lastname, String p_telephone) {
+    public Profile(String p_email, String p_username, String p_password, String p_name, String p_lastname, int p_telephone) {
         this.p_email = p_email;
         this.p_username = p_username;
         this.p_password = p_password;
@@ -80,11 +80,11 @@ public abstract class Profile {
         this.p_lastname = p_lastname;
     }
 
-    public String getTelephone() {
+    public int getTelephone() {
         return p_telephone;
     }
 
-    public void setTelephone(String p_telephone) {
+    public void setTelephone(int p_telephone) {
         this.p_telephone = p_telephone;
     }
 
