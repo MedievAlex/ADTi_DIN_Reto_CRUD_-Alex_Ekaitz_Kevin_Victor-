@@ -1,5 +1,9 @@
 package model;
 
-public class ModelDAO {
-
+/**
+ *
+ * @author Ekasestao
+ */
+public interface ModelDAO {
+    
 }
