@@ -1,12 +1,15 @@
 package model;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Alex, Ekaitz, Kevin, Victor
  */
 public class DBImplementation implements ModelDAO
 {
+    private static  final int WAITMS = 30000; // 30 seconds
 
     /**
      * SQL Queries: INSERTS
@@ -26,14 +29,123 @@ public class DBImplementation implements ModelDAO
      */
     final String SQLUPDATE_PROFILE = "UPDATE db_profile SET P_PASSWORD = ?, P_NAME = ?, P_LASTNAME = ?, P_TELEPHONE = ? WHERE P_ID = ?";
     final String SQLUPDATE_USER = "UPDATE db_user SET U_GENDER = ?, U_CARD = ? WHERE U_ID = ?";
-    final String SQLUPDATE_ADMIN = "UPDATE db_admin SET A_CURRENT_ACCOUNT = ? WHERE A_ID = ?";
     
     /**
      * SQL Queries: DELETES
      */
     final String SQLDELETE_USER = "DELETE FROM db_profile WHERE P_ID = ?";
 
-    public void metodoPrueba()
+    public boolean insertUser()
+    {
+        try
+            (
+                Connection con = ConnectionPool.getConnection();
+                PreparedStatement stmtProfile = con.prepareStatement(SQLINSERT_PROFILE);
+                PreparedStatement stmtUser = con.prepareStatement(SQLINSERT_USER)
+            )
+        {           
+            Thread.sleep(WAITMS);
+        }
+        catch (SQLException | InterruptedException ex)
+        {
+
+        }
+        
+        return true;
+    }
+    
+    public List<User> selectUsers()
+    {
+        try
+            (
+                Connection con = ConnectionPool.getConnection();
+                PreparedStatement stmt = con.prepareStatement(SQLSELECT_USERS);
+            )
+        {           
+            Thread.sleep(WAITMS);
+        }
+        catch (SQLException | InterruptedException ex)
+        {
+
+        }
+        
+        return new ArrayList<>();
+    }
+    
+    public User selectUser()
+    {
+        try
+            (
+                Connection con = ConnectionPool.getConnection();
+                PreparedStatement stmtProfile = con.prepareStatement(SQLSELECT_USER);
+            )
+        {           
+            Thread.sleep(WAITMS);
+        }
+        catch (SQLException | InterruptedException ex)
+        {
+
+        }
+        
+        return new User("", "", "", "", "", 123456789, Gender.MALE, "");
+    }
+    
+    public Admin selectAdmin()
+    {
+        try
+            (
+                Connection con = ConnectionPool.getConnection();
+                PreparedStatement stmtProfile = con.prepareStatement(SQLSELECT_ADMIN);
+            )
+        {           
+            Thread.sleep(WAITMS);
+        }
+        catch (SQLException | InterruptedException ex)
+        {
+
+        }
+        
+        return new Admin("", "", "", "", "", 123456789, "");
+    }
+    
+    public boolean updateUser()
+    {
+        try
+            (
+                Connection con = ConnectionPool.getConnection();
+                PreparedStatement stmtProfile = con.prepareStatement(SQLUPDATE_PROFILE);
+                PreparedStatement stmtUser = con.prepareStatement(SQLUPDATE_USER)
+            )
+        {           
+            Thread.sleep(WAITMS);
+        }
+        catch (SQLException | InterruptedException ex)
+        {
+
+        }
+        
+        return true;
+    }
+    
+    public boolean deleteUser()
+    {
+        try
+            (
+                Connection con = ConnectionPool.getConnection();
+                PreparedStatement stmt = con.prepareStatement(SQLDELETE_USER);
+            )
+        {           
+            Thread.sleep(WAITMS);
+        }
+        catch (SQLException | InterruptedException ex)
+        {
+
+        }
+        
+        return true;
+    }
+    
+    public void login()
     {
         try (
                 Connection con = ConnectionPool.getConnection();
@@ -46,9 +158,10 @@ public class DBImplementation implements ModelDAO
                 {
                 }
             }
-
+            
+            Thread.sleep(WAITMS);
         }
-        catch (SQLException ex)
+        catch (SQLException | InterruptedException ex)
         {
 
         }
