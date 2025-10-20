@@ -11,6 +11,8 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
@@ -55,6 +57,30 @@ public class AdminWindowController implements Initializable {
     private TextField cardNumber3TextField;
     @FXML
     private TextField cardNumber4TextField;
+    @FXML
+    private Label usernameLabel;
+    @FXML
+    private Label passwordLabel;
+    @FXML
+    private Label nameLabel;
+    @FXML
+    private Label telephoneLabel;
+    @FXML
+    private Label genderLabel;
+    @FXML
+    private Label emailLabel;
+    @FXML
+    private Label cardNumberLabel;
+    @FXML
+    private ComboBox<?> usersComboBox;
+    @FXML
+    private Button deleteUserBttn;
+    @FXML
+    private Button saveChangesBttn;
+    @FXML
+    private Label username;
+    @FXML
+    private Button logOutBttn;
     
     
     /**
