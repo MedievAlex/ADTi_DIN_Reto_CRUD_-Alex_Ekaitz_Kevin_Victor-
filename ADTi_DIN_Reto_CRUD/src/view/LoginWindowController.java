@@ -11,7 +11,11 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 
 /**
  *
@@ -20,8 +24,19 @@ import javafx.scene.control.Label;
 public class LoginWindowController implements Initializable {
     private Controller controller;
     
-    @FXML
     private Label label;
+    @FXML
+    private Pane leftPane;
+    @FXML
+    private Pane rightPane;
+    @FXML
+    private TextField credentialTextField;
+    @FXML
+    private PasswordField passwordPasswordField;
+    @FXML
+    private Button logInBttn;
+    @FXML
+    private Button signInBttn;
     
     
     /**
@@ -32,7 +47,6 @@ public class LoginWindowController implements Initializable {
         this.controller = controller;
     }
     
-    @FXML
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me!");
         label.setText("Hello World!");
