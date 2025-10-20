@@ -6,29 +6,68 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="429.0" prefWidth="602.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.WindowLoginController">
-   <children>
-      <Button layoutX="308.0" layoutY="367.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="95.0" text="SIGN UP" />
-      <RadioButton layoutX="216.0" layoutY="286.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="95.0" text="MALE" />
-      <RadioButton layoutX="312.0" layoutY="287.0" mnemonicParsing="false" text="FEMALE" />
-      <RadioButton layoutX="407.0" layoutY="287.0" mnemonicParsing="false" text="OTHER" />
-      <Label layoutX="40.0" layoutY="79.0" prefHeight="18.0" prefWidth="126.0" text="USERNAME" />
-      <Label layoutX="39.0" layoutY="107.0" prefHeight="18.0" prefWidth="126.0" text="EMAIL" />
-      <Label layoutX="39.0" layoutY="135.0" prefHeight="18.0" prefWidth="126.0" text="PASSSWORD" />
-      <Label layoutX="40.0" layoutY="167.0" prefHeight="18.0" prefWidth="126.0" text="CONFIRM PASSWORD" />
-      <Label layoutX="40.0" layoutY="196.0" prefHeight="18.0" prefWidth="126.0" text="NAME" />
-      <Label layoutX="40.0" layoutY="223.0" prefHeight="18.0" prefWidth="126.0" text="LASTNAME" />
-      <Label layoutX="40.0" layoutY="259.0" prefHeight="18.0" prefWidth="126.0" text="TELEPHONE" />
-      <Label layoutX="40.0" layoutY="286.0" prefHeight="18.0" prefWidth="126.0" text="GENDER" />
-      <Label layoutX="40.0" layoutY="321.0" prefHeight="18.0" prefWidth="126.0" text="CARD NUMBER" />
-      <TextField layoutX="216.0" layoutY="76.0" prefHeight="26.0" prefWidth="286.0" />
-      <TextField layoutX="216.0" layoutY="103.0" prefHeight="26.0" prefWidth="286.0" />
-      <TextField layoutX="216.0" layoutY="192.0" prefHeight="26.0" prefWidth="286.0" />
-      <TextField layoutX="216.0" layoutY="219.0" prefHeight="26.0" prefWidth="286.0" />
-      <TextField layoutX="216.0" layoutY="255.0" prefHeight="26.0" prefWidth="286.0" />
-      <TextField layoutX="216.0" layoutY="317.0" prefHeight="26.0" prefWidth="286.0" />
-      <PasswordField layoutX="216.0" layoutY="131.0" prefHeight="26.0" prefWidth="286.0" />
-      <TextField layoutX="216.0" layoutY="163.0" prefHeight="26.0" prefWidth="286.0" />
-   </children>
+<AnchorPane id="AnchorPane" prefHeight="360.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SignUpWindowController">
+    <children>
+      <Pane fx:id="leftPane" prefHeight="362.0" prefWidth="152.0" style="-fx-background-color: ACA9FF;">
+         <children>
+            <Label fx:id="usernameLabel" layoutX="26.0" layoutY="76.0" prefHeight="25.0" prefWidth="121.0" text="Username:">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="passwordLabel" layoutX="26.0" layoutY="139.0" prefHeight="25.0" prefWidth="121.0" text="Password:">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="nameLabel" layoutX="24.0" layoutY="168.0" prefHeight="25.0" prefWidth="121.0" text="Name:">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="telephoneLabel" layoutX="24.0" layoutY="200.0" prefHeight="25.0" prefWidth="121.0" text="Telephone:">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="genderLabel" layoutX="24.0" layoutY="231.0" prefHeight="25.0" prefWidth="121.0" text="Gender:">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="emailLabel" layoutX="26.0" layoutY="107.0" prefHeight="25.0" prefWidth="121.0" text="Email:">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="cardNumberLabel" layoutX="24.0" layoutY="262.0" prefHeight="25.0" prefWidth="121.0" text="Card Number:">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane fx:id="rightPane" layoutX="151.0" prefHeight="362.0" prefWidth="350.0" style="-fx-background-color: EEEEEE;">
+         <children>
+            <TextField fx:id="usernameTextField" layoutX="32.0" layoutY="76.0" prefHeight="25.0" prefWidth="286.0" promptText="exampleuser" />
+            <TextField fx:id="emailTextField" layoutX="32.0" layoutY="107.0" prefHeight="25.0" prefWidth="286.0" promptText="example@email.com" />
+            <TextField fx:id="nameTextField" layoutX="32.0" layoutY="169.0" prefHeight="25.0" prefWidth="128.0" promptText="name" />
+            <TextField fx:id="surnameTextField" layoutX="190.0" layoutY="169.0" prefHeight="25.0" prefWidth="128.0" promptText="surname" />
+            <TextField fx:id="phoneTextField" layoutX="32.0" layoutY="200.0" prefHeight="25.0" prefWidth="286.0" promptText="688 88 88 88" />
+            <PasswordField fx:id="passwordPasswordField" layoutX="32.0" layoutY="138.0" prefHeight="25.0" prefWidth="286.0" promptText="· · · · · · · ·" />
+            <RadioButton fx:id="maleRadioButton" layoutX="34.0" layoutY="233.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="91.0" text="MALE" />
+            <RadioButton fx:id="femaleRadioButton" layoutX="126.0" layoutY="233.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="91.0" text="FEMALE" />
+            <RadioButton fx:id="otherRadioButton" layoutX="225.0" layoutY="233.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="91.0" text="OTHER" />
+            <TextField fx:id="cardNumber1TextField" alignment="CENTER" layoutX="32.0" layoutY="261.0" prefHeight="25.0" prefWidth="59.0" promptText="0000" />
+            <TextField fx:id="cardNumber2TextField" alignment="CENTER" layoutX="109.0" layoutY="261.0" prefHeight="25.0" prefWidth="59.0" promptText="0000" />
+            <TextField fx:id="cardNumber3TextField" alignment="CENTER" layoutX="183.0" layoutY="261.0" prefHeight="25.0" prefWidth="59.0" promptText="0000" />
+            <TextField fx:id="cardNumber4TextField" alignment="CENTER" layoutX="259.0" layoutY="261.0" prefHeight="25.0" prefWidth="59.0" promptText="0000" />
+            <Button fx:id="signUpBttn" layoutX="130.0" layoutY="298.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" style="-fx-background-radius: 10px;" text="SIGN UP" />
+            <Button fx:id="logInBttn" layoutX="84.0" layoutY="323.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="183.0" style="-fx-background-color: null;" text="If you have an account LOG IN" />
+         </children>
+      </Pane>
+    </children>
 </AnchorPane>

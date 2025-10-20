@@ -12,48 +12,48 @@
 
 <AnchorPane id="AnchorPane" prefHeight="360.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AdminWindowController">
     <children>
-      <Pane fx:id="leftPane" prefHeight="362.0" prefWidth="152.0" style="-fx-background-color: red;">
+      <Pane fx:id="leftPane" prefHeight="362.0" prefWidth="152.0" style="-fx-background-color: ACA9FF;">
          <children>
-            <Label layoutX="26.0" layoutY="76.0" prefHeight="25.0" prefWidth="121.0" text="Username:">
+            <Label fx:id="usernameLabel" layoutX="26.0" layoutY="76.0" prefHeight="25.0" prefWidth="121.0" text="Username:">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Label layoutX="26.0" layoutY="139.0" prefHeight="25.0" prefWidth="121.0" text="Password:">
+            <Label fx:id="passwordLabel" layoutX="26.0" layoutY="139.0" prefHeight="25.0" prefWidth="121.0" text="Password:">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Label layoutX="24.0" layoutY="168.0" prefHeight="25.0" prefWidth="121.0" text="Name:">
+            <Label fx:id="nameLabel" layoutX="24.0" layoutY="168.0" prefHeight="25.0" prefWidth="121.0" text="Name:">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Label layoutX="24.0" layoutY="200.0" prefHeight="25.0" prefWidth="121.0" text="Telephone:">
+            <Label fx:id="telephoneLabel" layoutX="24.0" layoutY="200.0" prefHeight="25.0" prefWidth="121.0" text="Telephone:">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Label layoutX="24.0" layoutY="231.0" prefHeight="25.0" prefWidth="121.0" text="Gender:">
+            <Label fx:id="genderLabel" layoutX="24.0" layoutY="231.0" prefHeight="25.0" prefWidth="121.0" text="Gender:">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Label layoutX="26.0" layoutY="107.0" prefHeight="25.0" prefWidth="121.0" text="Email:">
+            <Label fx:id="emailLabel" layoutX="26.0" layoutY="107.0" prefHeight="25.0" prefWidth="121.0" text="Email:">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Label layoutX="24.0" layoutY="262.0" prefHeight="25.0" prefWidth="121.0" text="Card Number:">
+            <Label fx:id="cardNumberLabel" layoutX="24.0" layoutY="262.0" prefHeight="25.0" prefWidth="121.0" text="Card Number:">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
          </children>
       </Pane>
-      <Pane fx:id="rightPane" layoutX="151.0" prefHeight="362.0" prefWidth="350.0" style="-fx-background-color: blue;">
+      <Pane fx:id="rightPane" layoutX="151.0" prefHeight="362.0" prefWidth="350.0" style="-fx-background-color: EEEEEE;">
          <children>
-            <ComboBox layoutX="16.0" layoutY="44.0" prefHeight="25.0" prefWidth="319.0" promptText="-- Choose an user --" />
+            <ComboBox fx:id="usersComboBox" layoutX="16.0" layoutY="44.0" prefHeight="25.0" prefWidth="319.0" promptText="-- Choose an user --" />
             <TextField fx:id="usernameTextField" layoutX="32.0" layoutY="76.0" prefHeight="25.0" prefWidth="286.0" promptText="exampleuser" />
             <TextField fx:id="emailTextField" layoutX="32.0" layoutY="107.0" prefHeight="25.0" prefWidth="286.0" promptText="example@email.com" />
             <TextField fx:id="nameTextField" layoutX="32.0" layoutY="169.0" prefHeight="25.0" prefWidth="128.0" promptText="name" />
@@ -67,14 +67,14 @@
             <TextField fx:id="cardNumber2TextField" alignment="CENTER" layoutX="109.0" layoutY="261.0" prefHeight="25.0" prefWidth="59.0" promptText="0000" />
             <TextField fx:id="cardNumber3TextField" alignment="CENTER" layoutX="183.0" layoutY="261.0" prefHeight="25.0" prefWidth="59.0" promptText="0000" />
             <TextField fx:id="cardNumber4TextField" alignment="CENTER" layoutX="259.0" layoutY="261.0" prefHeight="25.0" prefWidth="59.0" promptText="0000" />
-            <Button layoutX="41.0" layoutY="316.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" style="-fx-background-radius: 10px;" text="DELETE USER" />
-            <Button layoutX="209.0" layoutY="316.0" mnemonicParsing="false" style="-fx-background-radius: 10px;" text="SAVE CHANGES" />
-            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="151.0" layoutY="6.0" prefHeight="25.0" prefWidth="121.0" text="username" textAlignment="CENTER">
+            <Button fx:id="deleteUserBttn" layoutX="41.0" layoutY="316.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" style="-fx-background-radius: 10px;" text="DELETE USER" />
+            <Button fx:id="saveChangesBttn" layoutX="209.0" layoutY="316.0" mnemonicParsing="false" style="-fx-background-radius: 10px;" text="SAVE CHANGES" />
+            <Label fx:id="username" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="151.0" layoutY="6.0" prefHeight="25.0" prefWidth="121.0" text="username" textAlignment="CENTER" textFill="#000066">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font>
             </Label>
-            <Button layoutX="283.0" layoutY="6.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="59.0" style="-fx-background-radius: 10px;" text="LOG OUT">
+            <Button fx:id="logOutBttn" layoutX="283.0" layoutY="6.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="59.0" style="-fx-background-radius: 10px;" text="LOG OUT">
                <font>
                   <Font size="10.0" />
                </font>
