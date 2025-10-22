@@ -88,7 +88,7 @@ public class UserWindowController implements Initializable {
     
     public void getData()
     {
-        
+
     }
     
     @Override

@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.ArrayList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -38,9 +39,9 @@ public class Controller
         stage.show();
     }
 
-    public ArrayList<User> getUsers()
+    public ArrayList<User> getUsers(Connection con)
     {
-        return dao.getUsers();
+        return dao.getUsers(con);
     }
     
     public boolean removeUser(User user)

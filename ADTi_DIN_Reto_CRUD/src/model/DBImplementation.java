@@ -189,22 +189,27 @@ public class DBImplementation implements ModelDAO
     }
     
     @Override
-    public ArrayList<User> getUsers()
+    public ArrayList<User> getUsers(Connection con)
     {
+        ArrayList<User> users = new ArrayList<>();
+        
         try
             (
-                Connection con = ConnectionPool.getConnection();
                 PreparedStatement stmt = con.prepareStatement(SQLSELECT_USERS);
+                ResultSet rs = stmt.executeQuery();
             )
-        {           
-            Thread.sleep(WAITMS);
-        }
-        catch (SQLException | InterruptedException ex)
         {
-
+            while (rs.next()) {
+                User user = new User(rs.getInt("P_ID"), rs.getString("U_EMAIL"), rs.getString("U_USERNAME"), rs.getString("PASSWORD"), rs.getString("U_NAME"), rs.getString("U_LASTNAME"), rs.getInt("U_TELEPHONE"), Gender.valueOf(rs.getString("U_GENDER")), rs.getString("U_CARD"));
+                users.add(user);
+            }
+        }
+        catch (SQLException ex)
+        {
+            
         }
         
-        return new ArrayList<>();
+        return users;
     }
     
     @Override

@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 
 /**
@@ -11,7 +12,7 @@ public interface ModelDAO {
     
     public Profile register(User user);
     
-    public ArrayList<User> getUsers();
+    public ArrayList<User> getUsers(Connection con);
     
     public boolean removeUser(User user);
 }

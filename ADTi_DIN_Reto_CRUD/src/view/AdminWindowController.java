@@ -7,8 +7,10 @@ package view;
 
 import controller.Controller;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -18,6 +20,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import model.ConnectionPool;
 
 /**
  *
@@ -25,6 +28,7 @@ import javafx.scene.layout.Pane;
  */
 public class AdminWindowController implements Initializable {
     private Controller controller;
+    private Connection con;
     
     private Label label;
     @FXML
@@ -72,7 +76,7 @@ public class AdminWindowController implements Initializable {
     @FXML
     private Label cardNumberLabel;
     @FXML
-    private ComboBox<?> usersComboBox;
+    private ComboBox<String> usersComboBox;
     @FXML
     private Button deleteUserBttn;
     @FXML
@@ -91,13 +95,22 @@ public class AdminWindowController implements Initializable {
         this.controller = controller;
     }
     
-    private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-        label.setText("Hello World!");
+    public void getUsers()
+    {
+        ArrayList users = controller.getUsers(con);
+        usersComboBox.getItems().addAll(users);
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        try
+        {
+            con = ConnectionPool.getConnection();
+        }
+        catch (SQLException ex)
+        {
+        }
+        
+        getUsers();
     }
 }
