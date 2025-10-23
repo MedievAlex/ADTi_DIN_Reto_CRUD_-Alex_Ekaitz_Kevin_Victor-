@@ -20,6 +20,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import model.Admin;
 import model.ConnectionPool;
 
 /**
@@ -29,6 +30,7 @@ import model.ConnectionPool;
 public class AdminWindowController implements Initializable {
     private Controller controller;
     private Connection con;
+    private Admin admin;
     
     private Label label;
     @FXML
@@ -97,8 +99,15 @@ public class AdminWindowController implements Initializable {
     
     public void getUsers()
     {
-        ArrayList users = controller.getUsers(con);
-        usersComboBox.getItems().addAll(users);
+        ArrayList users;
+        
+        try
+        {
+            users = controller.getUsers(con);
+            usersComboBox.getItems().addAll(users);
+        } catch (SQLException ex)
+        {
+        }
     }
     
     @Override

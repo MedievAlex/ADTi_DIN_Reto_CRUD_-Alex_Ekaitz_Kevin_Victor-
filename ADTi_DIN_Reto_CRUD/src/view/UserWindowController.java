@@ -14,6 +14,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import model.ConnectionPool;
+import model.User;
 
 /**
  *
@@ -22,6 +23,7 @@ import model.ConnectionPool;
 public class UserWindowController implements Initializable {
     private Controller controller;
     private Connection con;
+    private User user;
     
     private Label label;
     @FXML
@@ -82,7 +84,8 @@ public class UserWindowController implements Initializable {
      * Asigna el controlador principal.
      * @param controller
      */
-    public void setController(Controller controller) {
+    public void setController(Controller controller)
+    {
         this.controller = controller;
     }
     
@@ -91,8 +94,13 @@ public class UserWindowController implements Initializable {
 
     }
     
+    public void logOut()
+    {
+    }
+    
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb)
+    {
         try
         {
             con = ConnectionPool.getConnection();

@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -39,7 +40,7 @@ public class Controller
         stage.show();
     }
 
-    public ArrayList<User> getUsers(Connection con)
+    public ArrayList<User> getUsers(Connection con) throws SQLException
     {
         return dao.getUsers(con);
     }

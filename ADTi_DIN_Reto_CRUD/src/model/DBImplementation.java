@@ -189,7 +189,7 @@ public class DBImplementation implements ModelDAO
     }
     
     @Override
-    public ArrayList<User> getUsers(Connection con)
+    public ArrayList<User> getUsers(Connection con) throws SQLException
     {
         ArrayList<User> users = new ArrayList<>();
         
@@ -203,10 +203,6 @@ public class DBImplementation implements ModelDAO
                 User user = new User(rs.getInt("P_ID"), rs.getString("U_EMAIL"), rs.getString("U_USERNAME"), rs.getString("PASSWORD"), rs.getString("U_NAME"), rs.getString("U_LASTNAME"), rs.getInt("U_TELEPHONE"), Gender.valueOf(rs.getString("U_GENDER")), rs.getString("U_CARD"));
                 users.add(user);
             }
-        }
-        catch (SQLException ex)
-        {
-            
         }
         
         return users;
