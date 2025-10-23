@@ -73,7 +73,8 @@ public class VerifyActionWindowController implements Initializable {
     }
     
     public void cancellButton(ActionEvent event) {
-
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
     }
     
     public void setUser(User user) {

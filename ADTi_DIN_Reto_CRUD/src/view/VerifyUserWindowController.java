@@ -45,6 +45,8 @@ public class VerifyUserWindowController implements Initializable {
     private Button cancelBttn;
     @FXML
     private Label titleLabel;
+    @FXML
+    private Label errorLabel;
       
     /**
      * Asigna el controlador principal.
@@ -54,29 +56,43 @@ public class VerifyUserWindowController implements Initializable {
         this.controller = controller;
     }
     
+    @FXML
     public void confirmButton(ActionEvent event) {
-        String password = passwordPasswordField.getText().trim();
-        
-        try {
-            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/WindowShow.fxml"));
-            Parent root = loader.load();   
-            
-            view.VerifyActionWindowController verifyActionWindow = loader.getController();
-            verifyActionWindow.setUser(user);
-
-            Scene scene = new Scene(root);
-            stage.setScene(scene);          
-
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (passwordPasswordField.isEmpty()) {
+            errorLabel.setText("Incorrect password.");
         }
+        else
+        {
+            String password = passwordPasswordField.getText().trim();
+            if (controller.verifyPassword(user))
+            {
+                try // Opens the next window
+                { 
+                    Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/VerifyActionWindow.fxml"));
+                    Parent root = loader.load();   
+
+                    view.VerifyActionWindowController verifyActionWindow = loader.getController();
+                    verifyActionWindow.setUser(user);
+
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);          
+
+                    stage.show();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        
+        
     }
     
+    @FXML
     public void cancellButton(ActionEvent event) {
-
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
     }
     
     public void setUser(User user) {

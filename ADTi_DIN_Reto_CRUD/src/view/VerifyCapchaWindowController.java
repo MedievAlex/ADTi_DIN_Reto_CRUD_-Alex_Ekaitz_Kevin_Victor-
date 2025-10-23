@@ -42,6 +42,8 @@ public class VerifyCapchaWindowController implements Initializable {
     private Label titleLabel;
     @FXML
     private Label codeLabel;
+    @FXML
+    private Label errorLabel;
       
     /**
      * Asigna el controlador principal.
@@ -56,7 +58,8 @@ public class VerifyCapchaWindowController implements Initializable {
     }
     
     public void cancellButton(ActionEvent event) {
-
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
     }
     
     public void setUser(User user) {

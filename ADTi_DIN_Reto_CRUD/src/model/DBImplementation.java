@@ -20,6 +20,7 @@ public class DBImplementation implements ModelDAO
     /**
      * SQL Queries: SELECTS
      */
+    final String SQLSELECT_PASSWORD = "SELECT * FROM db_profile WHERE P_USERNAME = ? AND P_PASSWORD = ?";
     final String SQLSELECT_USERS = "SELECT * FROM db_profile JOIN db_user ON P_ID = U_ID";
     final String SQLSELECT_USER = "SELECT * FROM db_profile JOIN db_user ON P_ID = U_ID WHERE P_EMAIL = ? OR P_USERNAME = ?";
     final String SQLSELECT_ADMIN = "SELECT * FROM db_profile JOIN db_admin ON P_ID = A_ID WHERE P_EMAIL = ? OR P_USERNAME = ?";
@@ -35,6 +36,31 @@ public class DBImplementation implements ModelDAO
      */
     final String SQLDELETE_USER = "DELETE FROM db_profile WHERE P_ID = ?";
 
+    public boolean verifyPassword(User user)
+    {
+        boolean valid = false;
+        try
+            (
+                Connection con = ConnectionPool.getConnection();
+                PreparedStatement stmt = con.prepareStatement(SQLSELECT_PASSWORD);
+                stmt.setString(1, user.getUsername());
+                stmt.setString(2, user.getPassword());
+                rs = stmt.executeQuery();
+                valid = rs.next();
+                rs.close();
+                stmt.close();
+                con.close();
+            )
+        {           
+            Thread.sleep(WAITMS);
+        }
+        catch (SQLException | InterruptedException ex)
+        {
+
+        }
+         return valid;
+    }
+    
     public boolean insertUser()
     {
         try
