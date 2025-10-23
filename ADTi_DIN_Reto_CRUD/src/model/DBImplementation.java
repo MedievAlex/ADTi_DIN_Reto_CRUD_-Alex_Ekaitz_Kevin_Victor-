@@ -43,6 +43,7 @@ public class DBImplementation implements ModelDAO
             (
                 Connection con = ConnectionPool.getConnection();
                 PreparedStatement stmt = con.prepareStatement(SQLSELECT_PASSWORD);
+                
                 stmt.setString(1, user.getUsername());
                 stmt.setString(2, user.getPassword());
                 rs = stmt.executeQuery();
