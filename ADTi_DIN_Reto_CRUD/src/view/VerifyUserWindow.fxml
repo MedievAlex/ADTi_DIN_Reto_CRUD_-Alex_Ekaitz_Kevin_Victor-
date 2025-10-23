@@ -24,7 +24,7 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Label fx:id="errorLabel" alignment="CENTER" layoutX="18.0" layoutY="58.0" prefHeight="17.0" prefWidth="434.0" wrapText="true" />
+            <Label fx:id="errorLabel" alignment="CENTER" layoutX="18.0" layoutY="58.0" prefHeight="17.0" prefWidth="434.0" textFill="#ea0101" wrapText="true" />
          </children>
       </Pane>
     </children>

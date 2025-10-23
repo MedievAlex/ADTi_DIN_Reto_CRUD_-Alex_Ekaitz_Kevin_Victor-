@@ -6,6 +6,6 @@ package model;
  */
 public interface ModelDAO {
     
-    public boolean verifyPassword(User user);
+    public boolean verifyPassword(User user, String password);
     
 }

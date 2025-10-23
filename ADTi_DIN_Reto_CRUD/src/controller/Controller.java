@@ -41,7 +41,7 @@ public class Controller {
         stage.show();
     }
     
-    public boolean verifyPassword(User user) {
-        return dao.verifyPassword(user);
+    public boolean verifyPassword(User user, String password) {
+        return dao.verifyPassword(user, password);
     }
 }

@@ -16,11 +16,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.User;
@@ -58,13 +55,14 @@ public class VerifyUserWindowController implements Initializable {
     
     @FXML
     public void confirmButton(ActionEvent event) {
-        if (passwordPasswordField.isEmpty()) {
-            errorLabel.setText("Incorrect password.");
+        String password = passwordPasswordField.getText().trim();
+        
+        if (password.isEmpty()) {
+            errorLabel.setText("Enter your password.");
         }
         else
         {
-            String password = passwordPasswordField.getText().trim();
-            if (controller.verifyPassword(user))
+            if (controller.verifyPassword(user, password))
             {
                 try // Opens the next window
                 { 
@@ -84,9 +82,11 @@ public class VerifyUserWindowController implements Initializable {
                     e.printStackTrace();
                 }
             }
-        }
-        
-        
+            else
+            {
+                errorLabel.setText("Incorrect password.");
+            }
+        }      
     }
     
     @FXML
