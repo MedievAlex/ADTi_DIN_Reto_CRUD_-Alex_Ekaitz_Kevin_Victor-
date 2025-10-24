@@ -20,19 +20,15 @@ public class Controller
 {
     private ModelDAO dao;
     
+    /**
+    * Constructor del Controller
+    */
     public Controller() throws SQLException
     {
-        this.dao = new DBImplementation();
+        dao = new DBImplementation();
     }
-
-    /**
-     * Crea y muestra la ventana de login.
-     *
-     * @param stage
-     * @throws IOException
-     */
-    public void showWindow(Stage stage) throws IOException
-    {
+    
+    public void showWindow(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LoginWindow.fxml"));
         Parent root = loader.load();
 
@@ -52,5 +48,9 @@ public class Controller
     public boolean removeUser(User user)
     {
         return dao.removeUser(user);
+    }
+   
+    public boolean verifyPassword(User user, String password, Connection con) {
+        return dao.verifyPassword(user, password, con);
     }
 }

@@ -15,4 +15,7 @@ public interface ModelDAO {
     public ArrayList<User> getUsers() throws SQLException;
     
     public boolean removeUser(User user);
+    
+    public boolean verifyPassword(User user, String password, Connection con);
+    
 }

@@ -1,1 +1,0 @@
-[ ] Preguntar a Jon sobre el aguantar la conexión durante un tiempo
