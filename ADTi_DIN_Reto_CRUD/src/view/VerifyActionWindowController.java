@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import model.Profile;
 import model.User;
 
 /**
@@ -28,7 +29,7 @@ import model.User;
  */
 public class VerifyActionWindowController implements Initializable {
     private Controller controller;
-    private User user;
+    private Profile user;
 
     @FXML
     private Pane rightPane;
@@ -52,7 +53,6 @@ public class VerifyActionWindowController implements Initializable {
     }
     
     public void confirmButton(ActionEvent event) {
-         
         
         try { // Opens the next window
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -60,7 +60,7 @@ public class VerifyActionWindowController implements Initializable {
             Parent root = loader.load();   
             
             view.VerifyCapchaWindowController verifyCapchaWindow = loader.getController();
-            verifyCapchaWindow.setUser(user);
+            verifyCapchaWindow.setUser((User) user);
 
             Scene scene = new Scene(root);
             stage.setScene(scene);          

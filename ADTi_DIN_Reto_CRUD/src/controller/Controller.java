@@ -6,6 +6,7 @@
 package controller;
 
 import java.io.IOException;
+import java.sql.Connection;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -41,7 +42,7 @@ public class Controller {
         stage.show();
     }
     
-    public boolean verifyPassword(User user, String password) {
-        return dao.verifyPassword(user, password);
+    public boolean verifyPassword(User user, String password, Connection con) {
+        return dao.verifyPassword(user, password, con);
     }
 }
