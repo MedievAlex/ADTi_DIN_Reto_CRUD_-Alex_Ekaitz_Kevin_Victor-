@@ -29,6 +29,8 @@ public class UserWindowController implements Initializable {
     @FXML
     private Label usernameLabel;
     @FXML
+    private Label emailLabel;
+    @FXML
     private Label passwordLabel;
     @FXML
     private Label nameLabel;
@@ -36,8 +38,6 @@ public class UserWindowController implements Initializable {
     private Label telephoneLabel;
     @FXML
     private Label genderLabel;
-    @FXML
-    private Label emailLabel;
     @FXML
     private Label cardNumberLabel;
     @FXML
@@ -49,13 +49,13 @@ public class UserWindowController implements Initializable {
     @FXML
     private TextField emailTextField;
     @FXML
+    private PasswordField passwordPasswordField;
+    @FXML
     private TextField nameTextField;
     @FXML
     private TextField surnameTextField;
     @FXML
     private TextField phoneTextField;
-    @FXML
-    private PasswordField passwordPasswordField;
     @FXML
     private RadioButton maleRadioButton;
     @FXML
@@ -87,8 +87,20 @@ public class UserWindowController implements Initializable {
         this.controller = controller;
     }
     
-    public void getData()
+    public void setUser(User user)
     {
+        this.user = user;
+    }
+    
+    public void setData()
+    {
+        username.setText(user.getUsername());
+        usernameTextField.setText(user.getUsername());
+        emailTextField.setText(user.getEmail());
+        passwordPasswordField.setText(user.getPassword());
+        nameTextField.setText(user.getName());
+        surnameTextField.setText(user.getLastname());
+        phoneTextField.setText(String.valueOf(user.getTelephone()));
 
     }
     
@@ -99,5 +111,6 @@ public class UserWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+        setData();
     }
 }

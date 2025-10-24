@@ -18,7 +18,7 @@ import view.LoginWindowController;
  */
 public class Controller
 {
-    private ModelDAO dao;
+    private final ModelDAO dao;
     
     public Controller() throws SQLException
     {
@@ -47,6 +47,11 @@ public class Controller
     public ArrayList<User> getUsers() throws SQLException
     {
         return dao.getUsers();
+    }
+    
+    public User getUser() throws SQLException
+    {
+        return dao.getUser();
     }
     
     public boolean removeUser(User user)
