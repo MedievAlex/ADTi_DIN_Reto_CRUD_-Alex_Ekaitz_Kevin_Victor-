@@ -13,7 +13,7 @@ CREATE TABLE db_profile (
   P_PASSWORD varchar(40) NOT NULL,
   P_NAME varchar(50) NOT NULL,
   P_LASTNAME varchar(40) NOT NULL,
-  P_TELEPHONE VARCHAR(9) NOT NULL
+  P_TELEPHONE char(9) NOT NULL
 );
 
 CREATE TABLE db_user (
