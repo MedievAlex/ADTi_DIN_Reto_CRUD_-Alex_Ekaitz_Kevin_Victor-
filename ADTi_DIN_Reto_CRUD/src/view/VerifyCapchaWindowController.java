@@ -5,13 +5,21 @@
  */
 package view;
 
+import controller.Controller;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import model.User;
 
 /**
  * FXML Controller class
@@ -19,6 +27,8 @@ import javafx.scene.layout.Pane;
  * @author 2dami
  */
 public class VerifyCapchaWindowController implements Initializable {
+    private Controller controller;
+    private User user;
 
     @FXML
     private Pane rightPane;
@@ -32,13 +42,32 @@ public class VerifyCapchaWindowController implements Initializable {
     private Label titleLabel;
     @FXML
     private Label codeLabel;
-
+    @FXML
+    private Label errorLabel;
+      
     /**
-     * Initializes the controller class.
+     * Asigna el controlador principal.
+     * @param controller
      */
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+    
+    public void confirmButton(ActionEvent event) {
+         
+    }
+    
+    public void cancellButton(ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
+    }
+    
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-    
+    }
 }
