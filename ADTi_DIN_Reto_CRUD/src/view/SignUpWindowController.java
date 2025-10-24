@@ -83,14 +83,86 @@ public class SignUpWindowController implements Initializable {
     public void setController(Controller controller) {
         this.controller = controller;
     }
+    /*
+    public void automaticChange(java.awt.event.KeyEvent evt,TextField cardNumber1, TextField cardNumber2, TextField cardNumber3, TextField cardNumber4){ 
+        int limite=4;
+        char c=evt.getKeyChar();
+        if(!Character.isDigit(c)){
+            evt.consume();
+            return;
+        }
+        if (cardNumber1.getText().length() >= limite) {
+            evt.consume();
+            cardNumber2.requestFocus();
+        } else if (cardNumber2.getText().length() >= limite) {
+            evt.consume();
+            cardNumber3.requestFocus();
+        } else if (cardNumber3.getText().length() >= limite) {
+            evt.consume();
+            cardNumber4.requestFocus();
+        }
+    }*/
     
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me!");
         label.setText("Hello World!");
     }
     
+    /**
+     * Configura los campos de la tarjeta con:
+     * - Límite de 4 caracteres por campo
+     * - Cambio automático al siguiente campo al alcanzar 4 caracteres
+     */
+    /**
+     * Configura los campos de la tarjeta con:
+     * - Límite de 4 caracteres por campo
+     * - Cambio automático al siguiente campo al alcanzar 4 caracteres
+     * - Validación para permitir solo números
+     */
+    private void setupCardNumberFields() {
+        // Array de los campos de tarjeta en orden
+        TextField[] cardFields = {
+            cardNumber1TextField,
+            cardNumber2TextField,
+            cardNumber3TextField,
+            cardNumber4TextField
+        };
+        
+        // Configurar cada campo
+        for (int i = 0; i < cardFields.length; i++) {
+            final TextField currentField = cardFields[i];
+            final TextField nextField = (i < cardFields.length - 1) ? cardFields[i + 1] : null;
+            
+            // Listener para cambio automático y validaciones
+            currentField.textProperty().addListener((observable, oldValue, newValue) -> {
+                // Si está vacío, permitir
+                if (newValue.isEmpty()) {
+                    return;
+                }
+                
+                // Validar que solo sean números
+                if (!newValue.matches("\\d*")) {
+                    currentField.setText(oldValue);
+                    return;
+                }
+                
+                // Si excede 4 caracteres, revertir al valor anterior
+                if (newValue.length() > 4) {
+                    currentField.setText(oldValue);
+                    return;
+                }
+                
+                // Si alcanza 4 caracteres y hay siguiente campo, cambiar el focus
+                if (newValue.length() >= 4 && nextField != null) {
+                    nextField.requestFocus();
+                }
+            });
+        }
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        // Configurar los campos de la tarjeta
+        setupCardNumberFields();
     }
 }
