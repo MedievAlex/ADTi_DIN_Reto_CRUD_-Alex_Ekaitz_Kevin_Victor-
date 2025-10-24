@@ -8,8 +8,13 @@ import java.util.ArrayList;
  */
 public class DBImplementation implements ModelDAO
 {
-    private static  final int WAITMS = 30000; // 30 seconds
-
+    Connection con;
+    
+    public DBImplementation() throws SQLException
+    {
+        this.con = ConnectionPool.getConnection();
+    }
+    
     /**
      * SQL Queries: INSERTS
      */
@@ -34,7 +39,7 @@ public class DBImplementation implements ModelDAO
      */
     final String SQLDELETE_USER = "DELETE FROM db_profile WHERE P_ID = ?";
 
-    private boolean insertUser(Connection con, User user)
+    private boolean insertUser(User user)
     {
         try
             (
@@ -42,9 +47,8 @@ public class DBImplementation implements ModelDAO
                 PreparedStatement stmtUser = con.prepareStatement(SQLINSERT_USER)
             )
         {           
-            Thread.sleep(WAITMS);
         }
-        catch (SQLException | InterruptedException ex)
+        catch (SQLException ex)
         {
 
         }
@@ -52,16 +56,15 @@ public class DBImplementation implements ModelDAO
         return true;
     }
     
-    private ArrayList<User> selectUsers(Connection con)
+    private ArrayList<User> selectUsers()
     {
         try
             (
                 PreparedStatement stmt = con.prepareStatement(SQLSELECT_USERS);
             )
         {           
-            Thread.sleep(WAITMS);
         }
-        catch (SQLException | InterruptedException ex)
+        catch (SQLException ex)
         {
 
         }
@@ -69,16 +72,15 @@ public class DBImplementation implements ModelDAO
         return new ArrayList<>();
     }
     
-    private User selectUser(Connection con, String user)
+    private User selectUser(String user)
     {
         try
             (
                 PreparedStatement stmtProfile = con.prepareStatement(SQLSELECT_USER);
             )
         {           
-            Thread.sleep(WAITMS);
         }
-        catch (SQLException | InterruptedException ex)
+        catch (SQLException ex)
         {
 
         }
@@ -86,16 +88,15 @@ public class DBImplementation implements ModelDAO
         return new User("", "", "", "", "", 123456789, Gender.MALE, "");
     }
     
-    private Admin selectAdmin(Connection con, String admin)
+    private Admin selectAdmin(String admin)
     {
         try
             (
                 PreparedStatement stmtProfile = con.prepareStatement(SQLSELECT_ADMIN);
             )
         {           
-            Thread.sleep(WAITMS);
         }
-        catch (SQLException | InterruptedException ex)
+        catch (SQLException ex)
         {
 
         }
@@ -103,7 +104,7 @@ public class DBImplementation implements ModelDAO
         return new Admin("", "", "", "", "", 123456789, "");
     }
     
-    private boolean updateUser(Connection con, User user)
+    private boolean updateUser(User user)
     {
         try
             (
@@ -111,9 +112,8 @@ public class DBImplementation implements ModelDAO
                 PreparedStatement stmtUser = con.prepareStatement(SQLUPDATE_USER)
             )
         {           
-            Thread.sleep(WAITMS);
         }
-        catch (SQLException | InterruptedException ex)
+        catch (SQLException ex)
         {
 
         }
@@ -121,16 +121,15 @@ public class DBImplementation implements ModelDAO
         return true;
     }
     
-    private boolean deleteUser(Connection con, String user)
+    private boolean deleteUser(String user)
     {
         try
             (
                 PreparedStatement stmt = con.prepareStatement(SQLDELETE_USER);
             )
         {           
-            Thread.sleep(WAITMS);
         }
-        catch (SQLException | InterruptedException ex)
+        catch (SQLException ex)
         {
 
         }
@@ -142,7 +141,6 @@ public class DBImplementation implements ModelDAO
     public Profile login(String username, String password)
     {
         try (
-                Connection con = ConnectionPool.getConnection();
                 PreparedStatement stmt = con.prepareStatement(SQLSELECT_USERS))
         {
 
@@ -153,9 +151,8 @@ public class DBImplementation implements ModelDAO
                 }
             }
             
-            Thread.sleep(WAITMS);
         }
-        catch (SQLException | InterruptedException ex)
+        catch (SQLException ex)
         {
 
         }
@@ -167,7 +164,6 @@ public class DBImplementation implements ModelDAO
     public Profile register(User user)
     {
         try (
-                Connection con = ConnectionPool.getConnection();
                 PreparedStatement stmt = con.prepareStatement(SQLSELECT_USERS))
         {
 
@@ -178,9 +174,8 @@ public class DBImplementation implements ModelDAO
                 }
             }
             
-            Thread.sleep(WAITMS);
         }
-        catch (SQLException | InterruptedException ex)
+        catch (SQLException ex)
         {
 
         }
@@ -189,7 +184,7 @@ public class DBImplementation implements ModelDAO
     }
     
     @Override
-    public ArrayList<User> getUsers(Connection con) throws SQLException
+    public ArrayList<User> getUsers() throws SQLException
     {
         ArrayList<User> users = new ArrayList<>();
         
@@ -213,13 +208,11 @@ public class DBImplementation implements ModelDAO
     {
         try
             (
-                Connection con = ConnectionPool.getConnection();
                 PreparedStatement stmt = con.prepareStatement(SQLSELECT_USERS);
             )
-        {           
-            Thread.sleep(WAITMS);
+        {
         }
-        catch (SQLException | InterruptedException ex)
+        catch (SQLException ex)
         {
 
         }

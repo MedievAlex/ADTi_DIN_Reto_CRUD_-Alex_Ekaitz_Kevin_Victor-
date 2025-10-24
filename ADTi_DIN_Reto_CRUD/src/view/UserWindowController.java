@@ -3,7 +3,6 @@ package view;
 import controller.Controller;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,7 +12,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import model.ConnectionPool;
 import model.User;
 
 /**
@@ -101,12 +99,5 @@ public class UserWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        try
-        {
-            con = ConnectionPool.getConnection();
-        }
-        catch (SQLException ex)
-        {
-        }
     }
 }

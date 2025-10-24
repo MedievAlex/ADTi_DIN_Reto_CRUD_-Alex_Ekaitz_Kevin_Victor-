@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import controller.Controller;
 import java.net.URL;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -21,7 +15,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import model.Admin;
-import model.ConnectionPool;
 
 /**
  *
@@ -29,7 +22,6 @@ import model.ConnectionPool;
  */
 public class AdminWindowController implements Initializable {
     private Controller controller;
-    private Connection con;
     private Admin admin;
     
     private Label label;
@@ -97,29 +89,22 @@ public class AdminWindowController implements Initializable {
         this.controller = controller;
     }
     
-    public void getUsers()
+    public void getUsers() throws SQLException
     {
         ArrayList users;
         
-        try
-        {
-            users = controller.getUsers(con);
-            usersComboBox.getItems().addAll(users);
-        } catch (SQLException ex)
-        {
-        }
+        users = controller.getUsers();
+        usersComboBox.getItems().addAll(users);
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try
         {
-            con = ConnectionPool.getConnection();
+            getUsers();
         }
         catch (SQLException ex)
         {
         }
-        
-        getUsers();
     }
 }

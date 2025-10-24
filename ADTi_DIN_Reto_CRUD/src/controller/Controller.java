@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +18,12 @@ import view.LoginWindowController;
  */
 public class Controller
 {
-    ModelDAO dao = new DBImplementation();
+    private ModelDAO dao;
+    
+    public Controller() throws SQLException
+    {
+        this.dao = new DBImplementation();
+    }
 
     /**
      * Crea y muestra la ventana de login.
@@ -40,9 +44,9 @@ public class Controller
         stage.show();
     }
 
-    public ArrayList<User> getUsers(Connection con) throws SQLException
+    public ArrayList<User> getUsers() throws SQLException
     {
-        return dao.getUsers(con);
+        return dao.getUsers();
     }
     
     public boolean removeUser(User user)
