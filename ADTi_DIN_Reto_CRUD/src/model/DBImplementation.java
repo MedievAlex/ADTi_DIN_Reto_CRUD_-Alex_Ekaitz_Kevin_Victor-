@@ -2,15 +2,19 @@ package model;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Alex, Ekaitz, Kevin, Victor
  */
-public class DBImplementation implements ModelDAO {
-
-    private static final int WAITMS = 30000; // 30 seconds
-
+public class DBImplementation implements ModelDAO
+{
+    Connection con;
+    
+    public DBImplementation() throws SQLException
+    {
+        this.con = ConnectionPool.getConnection();
+    }
+    
     /**
      * SQL Queries: INSERTS
      */
@@ -36,109 +40,182 @@ public class DBImplementation implements ModelDAO {
      */
     final String SQLDELETE_USER = "DELETE FROM db_profile WHERE P_ID = ?";
 
-    public boolean verifyPassword(User user, String password, Connection con) {
-        boolean valid = false;
-        try (
-                PreparedStatement stmt = con.prepareStatement(SQLSELECT_PASSWORD);
-            ) {
-            ResultSet rs;
-            stmt.setString(1, user.getUsername());
-            stmt.setString(2, password);
-            rs = stmt.executeQuery();
-            valid = rs.next();
-            rs.close();
-        } catch (SQLException ex) {
-
-        }
-        return valid;
-    }
-
-    public boolean insertUser(User user, Connection con) {
-        try (
+    private boolean insertUser(User user)
+    {
+        try
+            (
                 PreparedStatement stmtProfile = con.prepareStatement(SQLINSERT_PROFILE);
-                PreparedStatement stmtUser = con.prepareStatement(SQLINSERT_USER)) {
-
-        } catch (SQLException ex) {
+                PreparedStatement stmtUser = con.prepareStatement(SQLINSERT_USER)
+            )
+        {           
+        }
+        catch (SQLException ex)
+        {
 
         }
 
         return true;
     }
-
-    public List<User> selectUsers() {
-        try (
-                Connection con = ConnectionPool.getConnection();
-                PreparedStatement stmt = con.prepareStatement(SQLSELECT_USERS);) {
-            Thread.sleep(WAITMS);
-        } catch (SQLException | InterruptedException ex) {
+    
+    private ArrayList<User> selectUsers()
+    {
+        try
+            (
+                PreparedStatement stmt = con.prepareStatement(SQLSELECT_USERS);
+            )
+        {           
+        }
+        catch (SQLException ex)
+        {
 
         }
 
         return new ArrayList<>();
     }
-
-    public User selectUser() {
-        try (
-                Connection con = ConnectionPool.getConnection();
-                PreparedStatement stmtProfile = con.prepareStatement(SQLSELECT_USER);) {
-            Thread.sleep(WAITMS);
-        } catch (SQLException | InterruptedException ex) {
+    
+    private User selectUser(String user)
+    {
+        try
+            (
+                PreparedStatement stmtProfile = con.prepareStatement(SQLSELECT_USER);
+            )
+        {           
+        }
+        catch (SQLException ex)
+        {
 
         }
 
         return new User("", "", "", "", "", 123456789, Gender.MALE, "");
     }
-
-    public Admin selectAdmin() {
-        try (
-                Connection con = ConnectionPool.getConnection();
-                PreparedStatement stmtProfile = con.prepareStatement(SQLSELECT_ADMIN);) {
-            Thread.sleep(WAITMS);
-        } catch (SQLException | InterruptedException ex) {
+    
+    private Admin selectAdmin(String admin)
+    {
+        try
+            (
+                PreparedStatement stmtProfile = con.prepareStatement(SQLSELECT_ADMIN);
+            )
+        {           
+        }
+        catch (SQLException ex)
+        {
 
         }
 
         return new Admin("", "", "", "", "", 123456789, "");
     }
-
-    public boolean updateUser() {
-        try (
-                Connection con = ConnectionPool.getConnection();
+    
+    private boolean updateUser(User user)
+    {
+        try
+            (
                 PreparedStatement stmtProfile = con.prepareStatement(SQLUPDATE_PROFILE);
-                PreparedStatement stmtUser = con.prepareStatement(SQLUPDATE_USER)) {
-            Thread.sleep(WAITMS);
-        } catch (SQLException | InterruptedException ex) {
+                PreparedStatement stmtUser = con.prepareStatement(SQLUPDATE_USER)
+            )
+        {           
+        }
+        catch (SQLException ex)
+        {
 
         }
 
         return true;
     }
-
-    public boolean deleteUser() {
-        try (
-                Connection con = ConnectionPool.getConnection();
-                PreparedStatement stmt = con.prepareStatement(SQLDELETE_USER);) {
-            Thread.sleep(WAITMS);
-        } catch (SQLException | InterruptedException ex) {
+    
+    private boolean deleteUser(String user)
+    {
+        try
+            (
+                PreparedStatement stmt = con.prepareStatement(SQLDELETE_USER);
+            )
+        {           
+        }
+        catch (SQLException ex)
+        {
 
         }
 
         return true;
     }
-
-    public void login() {
+    
+    @Override
+    public Profile login(String username, String password)
+    {
         try (
-                Connection con = ConnectionPool.getConnection();
-                PreparedStatement stmt = con.prepareStatement(SQLSELECT_USERS)) {
+                PreparedStatement stmt = con.prepareStatement(SQLSELECT_USERS))
+        {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                 }
             }
-
-            Thread.sleep(WAITMS);
-        } catch (SQLException | InterruptedException ex) {
+            
+        }
+        catch (SQLException ex)
+        {
 
         }
+        
+        return new User("", "", "", "", "", 123456789, Gender.MALE, "");
+    }
+    
+    @Override
+    public Profile register(User user)
+    {
+        try (
+                PreparedStatement stmt = con.prepareStatement(SQLSELECT_USERS))
+        {
+
+            try (ResultSet rs = stmt.executeQuery())
+            {
+                while (rs.next())
+                {
+                }
+            }
+            
+        }
+        catch (SQLException ex)
+        {
+
+        }
+        
+        return new User("", "", "", "", "", 123456789, Gender.MALE, "");
+    }
+    
+    @Override
+    public ArrayList<User> getUsers() throws SQLException
+    {
+        ArrayList<User> users = new ArrayList<>();
+        
+        try
+            (
+                PreparedStatement stmt = con.prepareStatement(SQLSELECT_USERS);
+                ResultSet rs = stmt.executeQuery();
+            )
+        {
+            while (rs.next()) {
+                User user = new User(rs.getInt("P_ID"), rs.getString("U_EMAIL"), rs.getString("U_USERNAME"), rs.getString("PASSWORD"), rs.getString("U_NAME"), rs.getString("U_LASTNAME"), rs.getInt("U_TELEPHONE"), Gender.valueOf(rs.getString("U_GENDER")), rs.getString("U_CARD"));
+                users.add(user);
+            }
+        }
+        
+        return users;
+    }
+    
+    @Override
+    public boolean removeUser(User user)
+    {
+        try
+            (
+                PreparedStatement stmt = con.prepareStatement(SQLSELECT_USERS);
+            )
+        {
+        }
+        catch (SQLException ex)
+        {
+
+        }
+        
+        return true;
     }
 }

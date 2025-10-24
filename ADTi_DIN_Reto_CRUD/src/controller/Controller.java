@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import java.io.IOException;
-import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -20,13 +16,15 @@ import view.LoginWindowController;
  *
  * @author 2dami
  */
-public class Controller {
+public class Controller
+{
     private ModelDAO dao;
-
+    
     /**
-     * Constructor del Controller
-     */
-    public Controller() {
+    * Constructor del Controller
+    */
+    public Controller() throws SQLException
+    {
         dao = new DBImplementation();
     }
     
@@ -41,7 +39,17 @@ public class Controller {
         stage.setScene(scene);
         stage.show();
     }
+
+    public ArrayList<User> getUsers() throws SQLException
+    {
+        return dao.getUsers();
+    }
     
+    public boolean removeUser(User user)
+    {
+        return dao.removeUser(user);
+    }
+   
     public boolean verifyPassword(User user, String password, Connection con) {
         return dao.verifyPassword(user, password, con);
     }
