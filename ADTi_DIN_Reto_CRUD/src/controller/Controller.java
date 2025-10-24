@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 import model.DBImplementation;
 import model.ModelDAO;
 import model.User;
-import view.LoginWindowController;
 
 /**
  *

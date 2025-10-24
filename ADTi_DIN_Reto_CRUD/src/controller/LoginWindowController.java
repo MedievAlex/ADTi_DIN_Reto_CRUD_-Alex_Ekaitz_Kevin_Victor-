@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view;
+package controller;
 
 import controller.Controller;
 import java.io.IOException;
@@ -67,7 +67,7 @@ public class LoginWindowController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/VerifyUserWindow.fxml"));
             Parent root = loader.load();
 
-            view.VerifyUserWindowController verifyUserWindow = loader.getController();
+            controller.VerifyUserWindowController verifyUserWindow = loader.getController();
             verifyUserWindow.setUser(user);
 
             Scene scene = new Scene(root);
