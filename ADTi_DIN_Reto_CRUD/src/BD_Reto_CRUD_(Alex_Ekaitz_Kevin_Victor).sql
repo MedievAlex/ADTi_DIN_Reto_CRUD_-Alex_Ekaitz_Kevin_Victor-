@@ -13,7 +13,7 @@ CREATE TABLE db_profile (
   P_PASSWORD varchar(40) NOT NULL,
   P_NAME varchar(50) NOT NULL,
   P_LASTNAME varchar(40) NOT NULL,
-  P_TELEPHONE int NOT NULL
+  P_TELEPHONE VARCHAR(9) NOT NULL
 );
 
 CREATE TABLE db_user (
@@ -31,10 +31,10 @@ CREATE TABLE db_admin (
 
 -- INSERTS IN THE TABLES --
 INSERT INTO db_profile (P_EMAIL, P_USERNAME, P_PASSWORD, P_NAME, P_LASTNAME, P_TELEPHONE) VALUES
-('admin@admin.com', 'admin', '1234', 'Admin', 'Admin', 123456789);
+('admin@admin.com', 'admin', '1234', 'Admin', 'Admin', '123456789');
 
 INSERT INTO db_profile (P_EMAIL, P_USERNAME, P_PASSWORD, P_NAME, P_LASTNAME, P_TELEPHONE) VALUES
-('user@user.com', 'user', '1234', 'User', 'User', 987654321);
+('user@user.com', 'user', '1234', 'User', 'User', '987654321');
 
 INSERT INTO db_admin (A_ID, A_CURRENT_ACCOUNT) VALUES
 (1, '1234123412341234');
