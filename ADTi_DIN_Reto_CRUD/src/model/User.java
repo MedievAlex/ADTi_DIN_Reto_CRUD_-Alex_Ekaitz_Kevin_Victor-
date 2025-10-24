@@ -8,6 +8,12 @@ public class User extends Profile {
     private Gender u_gender;
     private String u_card;
 
+    public User() {
+        super();
+        this.u_gender = u_gender.OTHER;
+        this.u_card = "";
+    }
+    
     public User(int u_id, String p_email, String p_username, String p_password, String p_name, String p_lastname, int p_telephone, Gender u_gender, String u_card) {
         super(u_id, p_email, p_username, p_password, p_name, p_lastname, p_telephone);
         this.u_gender = u_gender;

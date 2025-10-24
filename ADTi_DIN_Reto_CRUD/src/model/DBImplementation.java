@@ -36,8 +36,10 @@ public class DBImplementation implements ModelDAO {
      */
     final String SQLDELETE_USER = "DELETE FROM db_profile WHERE P_ID = ?";
 
-    public boolean verifyPassword(User user, String password, Connection con) {
+    
+    public boolean verifyPassword(User user, String password) {
         boolean valid = false;
+        /**
         try (
                 PreparedStatement stmt = con.prepareStatement(SQLSELECT_PASSWORD);
             ) {
@@ -49,8 +51,8 @@ public class DBImplementation implements ModelDAO {
             rs.close();
         } catch (SQLException ex) {
 
-        }
-        return valid;
+        }*/
+        return valid; 
     }
 
     public boolean insertUser(User user, Connection con) {

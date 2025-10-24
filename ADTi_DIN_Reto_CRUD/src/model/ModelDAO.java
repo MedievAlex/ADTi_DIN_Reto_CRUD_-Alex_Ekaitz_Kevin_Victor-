@@ -8,6 +8,6 @@ import java.sql.Connection;
  */
 public interface ModelDAO {
     
-    public boolean verifyPassword(User user, String password, Connection con);
+    public boolean verifyPassword(User user, String password);
     
 }

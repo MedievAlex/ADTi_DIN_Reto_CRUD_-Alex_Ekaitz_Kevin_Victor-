@@ -62,7 +62,26 @@ public class VerifyUserWindowController implements Initializable {
         }
         else
         {
-            if (controller.verifyPassword(user, password, con))
+            
+            try // Opens the next window
+                { 
+                    Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/VerifyActionWindow.fxml"));
+                    Parent root = loader.load();   
+
+                    view.VerifyActionWindowController verifyActionWindow = loader.getController();
+                    verifyActionWindow.setUser(user);
+
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);          
+
+                    stage.show();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            
+            if (controller.verifyPassword(user, password))
             {
                 try // Opens the next window
                 { 

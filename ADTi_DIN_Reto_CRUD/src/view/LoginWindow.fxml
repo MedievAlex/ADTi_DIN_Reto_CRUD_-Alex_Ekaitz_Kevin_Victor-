@@ -13,7 +13,7 @@
          <children>
             <TextField fx:id="credentialTextField" layoutX="58.0" layoutY="138.0" prefHeight="25.0" prefWidth="260.0" promptText="exampleuser / example@email.com" />
             <PasswordField fx:id="passwordPasswordField" layoutX="58.0" layoutY="200.0" prefHeight="25.0" prefWidth="260.0" promptText="password" />
-            <Button fx:id="logInBttn" layoutX="135.0" layoutY="257.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" style="-fx-background-radius: 10px;" text="LOG IN" />
+            <Button fx:id="logInBttn" layoutX="135.0" layoutY="257.0" mnemonicParsing="false" onAction="#test" prefHeight="25.0" prefWidth="81.0" style="-fx-background-radius: 10px;" text="LOG IN" />
             <Button fx:id="signInBttn" layoutX="84.0" layoutY="295.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="183.0" style="-fx-background-color: null;" text="If you have no account SIGN IN" />
          </children>
       </Pane>
