@@ -14,7 +14,5 @@ public interface ModelDAO {
     
     public ArrayList<User> getUsers() throws SQLException;
     
-    public User getUser() throws SQLException;
-    
     public boolean removeUser(User user);
 }

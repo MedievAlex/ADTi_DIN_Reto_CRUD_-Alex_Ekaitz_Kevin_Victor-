@@ -3,8 +3,6 @@ package main;
 import controller.Controller;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import model.ConnectionPool;
-
 /**
  *
  * @author 2dami

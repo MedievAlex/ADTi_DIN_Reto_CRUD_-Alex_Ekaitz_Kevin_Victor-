@@ -78,7 +78,8 @@ public class DBImplementation implements ModelDAO
             (
                 PreparedStatement stmtProfile = con.prepareStatement(SQLSELECT_USER);
             )
-        {           
+        {
+            
         }
         catch (SQLException ex)
         {

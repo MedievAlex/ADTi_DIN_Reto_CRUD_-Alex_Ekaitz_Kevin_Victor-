@@ -3,9 +3,7 @@ package view;
 import controller.Controller;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -13,7 +11,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import model.ConnectionPool;
 
 /**
  *
@@ -44,10 +41,6 @@ public class LoginWindowController implements Initializable {
      */
     public void setController(Controller controller) {
         this.controller = controller;
-    }
-    
-    private void handleButtonAction(ActionEvent event) throws SQLException {
-        con = ConnectionPool.getConnection();
     }
     
     @Override

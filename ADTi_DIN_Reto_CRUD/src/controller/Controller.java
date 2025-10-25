@@ -49,11 +49,6 @@ public class Controller
         return dao.getUsers();
     }
     
-    public User getUser() throws SQLException
-    {
-        return dao.getUser();
-    }
-    
     public boolean removeUser(User user)
     {
         return dao.removeUser(user);

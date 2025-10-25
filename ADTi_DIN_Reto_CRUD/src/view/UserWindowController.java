@@ -1,28 +1,34 @@
 package view;
 
 import controller.Controller;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import model.User;
 
 /**
  *
  * @author 2dami
  */
-public class UserWindowController implements Initializable {
+public class UserWindowController implements Initializable
+{
     private Controller controller;
     private Connection con;
     private User user;
-    
+
     private Label label;
     @FXML
     private Pane leftPane;
@@ -76,22 +82,22 @@ public class UserWindowController implements Initializable {
     private Label username;
     @FXML
     private Button logOutBttn;
-    
-    
+
     /**
      * Asigna el controlador principal.
+     *
      * @param controller
      */
     public void setController(Controller controller)
     {
         this.controller = controller;
     }
-    
+
     public void setUser(User user)
     {
         this.user = user;
     }
-    
+
     public void setData()
     {
         username.setText(user.getUsername());
@@ -103,11 +109,23 @@ public class UserWindowController implements Initializable {
         phoneTextField.setText(String.valueOf(user.getTelephone()));
 
     }
-    
+
     public void logOut()
     {
+        this.user = null;
+        
+        try
+        {
+            Parent loginRoot = FXMLLoader.load(getClass().getResource("/view/LoginWindow.fxml"));
+            Stage currentStage = (Stage) logOutBttn.getScene().getWindow();
+            currentStage.setScene(new Scene(loginRoot));
+        }
+        catch (IOException e)
+        {
+            System.err.println("Error loading login window: " + e.getMessage());
+        }
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
