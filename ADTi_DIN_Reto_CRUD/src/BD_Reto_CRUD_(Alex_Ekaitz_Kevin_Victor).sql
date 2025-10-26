@@ -31,9 +31,7 @@ CREATE TABLE db_admin (
 
 -- INSERTS IN THE TABLES --
 INSERT INTO db_profile (P_EMAIL, P_USERNAME, P_PASSWORD, P_NAME, P_LASTNAME, P_TELEPHONE) VALUES
-('admin@admin.com', 'admin', '1234', 'Admin', 'Admin', '123456789');
-
-INSERT INTO db_profile (P_EMAIL, P_USERNAME, P_PASSWORD, P_NAME, P_LASTNAME, P_TELEPHONE) VALUES
+('admin@admin.com', 'admin', '1234', 'Admin', 'Admin', '123456789'),
 ('user@user.com', 'user', '1234', 'User', 'User', '987654321');
 
 INSERT INTO db_admin (A_ID, A_CURRENT_ACCOUNT) VALUES
