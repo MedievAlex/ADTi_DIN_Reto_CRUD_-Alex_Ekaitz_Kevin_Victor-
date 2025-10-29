@@ -7,10 +7,12 @@ package controller;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.List;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.Admin;
 import model.DBImplementation;
 import model.ModelDAO;
 import model.User;
@@ -43,5 +45,33 @@ public class Controller {
     
     public boolean verifyPassword(User user, String password) {
         return dao.verifyPassword(user, password);
+    }
+    
+    public boolean insertUser(User user, Connection con) {
+        return dao.insertUser(user, con);
+    }
+    
+    public List<User> selectUsers() {
+        return dao.selectUsers();
+    }
+    
+    public User selectUser() {
+        return dao.selectUser();
+    }
+     
+    public Admin selectAdmin() {
+        return dao.selectAdmin();
+    }
+    
+    public boolean updateUser() {
+        return dao.updateUser();
+    }
+    
+    public boolean deleteUser() {
+        return dao.deleteUser();
+    }
+    
+    public void login() {
+        dao.login();
     }
 }
