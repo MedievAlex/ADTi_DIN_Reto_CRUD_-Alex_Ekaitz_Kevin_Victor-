@@ -19,7 +19,7 @@ import view.LoginWindowController;
 public class Controller
 {
     private final ModelDAO dao;
-    
+
     public Controller() throws SQLException
     {
         this.dao = new DBImplementation();
@@ -48,7 +48,7 @@ public class Controller
     {
         return dao.getUsers();
     }
-    
+
     public boolean removeUser(User user)
     {
         return dao.removeUser(user);

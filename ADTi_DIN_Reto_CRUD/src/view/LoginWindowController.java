@@ -19,7 +19,7 @@ import javafx.scene.layout.Pane;
 public class LoginWindowController implements Initializable {
     private Controller controller;
     private Connection con;
-    
+
     private Label label;
     @FXML
     private Pane leftPane;
@@ -33,8 +33,8 @@ public class LoginWindowController implements Initializable {
     private Button logInBttn;
     @FXML
     private Button signInBttn;
-    
-    
+
+
     /**
      * Asigna el controlador principal.
      * @param controller
@@ -42,7 +42,7 @@ public class LoginWindowController implements Initializable {
     public void setController(Controller controller) {
         this.controller = controller;
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
