@@ -31,11 +31,15 @@ CREATE TABLE db_admin (
 
 -- INSERTS IN THE TABLES --
 INSERT INTO db_profile (P_EMAIL, P_USERNAME, P_PASSWORD, P_NAME, P_LASTNAME, P_TELEPHONE) VALUES
-('admin@admin.com', 'admin', '1234', 'Admin', 'Admin', '123456789'),
-('user@user.com', 'user', '1234', 'User', 'User', '987654321');
+('admin@sandia.com', 'admin', 'Ab123456', 'Admin', 'Sandia', '123456789'),
+('user1@sandia.com', 'user1', 'Ab123456', 'User 1', 'Sandia', '987654321'),
+('user2@sandia.com', 'user2', 'Ab123456', 'User 2', 'Sandia', '987867321'),
+('user3@sandia.com', 'user3', 'Ab123456', 'User 3', 'Sandia', '687864451');
 
 INSERT INTO db_admin (A_ID, A_CURRENT_ACCOUNT) VALUES
 (1, '1234123412341234');
 
 INSERT INTO db_user (U_ID, U_GENDER, U_CARD) VALUES
-(2, 'MALE', '4321432143214321');
+(2, 'MALE', '4321432143214321'),
+(3, 'FEMALE', '4321432337914321'),
+(4, 'OTHER', '4305332143214321');
