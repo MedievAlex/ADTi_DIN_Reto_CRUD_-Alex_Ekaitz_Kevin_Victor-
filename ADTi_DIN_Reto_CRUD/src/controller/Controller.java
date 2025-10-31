@@ -50,7 +50,7 @@ public class Controller
         return dao.removeUser(user);
     }
    
-    public boolean verifyPassword(User user, String password, Connection con) {
-        return dao.verifyPassword(user, password, con);
+    public boolean verifyPassword(User user, String password) {
+        return dao.verifyPassword(user, password);
     }
 }

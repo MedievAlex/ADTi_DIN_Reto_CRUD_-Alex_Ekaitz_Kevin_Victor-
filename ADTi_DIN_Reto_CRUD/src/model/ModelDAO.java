@@ -16,6 +16,5 @@ public interface ModelDAO {
     
     public boolean removeUser(User user);
     
-    public boolean verifyPassword(User user, String password, Connection con);
-    
+    public boolean verifyPassword(User user, String password);
 }

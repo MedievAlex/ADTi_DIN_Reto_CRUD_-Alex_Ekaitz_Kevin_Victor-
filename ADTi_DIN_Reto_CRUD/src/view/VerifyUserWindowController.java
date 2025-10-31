@@ -62,7 +62,7 @@ public class VerifyUserWindowController implements Initializable {
         }
         else
         {
-            if (controller.verifyPassword(user, password, con))
+            if (controller.verifyPassword(user, password))
             {
                 try // Opens the next window
                 { 
