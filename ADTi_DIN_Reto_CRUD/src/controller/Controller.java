@@ -7,10 +7,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import model.DBImplementation;
-import model.ModelDAO;
+import dao.DBImplementation;
+import dao.ModelDAO;
 import model.User;
-import view.LoginWindowController;
 
 /**
  *
@@ -18,10 +17,11 @@ import view.LoginWindowController;
  */
 public class Controller
 {
-    private ModelDAO dao;
+    private final ModelDAO dao;
     
     /**
     * Constructor del Controller
+     * @throws java.sql.SQLException
     */
     public Controller() throws SQLException
     {

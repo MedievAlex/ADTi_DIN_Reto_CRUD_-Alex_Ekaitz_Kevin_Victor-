@@ -1,7 +1,9 @@
-package model;
+package dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import model.Profile;
+import model.User;
 
 /**
  *

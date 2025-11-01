@@ -1,4 +1,4 @@
-package model;
+package pool;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import java.sql.Connection;
@@ -17,7 +17,7 @@ public class ConnectionPool
         DATASOURCE = new BasicDataSource();
 
         // Import configuration from classConfig.properties file
-        ResourceBundle configFile = ResourceBundle.getBundle("model.classConfig");
+        ResourceBundle configFile = ResourceBundle.getBundle("config.classConfig");
 
         DATASOURCE.setUrl(configFile.getString("Conn"));
         DATASOURCE.setUsername(configFile.getString("DBUser"));

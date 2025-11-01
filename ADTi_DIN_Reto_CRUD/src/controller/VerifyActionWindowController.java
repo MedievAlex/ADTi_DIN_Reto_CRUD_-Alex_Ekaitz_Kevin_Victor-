@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view;
+package controller;
 
 import controller.Controller;
 import java.io.IOException;
@@ -59,7 +59,7 @@ public class VerifyActionWindowController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/VerifyCapchaWindow.fxml"));
             Parent root = loader.load();   
             
-            view.VerifyCapchaWindowController verifyCapchaWindow = loader.getController();
+            controller.VerifyCapchaWindowController verifyCapchaWindow = loader.getController();
             verifyCapchaWindow.setUser((User) user);
 
             Scene scene = new Scene(root);

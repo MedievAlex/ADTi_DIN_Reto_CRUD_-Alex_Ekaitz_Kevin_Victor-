@@ -1,7 +1,12 @@
-package model;
+package dao;
 
+import pool.ConnectionPool;
 import java.sql.*;
 import java.util.ArrayList;
+import model.Admin;
+import model.Gender;
+import model.Profile;
+import model.User;
 /**
  * @author Alex, Ekaitz, Kevin, Victor
  */
