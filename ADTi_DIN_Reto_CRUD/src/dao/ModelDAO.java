@@ -1,6 +1,6 @@
 package dao;
 
-import java.sql.SQLException;
+import exception.OurException;
 import java.util.ArrayList;
 import model.Profile;
 import model.User;
@@ -10,13 +10,15 @@ import model.User;
  * @author Ekasestao
  */
 public interface ModelDAO {
-    public Profile login(String username, String password);
+    public ArrayList<User> getUsers() throws OurException;
     
-    public Profile register(User user);
+    public boolean updateUser(User user) throws OurException;
     
-    public ArrayList<User> getUsers() throws SQLException;
+    public boolean deleteUser(User user) throws OurException;
     
-    public boolean removeUser(User user);
+    public Profile login(String username, String password) throws OurException;
     
-    public boolean verifyPassword(User user, String password);
+    public User register(User user) throws OurException;
+    
+    public boolean verifyPassword(User user, String password) throws OurException;
 }
