@@ -1,7 +1,9 @@
-package model;
+package dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import model.Profile;
+import model.User;
 
 /**
  *
@@ -16,6 +18,5 @@ public interface ModelDAO {
     
     public boolean removeUser(User user);
     
-    public boolean verifyPassword(User user, String password, Connection con);
-    
+    public boolean verifyPassword(User user, String password);
 }

@@ -1,8 +1,12 @@
-package model;
+package dao;
 
+import pool.ConnectionPool;
 import java.sql.*;
 import java.util.ArrayList;
-
+import model.Admin;
+import model.Gender;
+import model.Profile;
+import model.User;
 /**
  * @author Alex, Ekaitz, Kevin, Victor
  */
@@ -139,22 +143,36 @@ public class DBImplementation implements ModelDAO
     }
     
     @Override
+    public boolean verifyPassword(User user, String password)
+    {
+        return true;
+    }
+    
+    @Override
     public Profile login(String username, String password)
     {
-        try (
-                PreparedStatement stmt = con.prepareStatement(SQLSELECT_USERS))
+        Thread thread = new Thread()
         {
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
+            private Connection con;
+            
+            @Override
+            public void run()
+            {
+                try
+                {
+                    con = ConnectionPool.getConnection();
+                } catch (SQLException ex)
+                {
                 }
             }
             
-        }
-        catch (SQLException ex)
-        {
-
-        }
+            public Connection getConnection()
+            {
+                return con;
+            }
+        };
+        
+        thread.start();
         
         return new User("", "", "", "", "", 123456789, Gender.MALE, "");
     }
