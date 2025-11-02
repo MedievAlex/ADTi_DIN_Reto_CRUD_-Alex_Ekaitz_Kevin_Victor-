@@ -10,6 +10,7 @@ import model.Admin;
 import model.Gender;
 import model.Profile;
 import model.User;
+import pool.ConnectionThread;
 
 /**
  * @author Alex, Ekaitz, Kevin, Victor
@@ -415,98 +416,65 @@ public class DBImplementation implements ModelDAO
     @Override
     public boolean updateUser(User user) throws OurException
     {
-        class Container {
-            Connection con;
-            boolean end = false;
-        }
-
-        final Container container = new Container();
-
-        Thread thread = new Thread(() -> {
-            try {
-                container.con = ConnectionPool.getConnection();
-
-                while(!container.end) {}
-
-                try {
-                    Thread.sleep(30000);
-                } catch (InterruptedException ex) {
-                    Thread.currentThread().interrupt();
-                }
-
-                if (container.con != null) {
-                    container.con.close();
-                }
-
-            } catch (SQLException ex) {}
-        });
-
+        ConnectionThread thread = new ConnectionThread(30);
         thread.start();
 
         try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+            int attempts = 0;
+
+            while (!thread.isReady() && attempts < 50) { // If in 500ms cant get a connection throws timeout exception
+                Thread.sleep(10);
+                attempts++;
+            }
+
+            if (!thread.isReady()) {
+                thread.releaseConnection();
+                throw new OurException("Timeout waiting the connection");
+            }
+
+            Connection con = thread.getConnection();
+            
+            boolean result = update(con, user);
+
+            thread.releaseConnection();
+
+            return result;
+        } catch (InterruptedException ex) {
+            thread.releaseConnection();
+            throw new OurException("Error updating the user: " + ex.getMessage());
         }
-
-        if (container.con == null) {
-            container.end = true;
-            throw new OurException("No se pudo obtener la conexión del hilo");
-        }
-
-        boolean result = update(container.con, user);
-
-        container.end = true;
-
-        return result;
     }
 
     @Override
-    public boolean deleteUser(User user) throws OurException {
-        class Container {
-            Connection con;
-            boolean end = false;
-        }
-
-        final Container container = new Container();
-
-        Thread thread = new Thread(() -> {
-            try {
-                container.con = ConnectionPool.getConnection();
-
-                while(!container.end) {}
-
-                try {
-                    Thread.sleep(30000);
-                } catch (InterruptedException ex) {
-                    Thread.currentThread().interrupt();
-                }
-
-                if (container.con != null) {
-                    container.con.close();
-                }
-
-            } catch (SQLException ex) {}
-        });
-
+    public boolean deleteUser(User user) throws OurException
+    {
+        ConnectionThread thread = new ConnectionThread(30);
         thread.start();
 
         try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+            int attempts = 0;
+            while (!thread.isReady() && attempts < 50) { // If in 500ms cant get a connection throws timeout exception
+                Thread.sleep(10);
+                attempts++;
+            }
+
+            if (!thread.isReady()) {
+                thread.releaseConnection();
+                throw new OurException("Timeout waiting the connection");
+            }
+
+            Connection con = thread.getConnection();
+            
+            boolean result = delete(con, user.getId());
+
+            thread.releaseConnection();
+            
+            return result;
+        } catch (InterruptedException ex) {
+            thread.releaseConnection();
+            
+            throw new OurException("Error deleting the user: " + ex.getMessage());
         }
-
-        if (container.con == null) {
-            container.end = true;
-            throw new OurException("No se pudo obtener la conexión del hilo");
-        }
-
-        boolean result = delete(container.con, user.getId());
-
-        container.end = true;
-
-        return result;
     }
 
     @Override
