@@ -1,6 +1,6 @@
 package controller;
 
-import controller.Controller;
+import exception.OurException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -91,9 +91,16 @@ public class AdminWindowController implements Initializable {
     
     public void getUsers() throws SQLException
     {
-        ArrayList users;
+        ArrayList users = new ArrayList<>();
         
-        users = controller.getUsers();
+        try
+        {
+            users = controller.getUsers();
+        }
+        catch (OurException ex)
+        {
+        }
+        
         usersComboBox.getItems().addAll(users);
     }
     

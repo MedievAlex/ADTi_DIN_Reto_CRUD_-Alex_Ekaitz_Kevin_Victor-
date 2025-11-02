@@ -10,6 +10,7 @@ import model.Admin;
 import model.Gender;
 import model.Profile;
 import model.User;
+import pool.ConnectionThread;
 
 /**
  * @author Alex, Ekaitz, Kevin, Victor
@@ -415,26 +416,64 @@ public class DBImplementation implements ModelDAO
     @Override
     public boolean updateUser(User user) throws OurException
     {
-        try (Connection con = ConnectionPool.getConnection())
-        {
-            return update(con, user);
-        }
-        catch (SQLException ex)
-        {
-            throw new OurException("Error updating user: " + ex.getMessage());
+        ConnectionThread thread = new ConnectionThread(30);
+        thread.start();
+
+        try {
+            int attempts = 0;
+
+            while (!thread.isReady() && attempts < 50) { // If in 500ms cant get a connection throws timeout exception
+                Thread.sleep(10);
+                attempts++;
+            }
+
+            if (!thread.isReady()) {
+                thread.releaseConnection();
+                throw new OurException("Timeout waiting the connection");
+            }
+
+            Connection con = thread.getConnection();
+            
+            boolean result = update(con, user);
+
+            thread.releaseConnection();
+
+            return result;
+        } catch (InterruptedException ex) {
+            thread.releaseConnection();
+            throw new OurException("Error updating the user: " + ex.getMessage());
         }
     }
 
     @Override
     public boolean deleteUser(User user) throws OurException
     {
-        try (Connection con = ConnectionPool.getConnection())
-        {
-            return delete(con, user.getId());
-        }
-        catch (SQLException ex)
-        {
-            throw new OurException("Error removing user: " + ex.getMessage());
+        ConnectionThread thread = new ConnectionThread(30);
+        thread.start();
+
+        try {
+            int attempts = 0;
+            while (!thread.isReady() && attempts < 50) { // If in 500ms cant get a connection throws timeout exception
+                Thread.sleep(10);
+                attempts++;
+            }
+
+            if (!thread.isReady()) {
+                thread.releaseConnection();
+                throw new OurException("Timeout waiting the connection");
+            }
+
+            Connection con = thread.getConnection();
+            
+            boolean result = delete(con, user.getId());
+
+            thread.releaseConnection();
+            
+            return result;
+        } catch (InterruptedException ex) {
+            thread.releaseConnection();
+            
+            throw new OurException("Error deleting the user: " + ex.getMessage());
         }
     }
 

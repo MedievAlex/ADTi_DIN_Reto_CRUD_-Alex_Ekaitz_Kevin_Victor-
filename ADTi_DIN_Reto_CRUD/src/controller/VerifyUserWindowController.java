@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
-import controller.Controller;
+import exception.OurException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -62,29 +57,36 @@ public class VerifyUserWindowController implements Initializable {
         }
         else
         {
-            if (controller.verifyPassword(user, password))
+            try
             {
-                try // Opens the next window
-                { 
-                    Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/VerifyActionWindow.fxml"));
-                    Parent root = loader.load();   
-
-                    controller.VerifyActionWindowController verifyActionWindow = loader.getController();
-                    verifyActionWindow.setUser(user);
-
-                    Scene scene = new Scene(root);
-                    stage.setScene(scene);          
-
-                    stage.show();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (controller.verifyPassword(user, password))
+                {
+                    try // Opens the next window
+                    {
+                        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/VerifyActionWindow.fxml"));
+                        Parent root = loader.load();
+                        
+                        controller.VerifyActionWindowController verifyActionWindow = loader.getController();
+                        verifyActionWindow.setUser(user);
+                        
+                        Scene scene = new Scene(root);
+                        stage.setScene(scene);
+                        
+                        stage.show();
+                        
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else
+                {
+                    errorLabel.setText("Incorrect password.");
                 }
             }
-            else
+            catch (OurException ex)
             {
-                errorLabel.setText("Incorrect password.");
+                
             }
         }      
     }

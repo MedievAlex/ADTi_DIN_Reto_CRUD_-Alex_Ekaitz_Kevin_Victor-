@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import dao.DBImplementation;
 import dao.ModelDAO;
+import exception.OurException;
+import model.Profile;
 import model.User;
 
 /**
@@ -39,18 +41,33 @@ public class Controller
         stage.setScene(scene);
         stage.show();
     }
+    
+    public User register(User user) throws OurException
+    {
+        return dao.register(user);
+    }
+    
+    public Profile login(String username, String password) throws OurException
+    {
+        return dao.login(username, password);
+    }
 
-    public ArrayList<User> getUsers() throws SQLException
+    public ArrayList<User> getUsers() throws OurException
     {
         return dao.getUsers();
     }
     
-    public boolean removeUser(User user)
+    public boolean updateUser(User user) throws OurException
     {
-        return dao.removeUser(user);
+        return dao.updateUser(user);
+    }
+    
+    public boolean removeUser(User user) throws OurException
+    {
+        return dao.deleteUser(user);
     }
    
-    public boolean verifyPassword(User user, String password) {
+    public boolean verifyPassword(User user, String password) throws OurException {
         return dao.verifyPassword(user, password);
     }
 }
