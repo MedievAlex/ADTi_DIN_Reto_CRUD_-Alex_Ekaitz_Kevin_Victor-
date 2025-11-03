@@ -54,7 +54,7 @@ public class VerifyUserWindowController implements Initializable {
 
     @FXML
     public void confirmButton(ActionEvent event) {
-        user = new User();
+        user = User.getInstance();
         String password = passwordPasswordField.getText().trim();
 
         if (password.isEmpty()) {

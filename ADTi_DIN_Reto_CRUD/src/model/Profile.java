@@ -14,13 +14,13 @@ public abstract class Profile {
     protected String p_telephone;
     
     public Profile() {
-        this.p_id = 0;
-        this.p_email = " ";
-        this.p_username = " ";
-        this.p_password = " ";
-        this.p_name = " ";
-        this.p_lastname = " ";
-        this.p_telephone = "000000000";
+        this.p_id = -1;
+        this.p_email = "";
+        this.p_username = "";
+        this.p_password = "";
+        this.p_name = "";
+        this.p_lastname = "";
+        this.p_telephone = "";
     }
     
     public Profile(int p_id, String p_email, String p_username, String p_password, String p_name, String p_lastname, String p_telephone) {

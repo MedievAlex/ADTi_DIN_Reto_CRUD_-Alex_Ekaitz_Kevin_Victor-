@@ -97,20 +97,21 @@ public class DBImplementation implements ModelDAO {
     private ArrayList<User> selectUsers(Connection con) throws OurException {
         ArrayList<User> users = new ArrayList<>();
 
-        try (
-                PreparedStatement stmt = con.prepareStatement(SQLSELECT_USERS);
-                ResultSet rs = stmt.executeQuery()) {
+        try (PreparedStatement stmt = con.prepareStatement(SQLSELECT_USERS);
+             ResultSet rs = stmt.executeQuery()) {
+            
             while (rs.next()) {
-                User user = new User();
-                user.setId(rs.getInt("P_ID"));
-                user.setEmail(rs.getString("P_EMAIL"));
-                user.setUsername(rs.getString("P_USERNAME"));
-                user.setPassword(rs.getString("P_PASSWORD"));
-                user.setName(rs.getString("P_NAME"));
-                user.setLastname(rs.getString("P_LASTNAME"));
-                user.setTelephone(rs.getString("P_TELEPHONE"));
-                user.setGender(Gender.valueOf(rs.getString("U_GENDER")));
-                user.setCard(rs.getString("U_CARD"));
+                User user = new User(
+                    rs.getInt("P_ID"),
+                    rs.getString("P_EMAIL"),
+                    rs.getString("P_USERNAME"),
+                    rs.getString("P_PASSWORD"),
+                    rs.getString("P_NAME"),
+                    rs.getString("P_LASTNAME"),
+                    rs.getString("P_TELEPHONE"),
+                    Gender.valueOf(rs.getString("U_GENDER")),
+                    rs.getString("U_CARD")
+                );
                 users.add(user);
             }
         } catch (SQLException ex) {
@@ -207,13 +208,11 @@ public class DBImplementation implements ModelDAO {
     }
 
     private Profile findProfileByType(Connection con, int profileId) throws OurException {
-        try (
-                PreparedStatement stmtUser = con.prepareStatement(SQLSELECT_USER);
-                PreparedStatement stmtAdmin = con.prepareStatement(SQLSELECT_ADMIN);) {
+        try (PreparedStatement stmtUser = con.prepareStatement(SQLSELECT_USER)) {
             stmtUser.setInt(1, profileId);
             try (ResultSet rsUser = stmtUser.executeQuery()) {
                 if (rsUser.next()) {
-                    User user = new User();
+                    User user = User.getInstance();
                     user.setId(rsUser.getInt("P_ID"));
                     user.setEmail(rsUser.getString("P_EMAIL"));
                     user.setUsername(rsUser.getString("P_USERNAME"));
@@ -223,29 +222,34 @@ public class DBImplementation implements ModelDAO {
                     user.setTelephone(rsUser.getString("P_TELEPHONE"));
                     user.setGender(Gender.valueOf(rsUser.getString("U_GENDER")));
                     user.setCard(rsUser.getString("U_CARD"));
+                    return user;
                 }
             }
+        } catch (SQLException ex) {
+            throw new OurException("Error finding user profile: " + ex.getMessage());
+        }
 
+        try (PreparedStatement stmtAdmin = con.prepareStatement(SQLSELECT_ADMIN)) {
             stmtAdmin.setInt(1, profileId);
             try (ResultSet rsAdmin = stmtAdmin.executeQuery()) {
                 if (rsAdmin.next()) {
-                    return new Admin(
-                            rsAdmin.getInt("P_ID"),
-                            rsAdmin.getString("P_EMAIL"),
-                            rsAdmin.getString("P_USERNAME"),
-                            rsAdmin.getString("P_PASSWORD"),
-                            rsAdmin.getString("P_NAME"),
-                            rsAdmin.getString("P_LASTNAME"),
-                            rsAdmin.getString("P_TELEPHONE"),
-                            rsAdmin.getString("A_CURRENT_ACCOUNT")
-                    );
+                    Admin admin = Admin.getInstance();
+                    admin.setId(rsAdmin.getInt("P_ID"));
+                    admin.setEmail(rsAdmin.getString("P_EMAIL"));
+                    admin.setUsername(rsAdmin.getString("P_USERNAME"));
+                    admin.setPassword(rsAdmin.getString("P_PASSWORD"));
+                    admin.setName(rsAdmin.getString("P_NAME"));
+                    admin.setLastname(rsAdmin.getString("P_LASTNAME"));
+                    admin.setTelephone(rsAdmin.getString("P_TELEPHONE"));
+                    admin.setCurrent_account(rsAdmin.getString("A_CURRENT_ACCOUNT"));
+                    return admin;
                 }
             }
-
-            throw new OurException("Profile not found");
         } catch (SQLException ex) {
-            throw new OurException("Error finding profile by type: " + ex.getMessage());
+            throw new OurException("Error finding admin profile: " + ex.getMessage());
         }
+
+        throw new OurException("Profile not found");
     }
 
     private HashMap<String, Boolean> checkCredentialsExistence(Connection con, String email, String username) throws OurException {

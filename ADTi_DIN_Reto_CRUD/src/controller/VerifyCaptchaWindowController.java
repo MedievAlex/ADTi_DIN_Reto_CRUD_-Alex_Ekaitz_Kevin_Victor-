@@ -8,7 +8,6 @@ package controller;
 import exception.OurException;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -74,7 +73,7 @@ public class VerifyCaptchaWindowController implements Initializable {
 
         if (codeTextField.getText().equals(String.valueOf(code))) {
             try {
-                controller.removeUser(user);
+                controller.deleteUser(user);
                 Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
                 stage.close();
                 if(user != user){ // Compare with the static user
