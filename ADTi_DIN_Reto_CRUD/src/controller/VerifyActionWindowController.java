@@ -54,7 +54,6 @@ public class VerifyActionWindowController implements Initializable {
     }
     
     public void confirmButton(ActionEvent event) {
-        
         try {
             Parent parentWindow = FXMLLoader.load(getClass().getResource("/view/VerifyCaptchaWindow.fxml"));
             Stage actualWindow = (Stage) confirmBttn.getScene().getWindow();
