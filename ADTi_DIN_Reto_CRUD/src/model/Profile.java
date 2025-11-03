@@ -15,11 +15,11 @@ public abstract class Profile {
     
     public Profile() {
         this.p_id = 0;
-        this.p_email = "";
-        this.p_username = "";
-        this.p_password = "";
-        this.p_name = "";
-        this.p_lastname = "";
+        this.p_email = " ";
+        this.p_username = " ";
+        this.p_password = " ";
+        this.p_name = " ";
+        this.p_lastname = " ";
         this.p_telephone = "000000000";
     }
     

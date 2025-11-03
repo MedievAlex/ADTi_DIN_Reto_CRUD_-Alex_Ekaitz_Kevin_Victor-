@@ -476,10 +476,4 @@ public class DBImplementation implements ModelDAO
             throw new OurException("Error deleting the user: " + ex.getMessage());
         }
     }
-
-    @Override
-    public boolean verifyPassword(User user, String password) throws OurException
-    {
-        return user.getPassword().equals(password);
-    }
 }

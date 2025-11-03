@@ -66,8 +66,4 @@ public class Controller
     {
         return dao.deleteUser(user);
     }
-   
-    public boolean verifyPassword(User user, String password) throws OurException {
-        return dao.verifyPassword(user, password);
-    }
 }

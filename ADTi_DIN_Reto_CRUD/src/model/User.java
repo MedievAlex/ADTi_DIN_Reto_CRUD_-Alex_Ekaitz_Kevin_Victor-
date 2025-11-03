@@ -9,9 +9,9 @@ public class User extends Profile {
     private String u_card;
 
     public User() {
-        super(0, "", "", "", "", "", "");
+        super();
         this.u_gender = Gender.OTHER;
-        this.u_card = "";
+        this.u_card = " ";
     }
     
     public User(int u_id, String p_email, String p_username, String p_password, String p_name, String p_lastname, String p_telephone, Gender u_gender, String u_card) {
