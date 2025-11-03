@@ -23,7 +23,7 @@ import model.Admin;
 public class AdminWindowController implements Initializable {
     private Controller controller;
     private Admin admin;
-    
+
     private Label label;
     @FXML
     private Pane leftPane;
@@ -79,8 +79,7 @@ public class AdminWindowController implements Initializable {
     private Label username;
     @FXML
     private Button logOutBttn;
-    
-    
+
     /**
      * Asigna el controlador principal.
      * @param controller
@@ -88,11 +87,11 @@ public class AdminWindowController implements Initializable {
     public void setController(Controller controller) {
         this.controller = controller;
     }
-    
+
     public void getUsers() throws SQLException
     {
         ArrayList users = new ArrayList<>();
-        
+
         try
         {
             users = controller.getUsers();
@@ -100,18 +99,12 @@ public class AdminWindowController implements Initializable {
         catch (OurException ex)
         {
         }
-        
+
         usersComboBox.getItems().addAll(users);
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try
-        {
-            getUsers();
-        }
-        catch (SQLException ex)
-        {
-        }
+        // getUsers();
     }
 }
