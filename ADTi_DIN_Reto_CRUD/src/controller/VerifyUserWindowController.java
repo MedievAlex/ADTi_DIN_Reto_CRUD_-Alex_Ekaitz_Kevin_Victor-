@@ -4,6 +4,8 @@ import exception.OurException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -50,6 +52,7 @@ public class VerifyUserWindowController implements Initializable {
     
     @FXML
     public void confirmButton(ActionEvent event) {
+        user = new User();
         String password = passwordPasswordField.getText().trim();
         
         if (password.isEmpty()) {
@@ -57,37 +60,27 @@ public class VerifyUserWindowController implements Initializable {
         }
         else
         {
-            try
-            {
-                if (controller.verifyPassword(user, password))
-                {
-                    try // Opens the next window
-                    {
-                        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/VerifyActionWindow.fxml"));
-                        Parent root = loader.load();
-                        
-                        controller.VerifyActionWindowController verifyActionWindow = loader.getController();
-                        verifyActionWindow.setUser(user);
-                        
-                        Scene scene = new Scene(root);
-                        stage.setScene(scene);
-                        
-                        stage.show();
-                        
-                    } catch (IOException e) {
-                        e.printStackTrace();
+           // try
+           // {
+                // if (controller.verifyPassword(user, password))
+                // {
+                    try {
+                        Parent parentWindow = FXMLLoader.load(getClass().getResource("/view/VerifyActionWindow.fxml"));
+                        Stage actualWindow = (Stage) confirmBttn.getScene().getWindow();
+                        actualWindow.setScene(new Scene(parentWindow));
+                    } catch (IOException ex) {
+                        Logger.getLogger(LoginWindowController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
-                else
-                {
-                    errorLabel.setText("Incorrect password.");
-                }
-            }
-            catch (OurException ex)
-            {
+               // }
+               // else
+               // {
+               //     errorLabel.setText("Incorrect password.");
+               // }
+           // }
+           // catch (OurException ex)
+           // {
                 
-            }
+           // }
         }      
     }
     
