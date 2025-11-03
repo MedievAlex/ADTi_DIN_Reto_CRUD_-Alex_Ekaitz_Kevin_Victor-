@@ -15,8 +15,7 @@ import pool.ConnectionThread;
 /**
  * @author Alex, Ekaitz, Kevin, Victor
  */
-public class DBImplementation implements ModelDAO
-{
+public class DBImplementation implements ModelDAO {
 
     /**
      * SQL Queries: INSERTS
@@ -47,14 +46,12 @@ public class DBImplementation implements ModelDAO
     /**
      * SQL Private Methods
      */
-    private int insert(Connection con, User user) throws OurException
-    {
+    private int insert(Connection con, User user) throws OurException {
         int id = -1;
 
         try (
                 PreparedStatement stmtProfile = con.prepareStatement(SQLINSERT_PROFILE, Statement.RETURN_GENERATED_KEYS);
-                PreparedStatement stmtUser = con.prepareStatement(SQLINSERT_USER))
-        {
+                PreparedStatement stmtUser = con.prepareStatement(SQLINSERT_USER)) {
             con.setAutoCommit(false);
 
             stmtProfile.setString(1, user.getEmail());
@@ -66,10 +63,8 @@ public class DBImplementation implements ModelDAO
             stmtProfile.executeUpdate();
 
             try (
-                    ResultSet generatedKeys = stmtProfile.getGeneratedKeys())
-            {
-                if (generatedKeys.next())
-                {
+                    ResultSet generatedKeys = stmtProfile.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
                     id = generatedKeys.getInt(1);
 
                     stmtUser.setInt(1, id);
@@ -80,74 +75,57 @@ public class DBImplementation implements ModelDAO
                     con.commit();
                 }
             }
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             id = -1;
 
-            try
-            {
+            try {
                 con.rollback();
-            }
-            catch (SQLException e)
-            {
+            } catch (SQLException e) {
             }
 
             throw new OurException("Error inserting the user: " + ex.getMessage());
-        } finally
-        {
-            try
-            {
+        } finally {
+            try {
                 con.setAutoCommit(true);
-            }
-            catch (SQLException e)
-            {
+            } catch (SQLException e) {
             }
         }
 
         return id;
     }
 
-    private ArrayList<User> selectUsers(Connection con) throws OurException
-    {
+    private ArrayList<User> selectUsers(Connection con) throws OurException {
         ArrayList<User> users = new ArrayList<>();
 
         try (
                 PreparedStatement stmt = con.prepareStatement(SQLSELECT_USERS);
-                ResultSet rs = stmt.executeQuery())
-        {
-            while (rs.next())
-            {
-                User user = new User(
-                        rs.getInt("P_ID"),
-                        rs.getString("P_EMAIL"),
-                        rs.getString("P_USERNAME"),
-                        rs.getString("P_PASSWORD"),
-                        rs.getString("P_NAME"),
-                        rs.getString("P_LASTNAME"),
-                        rs.getString("P_TELEPHONE"),
-                        Gender.valueOf(rs.getString("U_GENDER")),
-                        rs.getString("U_CARD")
-                );
+                ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("P_ID"));
+                user.setEmail(rs.getString("P_EMAIL"));
+                user.setUsername(rs.getString("P_USERNAME"));
+                user.setPassword(rs.getString("P_PASSWORD"));
+                user.setName(rs.getString("P_NAME"));
+                user.setLastname(rs.getString("P_LASTNAME"));
+                user.setTelephone(rs.getString("P_TELEPHONE"));
+                user.setGender(Gender.valueOf(rs.getString("U_GENDER")));
+                user.setCard(rs.getString("U_CARD"));
                 users.add(user);
             }
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             throw new OurException("Error trying to obtain all the users: " + ex.getMessage());
         }
 
         return users;
     }
 
-    private boolean update(Connection con, User user) throws OurException
-    {
+    private boolean update(Connection con, User user) throws OurException {
         boolean success = false;
 
         try (
                 PreparedStatement stmtProfile = con.prepareStatement(SQLUPDATE_PROFILE);
-                PreparedStatement stmtUser = con.prepareStatement(SQLUPDATE_USER))
-        {
+                PreparedStatement stmtUser = con.prepareStatement(SQLUPDATE_USER)) {
             con.setAutoCommit(false);
 
             stmtProfile.setString(1, user.getPassword());
@@ -164,58 +142,42 @@ public class DBImplementation implements ModelDAO
 
             int userUpdated = stmtUser.executeUpdate();
 
-            if (profileUpdated > 0 && userUpdated > 0)
-            {
+            if (profileUpdated > 0 && userUpdated > 0) {
                 con.commit();
                 success = true;
-            }
-            else
-            {
+            } else {
                 con.rollback();
                 success = false;
             }
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             success = false;
 
-            try
-            {
+            try {
                 con.rollback();
-            }
-            catch (SQLException e)
-            {
+            } catch (SQLException e) {
             }
 
             throw new OurException("Error trying to update the user: " + ex.getMessage());
-        } finally
-        {
-            try
-            {
+        } finally {
+            try {
                 con.setAutoCommit(true);
-            }
-            catch (SQLException e)
-            {
+            } catch (SQLException e) {
             }
         }
 
         return success;
     }
 
-    private boolean delete(Connection con, int userId) throws OurException
-    {
+    private boolean delete(Connection con, int userId) throws OurException {
         boolean success;
 
         try (
-                PreparedStatement stmt = con.prepareStatement(SQLDELETE_USER))
-        {
+                PreparedStatement stmt = con.prepareStatement(SQLDELETE_USER)) {
             stmt.setInt(1, userId);
 
             int rowsAffected = stmt.executeUpdate();
             success = rowsAffected > 0;
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             success = false;
             throw new OurException("Error trying to delete the user: " + ex.getMessage());
         }
@@ -223,17 +185,13 @@ public class DBImplementation implements ModelDAO
         return success;
     }
 
-    private HashMap<String, Object> findProfileByCredential(Connection con, String credential) throws OurException
-    {
-        try (PreparedStatement stmt = con.prepareStatement(SQLSELECT_PROFILE))
-        {
+    private HashMap<String, Object> findProfileByCredential(Connection con, String credential) throws OurException {
+        try (PreparedStatement stmt = con.prepareStatement(SQLSELECT_PROFILE)) {
             stmt.setString(1, credential);
             stmt.setString(2, credential);
 
-            try (ResultSet rs = stmt.executeQuery())
-            {
-                if (rs.next())
-                {
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
                     HashMap<String, Object> profile = new HashMap<>();
                     profile.put("P_ID", rs.getInt("P_ID"));
                     profile.put("P_EMAIL", rs.getString("P_EMAIL"));
@@ -243,43 +201,34 @@ public class DBImplementation implements ModelDAO
                 }
                 return null;
             }
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             throw new OurException("Error finding profile: " + ex.getMessage());
         }
     }
 
-    private Profile findProfileByType(Connection con, int profileId) throws OurException
-    {
+    private Profile findProfileByType(Connection con, int profileId) throws OurException {
         try (
                 PreparedStatement stmtUser = con.prepareStatement(SQLSELECT_USER);
-                PreparedStatement stmtAdmin = con.prepareStatement(SQLSELECT_ADMIN);)
-        {
+                PreparedStatement stmtAdmin = con.prepareStatement(SQLSELECT_ADMIN);) {
             stmtUser.setInt(1, profileId);
-            try (ResultSet rsUser = stmtUser.executeQuery())
-            {
-                if (rsUser.next())
-                {
-                    return new User(
-                            rsUser.getInt("P_ID"),
-                            rsUser.getString("P_EMAIL"),
-                            rsUser.getString("P_USERNAME"),
-                            rsUser.getString("P_PASSWORD"),
-                            rsUser.getString("P_NAME"),
-                            rsUser.getString("P_LASTNAME"),
-                            rsUser.getString("P_TELEPHONE"),
-                            Gender.valueOf(rsUser.getString("U_GENDER")),
-                            rsUser.getString("U_CARD")
-                    );
+            try (ResultSet rsUser = stmtUser.executeQuery()) {
+                if (rsUser.next()) {
+                    User user = new User();
+                    user.setId(rsUser.getInt("P_ID"));
+                    user.setEmail(rsUser.getString("P_EMAIL"));
+                    user.setUsername(rsUser.getString("P_USERNAME"));
+                    user.setPassword(rsUser.getString("P_PASSWORD"));
+                    user.setName(rsUser.getString("P_NAME"));
+                    user.setLastname(rsUser.getString("P_LASTNAME"));
+                    user.setTelephone(rsUser.getString("P_TELEPHONE"));
+                    user.setGender(Gender.valueOf(rsUser.getString("U_GENDER")));
+                    user.setCard(rsUser.getString("U_CARD"));
                 }
             }
 
             stmtAdmin.setInt(1, profileId);
-            try (ResultSet rsAdmin = stmtAdmin.executeQuery())
-            {
-                if (rsAdmin.next())
-                {
+            try (ResultSet rsAdmin = stmtAdmin.executeQuery()) {
+                if (rsAdmin.next()) {
                     return new Admin(
                             rsAdmin.getInt("P_ID"),
                             rsAdmin.getString("P_EMAIL"),
@@ -294,17 +243,13 @@ public class DBImplementation implements ModelDAO
             }
 
             throw new OurException("Profile not found");
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             throw new OurException("Error finding profile by type: " + ex.getMessage());
         }
     }
 
-    private HashMap<String, Boolean> checkCredentialsExistence(Connection con, String email, String username) throws OurException
-    {
-        try (PreparedStatement stmt = con.prepareStatement(SQLCHECK_CREDENTIALS))
-        {
+    private HashMap<String, Boolean> checkCredentialsExistence(Connection con, String email, String username) throws OurException {
+        try (PreparedStatement stmt = con.prepareStatement(SQLCHECK_CREDENTIALS)) {
             stmt.setString(1, email);
             stmt.setString(2, username);
 
@@ -312,24 +257,18 @@ public class DBImplementation implements ModelDAO
             exists.put("email", false);
             exists.put("username", false);
 
-            try (ResultSet rs = stmt.executeQuery())
-            {
-                while (rs.next())
-                {
-                    if (email.equals(rs.getString("P_EMAIL")))
-                    {
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    if (email.equals(rs.getString("P_EMAIL"))) {
                         exists.put("email", true);
                     }
-                    if (username.equals(rs.getString("P_USERNAME")))
-                    {
+                    if (username.equals(rs.getString("P_USERNAME"))) {
                         exists.put("username", true);
                     }
                 }
                 return exists;
             }
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             throw new OurException("Error checking credentials: " + ex.getMessage());
         }
     }
@@ -338,84 +277,61 @@ public class DBImplementation implements ModelDAO
      * SQL Public Methods
      */
     @Override
-    public User register(User user) throws OurException
-    {
-        try (Connection con = ConnectionPool.getConnection())
-        {
+    public User register(User user) throws OurException {
+        try (Connection con = ConnectionPool.getConnection()) {
             Map<String, Boolean> existing = checkCredentialsExistence(con, user.getEmail(), user.getUsername());
 
-            if (existing.get("email") && existing.get("username"))
-            {
+            if (existing.get("email") && existing.get("username")) {
                 throw new OurException("Both email and username already exist");
-            }
-            else if (existing.get("email"))
-            {
+            } else if (existing.get("email")) {
                 throw new OurException("Email already exists");
-            }
-            else if (existing.get("username"))
-            {
+            } else if (existing.get("username")) {
                 throw new OurException("Username already exists");
             }
 
             int id = insert(con, user);
-            if (id != -1)
-            {
+            if (id != -1) {
                 user.setId(id);
                 return user;
-            }
-            else
-            {
+            } else {
                 throw new OurException("Error creating user");
             }
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             throw new OurException("Error creating user: " + ex.getMessage());
         }
     }
 
     @Override
-    public Profile login(String credential, String password) throws OurException
-    {
-        try (Connection con = ConnectionPool.getConnection())
-        {
+    public Profile login(String credential, String password) throws OurException {
+        try (Connection con = ConnectionPool.getConnection()) {
             HashMap<String, Object> profileData = findProfileByCredential(con, credential);
-            if (profileData == null)
-            {
+            if (profileData == null) {
                 return null;
             }
 
             String storedPassword = (String) profileData.get("P_PASSWORD");
-            if (!storedPassword.equals(password))
-            {
+            if (!storedPassword.equals(password)) {
                 return null;
             }
 
             int profileId = (int) profileData.get("P_ID");
             return findProfileByType(con, profileId);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new OurException("Login error: " + ex.getMessage());
         }
     }
 
     @Override
-    public ArrayList<User> getUsers() throws OurException
-    {
-        try (Connection con = ConnectionPool.getConnection())
-        {
+    public ArrayList<User> getUsers() throws OurException {
+        try (Connection con = ConnectionPool.getConnection()) {
             return selectUsers(con);
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             throw new OurException("Error getting users: " + ex.getMessage());
         }
     }
 
     @Override
-    public boolean updateUser(User user) throws OurException
-    {
+    public boolean updateUser(User user) throws OurException {
         ConnectionThread thread = new ConnectionThread(30);
         thread.start();
 
@@ -433,7 +349,7 @@ public class DBImplementation implements ModelDAO
             }
 
             Connection con = thread.getConnection();
-            
+
             boolean result = update(con, user);
 
             thread.releaseConnection();
@@ -446,8 +362,7 @@ public class DBImplementation implements ModelDAO
     }
 
     @Override
-    public boolean deleteUser(User user) throws OurException
-    {
+    public boolean deleteUser(User user) throws OurException {
         ConnectionThread thread = new ConnectionThread(30);
         thread.start();
 
@@ -464,15 +379,15 @@ public class DBImplementation implements ModelDAO
             }
 
             Connection con = thread.getConnection();
-            
+
             boolean result = delete(con, user.getId());
 
             thread.releaseConnection();
-            
+
             return result;
         } catch (InterruptedException ex) {
             thread.releaseConnection();
-            
+
             throw new OurException("Error deleting the user: " + ex.getMessage());
         }
     }
