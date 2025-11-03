@@ -19,6 +19,4 @@ public interface ModelDAO {
     public Profile login(String username, String password) throws OurException;
     
     public User register(User user) throws OurException;
-    
-    public boolean verifyPassword(User user, String password) throws OurException;
 }
