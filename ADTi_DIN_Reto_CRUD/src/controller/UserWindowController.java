@@ -90,6 +90,7 @@ public class UserWindowController implements Initializable {
     {
         this.controller = controller;
         user = User.getInstance();
+        username.setText(user.getUsername());
         setData();
     }
     
@@ -166,6 +167,7 @@ public class UserWindowController implements Initializable {
     public void logOut()
     {
         this.user = null;
+        User.clearInstance();
 
         try
         {

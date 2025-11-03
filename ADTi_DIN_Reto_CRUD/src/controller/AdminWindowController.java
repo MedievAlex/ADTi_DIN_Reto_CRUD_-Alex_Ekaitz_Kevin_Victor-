@@ -2,11 +2,15 @@ package controller;
 
 import exception.OurException;
 import exception.ShowAlert;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -15,6 +19,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import model.Admin;
 import model.User;
 
@@ -90,6 +95,8 @@ public class AdminWindowController implements Initializable {
     public void setController(Controller controller)
     {
         this.controller = controller;
+        admin = Admin.getInstance();
+        username.setText(admin.getUsername());
         getUsers();
     }
 
@@ -105,6 +112,23 @@ public class AdminWindowController implements Initializable {
         }
         
         users.forEach(user -> usersComboBox.getItems().add(user.getUsername())); // Ask if is better do a normal for each or use this option (Recommended by Netbeans)
+    }
+    
+    public void logOut()
+    {
+        this.admin = null;
+        User.clearInstance();
+
+        try
+        {
+            Parent loginRoot = FXMLLoader.load(getClass().getResource("/view/LoginWindow.fxml"));
+            Stage currentStage = (Stage) logOutBttn.getScene().getWindow();
+            currentStage.setScene(new Scene(loginRoot));
+        }
+        catch (IOException e)
+        {
+            System.err.println("Error loading login window: " + e.getMessage());
+        }
     }
 
     @Override

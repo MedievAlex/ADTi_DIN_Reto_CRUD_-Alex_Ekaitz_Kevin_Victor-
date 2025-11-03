@@ -78,7 +78,7 @@
                   <Font name="System Italic" size="12.0" />
                </font>
             </Label>
-            <Button fx:id="logOutBttn" layoutX="283.0" layoutY="6.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="59.0" style="-fx-background-radius: 10px;" text="LOG OUT">
+            <Button fx:id="logOutBttn" layoutX="283.0" layoutY="6.0" mnemonicParsing="false" onAction="#logOut" prefHeight="21.0" prefWidth="59.0" style="-fx-background-radius: 10px;" text="LOG OUT">
                <font>
                   <Font size="10.0" />
                </font>
