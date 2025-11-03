@@ -5,6 +5,7 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
@@ -59,9 +60,12 @@
             <TextField fx:id="surnameTextField" layoutX="190.0" layoutY="169.0" prefHeight="25.0" prefWidth="128.0" promptText="surname" />
             <TextField fx:id="phoneTextField" layoutX="32.0" layoutY="200.0" prefHeight="25.0" prefWidth="286.0" promptText="688 88 88 88" />
             <PasswordField fx:id="passwordPasswordField" layoutX="32.0" layoutY="138.0" prefHeight="25.0" prefWidth="286.0" promptText="· · · · · · · ·" />
-            <RadioButton fx:id="maleRadioButton" layoutX="34.0" layoutY="233.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="91.0" text="MALE" />
-            <RadioButton fx:id="femaleRadioButton" layoutX="126.0" layoutY="233.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="91.0" text="FEMALE" />
-            <RadioButton fx:id="otherRadioButton" layoutX="225.0" layoutY="233.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="91.0" text="OTHER" />
+            <RadioButton fx:id="maleRadioButton" layoutX="34.0" layoutY="233.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="91.0" text="MALE">
+               <toggleGroup>
+                  <ToggleGroup fx:id="genderGroup" />
+               </toggleGroup></RadioButton>
+            <RadioButton fx:id="femaleRadioButton" layoutX="126.0" layoutY="233.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="91.0" text="FEMALE" toggleGroup="$genderGroup" />
+            <RadioButton fx:id="otherRadioButton" layoutX="225.0" layoutY="233.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="91.0" text="OTHER" toggleGroup="$genderGroup" />
             <TextField fx:id="cardNumber1TextField" alignment="CENTER" layoutX="32.0" layoutY="261.0" prefHeight="25.0" prefWidth="59.0" promptText="0000" />
             <TextField fx:id="cardNumber2TextField" alignment="CENTER" layoutX="109.0" layoutY="261.0" prefHeight="25.0" prefWidth="59.0" promptText="0000" />
             <TextField fx:id="cardNumber3TextField" alignment="CENTER" layoutX="183.0" layoutY="261.0" prefHeight="25.0" prefWidth="59.0" promptText="0000" />
@@ -72,7 +76,7 @@
                   <Font name="System Italic" size="12.0" />
                </font>
             </Label>
-            <Button fx:id="logOutBttn" layoutX="283.0" layoutY="6.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="59.0" style="-fx-background-radius: 10px;" text="LOG OUT">
+            <Button fx:id="logOutBttn" layoutX="283.0" layoutY="6.0" mnemonicParsing="false" onAction="#logOut" prefHeight="21.0" prefWidth="59.0" style="-fx-background-radius: 10px;" text="LOG OUT">
                <font>
                   <Font size="10.0" />
                </font>

@@ -1,12 +1,13 @@
 package controller;
 
 import exception.OurException;
+import exception.ShowAlert;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -15,6 +16,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import model.Admin;
+import model.User;
 
 /**
  *
@@ -23,6 +25,7 @@ import model.Admin;
 public class AdminWindowController implements Initializable {
     private Controller controller;
     private Admin admin;
+    private ArrayList<User> users;
 
     private Label label;
     @FXML
@@ -84,27 +87,28 @@ public class AdminWindowController implements Initializable {
      * Asigna el controlador principal.
      * @param controller
      */
-    public void setController(Controller controller) {
+    public void setController(Controller controller)
+    {
         this.controller = controller;
+        getUsers();
     }
 
-    public void getUsers() throws SQLException
+    public void getUsers()
     {
-        ArrayList users = new ArrayList<>();
-
         try
         {
             users = controller.getUsers();
         }
         catch (OurException ex)
         {
+            ShowAlert.showAlert("Error", "Error getting users: " + ex.getMessage(), Alert.AlertType.ERROR);
         }
-
-        usersComboBox.getItems().addAll(users);
+        
+        users.forEach(user -> usersComboBox.getItems().add(user.getUsername())); // Ask if is better do a normal for each or use this option (Recommended by Netbeans)
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // getUsers();
+    public void initialize(URL url, ResourceBundle rb)
+    {
     }
 }

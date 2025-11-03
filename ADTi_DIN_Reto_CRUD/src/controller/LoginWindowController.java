@@ -1,13 +1,12 @@
 package controller;
 
 import exception.OurException;
+import exception.ShowAlert;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -79,54 +78,60 @@ public class LoginWindowController implements Initializable
     }
 
     @FXML
-    private void handleLogin(ActionEvent event) {
+    private void handleLogin(ActionEvent event)
+    {
         String credential = credentialTextField.getText();
         String password = passwordPasswordField.getText();
 
-        if (credential.isEmpty() || password.isEmpty()) {
-            showAlert("Error", "Please fill all the fields", Alert.AlertType.ERROR);
+        if (credential.isEmpty() || password.isEmpty())
+        {
+            ShowAlert.showAlert("Error", "Please fill all the fields", Alert.AlertType.ERROR);
             return;
         }
 
-        try {
+        try
+        {
             Profile loggedIn = controller.login(credential, password);
 
-            if (loggedIn != null) {
-                String windowPath;
-                showAlert("Ok", "Correct login!", Alert.AlertType.INFORMATION);
-                if (loggedIn instanceof User)
+            if (loggedIn != null)
+            {
+                ShowAlert.showAlert("Ok", "Correct login!", Alert.AlertType.INFORMATION);
+
+                try
                 {
-                   windowPath = "/view/UserWindow.fxml";
+                    String fxmlPath = (loggedIn instanceof User) ? "/view/UserWindow.fxml" : "/view/AdminWindow.fxml";
+
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+                    Parent window = loader.load();
+
+                    if (loggedIn instanceof User)
+                    {
+                        UserWindowController userController = loader.getController();
+                        userController.setController(this.controller);
+                    }
+                    else
+                    {
+                        AdminWindowController adminController = loader.getController();
+                        adminController.setController(this.controller);
+                    }
+
+                    Stage currentwindow = (Stage) logInBttn.getScene().getWindow();
+                    currentwindow.setScene(new Scene(window));
                 }
-                else
+                catch (IOException ex)
                 {
-                    windowPath = "/view/AdminWindow.fxml";
+                    ShowAlert.showAlert("Error", "Error trying to open the window: " + ex.getMessage(), Alert.AlertType.ERROR);
                 }
-                
-                Parent window;
-                try {
-                    window = FXMLLoader.load(getClass().getResource(windowPath));
-                    Stage currentventana = (Stage) logInBttn.getScene().getWindow();
-                    currentventana.setScene(new Scene(window));
-                }
-                catch (IOException ex) {
-                    showAlert("Error", "Error trying to open the window: " + ex.getMessage(), Alert.AlertType.ERROR);
-                }
-            } else {
-                showAlert("Error", "Incorrect credentials", Alert.AlertType.ERROR);
+            }
+            else
+            {
+                ShowAlert.showAlert("Error", "Incorrect credentials", Alert.AlertType.ERROR);
             }
 
-        } catch (OurException ex) {
-            showAlert("Error", "Error in login: " + ex.getMessage(), Alert.AlertType.ERROR);
         }
-    }
-
-    private void showAlert(String title, String message, Alert.AlertType type)
-    {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+        catch (OurException ex)
+        {
+            ShowAlert.showAlert("Error", "Error in login: " + ex.getMessage(), Alert.AlertType.ERROR);
+        }
     }
 }
