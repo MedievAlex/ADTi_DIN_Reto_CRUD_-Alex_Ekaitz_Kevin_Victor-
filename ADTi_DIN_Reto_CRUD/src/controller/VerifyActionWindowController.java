@@ -68,12 +68,13 @@ public class VerifyActionWindowController implements Initializable {
         stage.close();
     }
     
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser() {
+        this.user = User.getInstance();
+        username.setText(user.getUsername());
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        setUser();
     }
 }
