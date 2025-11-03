@@ -5,10 +5,11 @@
  */
 package controller;
 
-import controller.Controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -54,21 +55,12 @@ public class VerifyActionWindowController implements Initializable {
     
     public void confirmButton(ActionEvent event) {
         
-        try { // Opens the next window
-            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/VerifyCapchaWindow.fxml"));
-            Parent root = loader.load();   
-            
-            controller.VerifyCapchaWindowController verifyCapchaWindow = loader.getController();
-            verifyCapchaWindow.setUser((User) user);
-
-            Scene scene = new Scene(root);
-            stage.setScene(scene);          
-
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        try {
+            Parent parentWindow = FXMLLoader.load(getClass().getResource("/view/VerifyCaptchaWindow.fxml"));
+            Stage actualWindow = (Stage) confirmBttn.getScene().getWindow();
+            actualWindow.setScene(new Scene(parentWindow));
+        } catch (IOException ex) {
+            Logger.getLogger(LoginWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

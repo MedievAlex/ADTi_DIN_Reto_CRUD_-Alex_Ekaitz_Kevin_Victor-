@@ -1,18 +1,25 @@
 package controller;
 
 import controller.Controller;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import pool.ConnectionPool;
 
 /**
@@ -53,5 +60,15 @@ public class LoginWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+    }
+    
+    public void test(ActionEvent event) {
+        try {
+            Parent ventana = FXMLLoader.load(getClass().getResource("/view/VerifyUserWindow.fxml"));
+            Stage currentventana = (Stage) logInBttn.getScene().getWindow();
+            currentventana.setScene(new Scene(ventana));
+        } catch (IOException ex) {
+            Logger.getLogger(LoginWindowController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
