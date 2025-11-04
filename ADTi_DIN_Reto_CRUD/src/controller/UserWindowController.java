@@ -1,17 +1,23 @@
 package controller;
 
-import controller.Controller;
+import exception.ShowAlert;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import model.User;
 
 /**
@@ -85,19 +91,106 @@ public class UserWindowController implements Initializable {
     public void setController(Controller controller)
     {
         this.controller = controller;
+        user = User.getInstance();
+        username.setText(user.getUsername());
+        setData();
     }
     
-    public void getData()
+    public void setData()
     {
+        username.setText(user.getUsername());
+        usernameTextField.setText(user.getUsername());
+        emailTextField.setText(user.getEmail());
+        passwordPasswordField.setText(user.getPassword());
+        nameTextField.setText(user.getName());
+        surnameTextField.setText(user.getLastname());
+        phoneTextField.setText(String.valueOf(user.getTelephone()));
 
+        switch (user.getGender())
+        {
+            case MALE:
+                maleRadioButton.setSelected(true);
+                break;
+            case FEMALE:
+                femaleRadioButton.setSelected(true);
+                break;
+            case OTHER:
+                otherRadioButton.setSelected(true);
+                break;
+        }
+    }
+    
+    private void configureCardNumber()
+    {
+        TextField[] cardFields =
+        {
+            cardNumber1TextField, cardNumber2TextField, cardNumber3TextField, cardNumber4TextField
+        };
+
+        for (int i = 0; i < cardFields.length; i++)
+        {
+            final TextField currentField = cardFields[i];
+            final TextField prevField = (i > 0) ? cardFields[i - 1] : null;
+            final TextField nextField = (i < cardFields.length - 1) ? cardFields[i + 1] : null;
+
+            currentField.textProperty().addListener((obs, oldValue, newValue) ->
+            {
+                // Filter for only numbers
+                if (!newValue.matches("\\d*"))
+                {
+                    currentField.setText(newValue.replaceAll("[^\\d]", ""));
+                    return;
+                }
+
+                // Filter for no more than 4 characters
+                if (newValue.length() > 4)
+                {
+                    currentField.setText(oldValue);
+                    return;
+                }
+
+                // Filter for change TextField when there are 4 characters
+                if (newValue.length() == 4 && nextField != null)
+                {
+                    nextField.requestFocus();
+                    nextField.positionCaret(nextField.getText().length()); // When change to the next TextField dont select all the content 
+                }
+
+                // Filter to change TextField when you deleted all the characters
+                if (newValue.isEmpty() && prevField != null)
+                {
+                    prevField.requestFocus();
+                    prevField.positionCaret(prevField.getText().length()); // When change to the previous TextField dont select all the content
+                }
+            });
+        }
     }
     
     public void logOut()
     {
+        this.user = null;
+        User.clearInstance();
+
+        try
+        {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LoginWindow.fxml"));
+            Parent window = loader.load();
+            LoginWindowController loginController = loader.getController();
+            loginController.setController(this.controller);
+            Stage currentwindow = (Stage) logOutBttn.getScene().getWindow();
+            currentwindow.setScene(new Scene(window));
+            
+            ShowAlert.showAlert("Ok", "Logout successfully", Alert.AlertType.INFORMATION);
+        }
+        catch (IOException ex)
+        {
+            ShowAlert.showAlert("Error", "Error trying to logout: " + ex.getMessage(), Alert.AlertType.ERROR);
+        }
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+        configureCardNumber();
     }
 }

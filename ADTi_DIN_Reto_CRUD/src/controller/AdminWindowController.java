@@ -1,12 +1,17 @@
 package controller;
 
 import exception.OurException;
+import exception.ShowAlert;
+import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -14,7 +19,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import model.Admin;
+import model.User;
 
 /**
  *
@@ -23,7 +30,8 @@ import model.Admin;
 public class AdminWindowController implements Initializable {
     private Controller controller;
     private Admin admin;
-    
+    private ArrayList<User> users;
+
     private Label label;
     @FXML
     private Pane leftPane;
@@ -79,39 +87,57 @@ public class AdminWindowController implements Initializable {
     private Label username;
     @FXML
     private Button logOutBttn;
-    
-    
+
     /**
      * Asigna el controlador principal.
      * @param controller
      */
-    public void setController(Controller controller) {
-        this.controller = controller;
-    }
-    
-    public void getUsers() throws SQLException
+    public void setController(Controller controller)
     {
-        ArrayList users = new ArrayList<>();
-        
+        this.controller = controller;
+        admin = Admin.getInstance();
+        username.setText(admin.getUsername());
+        getUsers();
+    }
+
+    public void getUsers()
+    {
         try
         {
             users = controller.getUsers();
         }
         catch (OurException ex)
         {
+            ShowAlert.showAlert("Error", "Error getting users: " + ex.getMessage(), Alert.AlertType.ERROR);
         }
         
-        usersComboBox.getItems().addAll(users);
+        users.forEach(user -> usersComboBox.getItems().add(user.getUsername()));
     }
     
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void logOut()
+    {
+        this.admin = null;
+        User.clearInstance();
+
         try
         {
-            getUsers();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LoginWindow.fxml"));
+            Parent window = loader.load();
+            LoginWindowController loginController = loader.getController();
+            loginController.setController(this.controller);
+            Stage currentwindow = (Stage) logOutBttn.getScene().getWindow();
+            currentwindow.setScene(new Scene(window));
+            
+            ShowAlert.showAlert("Ok", "Logout successfully", Alert.AlertType.INFORMATION);
         }
-        catch (SQLException ex)
+        catch (IOException ex)
         {
+            ShowAlert.showAlert("Error", "Error trying to logout: " + ex.getMessage(), Alert.AlertType.ERROR);
         }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb)
+    {
     }
 }

@@ -54,7 +54,6 @@ public class VerifyActionWindowController implements Initializable {
     }
     
     public void confirmButton(ActionEvent event) {
-        
         try {
             Parent parentWindow = FXMLLoader.load(getClass().getResource("/view/VerifyCaptchaWindow.fxml"));
             Stage actualWindow = (Stage) confirmBttn.getScene().getWindow();
@@ -69,12 +68,13 @@ public class VerifyActionWindowController implements Initializable {
         stage.close();
     }
     
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser() {
+        this.user = User.getInstance();
+        username.setText(user.getUsername());
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        setUser();
     }
 }

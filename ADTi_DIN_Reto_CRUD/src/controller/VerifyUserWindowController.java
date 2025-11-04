@@ -54,7 +54,7 @@ public class VerifyUserWindowController implements Initializable {
 
     @FXML
     public void confirmButton(ActionEvent event) {
-        user = new User();
+        user = User.getInstance();
         String password = passwordPasswordField.getText().trim();
 
         if (password.isEmpty()) {
@@ -84,17 +84,18 @@ public class VerifyUserWindowController implements Initializable {
         stage.close();
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public boolean verifyPassword(User user, String password) throws OurException
     {
         return user.getPassword().equals(password);
     }
     
+    public void setUser() {
+        this.user = User.getInstance();
+        username.setText(user.getUsername());
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        setUser();
     }
 }

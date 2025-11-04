@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -23,11 +22,15 @@ public class Controller
     
     /**
     * Constructor del Controller
-     * @throws java.sql.SQLException
+     * @throws exception.OurException
     */
-    public Controller() throws SQLException
+    public Controller() throws OurException
     {
-        dao = new DBImplementation();
+        try {
+            dao = new DBImplementation();
+        } catch (Exception ex) {
+            throw new OurException("Error initializing database connection: " + ex.getMessage());
+        }
     }
     
     public void showWindow(Stage stage) throws IOException {
@@ -47,9 +50,9 @@ public class Controller
         return dao.register(user);
     }
     
-    public Profile login(String username, String password) throws OurException
+    public Profile login(String credential, String password) throws OurException
     {
-        return dao.login(username, password);
+        return dao.login(credential, password);
     }
 
     public ArrayList<User> getUsers() throws OurException
@@ -62,7 +65,7 @@ public class Controller
         return dao.updateUser(user);
     }
     
-    public boolean removeUser(User user) throws OurException
+    public boolean deleteUser(User user) throws OurException
     {
         return dao.deleteUser(user);
     }

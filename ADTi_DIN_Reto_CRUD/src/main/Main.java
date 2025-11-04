@@ -3,14 +3,12 @@ package main;
 import controller.Controller;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import pool.ConnectionPool;
 
 /**
  *
  * @author 2dami
  */
 public class Main extends Application {
-    
     /**
      * Crea el controlador y llama al método para abrir la ventana de login.
      *
@@ -28,5 +26,5 @@ public class Main extends Application {
      */
     public static void main(String[] args) {
         launch(args);
-    }   
+    }
 }
