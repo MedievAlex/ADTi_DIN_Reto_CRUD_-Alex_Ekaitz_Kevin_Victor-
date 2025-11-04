@@ -111,7 +111,7 @@ public class AdminWindowController implements Initializable {
             ShowAlert.showAlert("Error", "Error getting users: " + ex.getMessage(), Alert.AlertType.ERROR);
         }
         
-        users.forEach(user -> usersComboBox.getItems().add(user.getUsername())); // Ask if is better do a normal for each or use this option (Recommended by Netbeans)
+        users.forEach(user -> usersComboBox.getItems().add(user.getUsername()));
     }
     
     public void logOut()
@@ -121,13 +121,18 @@ public class AdminWindowController implements Initializable {
 
         try
         {
-            Parent loginRoot = FXMLLoader.load(getClass().getResource("/view/LoginWindow.fxml"));
-            Stage currentStage = (Stage) logOutBttn.getScene().getWindow();
-            currentStage.setScene(new Scene(loginRoot));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LoginWindow.fxml"));
+            Parent window = loader.load();
+            LoginWindowController loginController = loader.getController();
+            loginController.setController(this.controller);
+            Stage currentwindow = (Stage) logOutBttn.getScene().getWindow();
+            currentwindow.setScene(new Scene(window));
+            
+            ShowAlert.showAlert("Ok", "Logout successfully", Alert.AlertType.INFORMATION);
         }
-        catch (IOException e)
+        catch (IOException ex)
         {
-            System.err.println("Error loading login window: " + e.getMessage());
+            ShowAlert.showAlert("Error", "Error trying to logout: " + ex.getMessage(), Alert.AlertType.ERROR);
         }
     }
 

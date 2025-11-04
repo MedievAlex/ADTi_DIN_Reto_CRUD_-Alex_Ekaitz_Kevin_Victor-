@@ -53,11 +53,6 @@ public class LoginWindowController implements Initializable
         this.controller = controller;
     }
 
-    private void handleButtonAction(ActionEvent event) throws SQLException
-    {
-        con = ConnectionPool.getConnection();
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
@@ -95,8 +90,6 @@ public class LoginWindowController implements Initializable
 
             if (loggedIn != null)
             {
-                ShowAlert.showAlert("Ok", "Correct login!", Alert.AlertType.INFORMATION);
-
                 try
                 {
                     String fxmlPath = (loggedIn instanceof User) ? "/view/UserWindow.fxml" : "/view/AdminWindow.fxml";
@@ -122,6 +115,8 @@ public class LoginWindowController implements Initializable
                 {
                     ShowAlert.showAlert("Error", "Error trying to open the window: " + ex.getMessage(), Alert.AlertType.ERROR);
                 }
+                
+                ShowAlert.showAlert("Ok", "Login successfully!", Alert.AlertType.INFORMATION);
             }
             else
             {

@@ -1,5 +1,6 @@
 package controller;
 
+import exception.ShowAlert;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -9,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -171,13 +173,18 @@ public class UserWindowController implements Initializable {
 
         try
         {
-            Parent loginRoot = FXMLLoader.load(getClass().getResource("/view/LoginWindow.fxml"));
-            Stage currentStage = (Stage) logOutBttn.getScene().getWindow();
-            currentStage.setScene(new Scene(loginRoot));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LoginWindow.fxml"));
+            Parent window = loader.load();
+            LoginWindowController loginController = loader.getController();
+            loginController.setController(this.controller);
+            Stage currentwindow = (Stage) logOutBttn.getScene().getWindow();
+            currentwindow.setScene(new Scene(window));
+            
+            ShowAlert.showAlert("Ok", "Logout successfully", Alert.AlertType.INFORMATION);
         }
-        catch (IOException e)
+        catch (IOException ex)
         {
-            System.err.println("Error loading login window: " + e.getMessage());
+            ShowAlert.showAlert("Error", "Error trying to logout: " + ex.getMessage(), Alert.AlertType.ERROR);
         }
     }
     
