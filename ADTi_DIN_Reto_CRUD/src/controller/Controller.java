@@ -11,6 +11,7 @@ import dao.ModelDAO;
 import exception.OurException;
 import model.Profile;
 import model.User;
+import javafx.scene.image.Image;
 
 /**
  *
@@ -42,6 +43,8 @@ public class Controller
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.setTitle("Login");
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
         stage.show();
     }
     

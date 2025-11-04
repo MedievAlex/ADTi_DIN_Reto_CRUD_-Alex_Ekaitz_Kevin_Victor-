@@ -19,6 +19,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Admin;
 import model.User;
@@ -112,6 +113,22 @@ public class AdminWindowController implements Initializable {
         }
         
         users.forEach(user -> usersComboBox.getItems().add(user.getUsername()));
+    }
+    
+    public void deleteUser()
+    {
+        try
+        {
+            Stage stage = new Stage();
+            Parent root = FXMLLoader.load(VerifyUserWindowController.class.getResource("/view/VerifyUserWindow.fxml"));
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(deleteUserBttn.getScene().getWindow());
+            stage.show();
+        } catch (IOException ex)
+        {
+            ShowAlert.showAlert("Error", "Error trying to deleting user: " + ex.getMessage(), Alert.AlertType.ERROR);
+        }
     }
     
     public void logOut()
