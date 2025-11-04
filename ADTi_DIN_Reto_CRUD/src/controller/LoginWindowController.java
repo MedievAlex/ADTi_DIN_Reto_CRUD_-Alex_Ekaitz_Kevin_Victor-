@@ -90,12 +90,14 @@ public class LoginWindowController implements Initializable
             {
                 try
                 {
-                    String fxmlPath = (loggedIn instanceof User) ? "/view/UserWindow.fxml" : "/view/AdminWindow.fxml";
+                    boolean isUser = loggedIn instanceof User;
+                    String fxmlPath = isUser ? "/view/UserWindow.fxml" : "/view/AdminWindow.fxml",
+                    title = isUser ? "User" : "Admin";
 
                     FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
                     Parent window = loader.load();
 
-                    if (loggedIn instanceof User)
+                    if (isUser)
                     {
                         // TODO: Charge the user from login
                         UserWindowController userController = loader.getController();
@@ -108,6 +110,7 @@ public class LoginWindowController implements Initializable
                     }
 
                     Stage currentwindow = (Stage) logInBttn.getScene().getWindow();
+                    currentwindow.setTitle(title);
                     currentwindow.setScene(new Scene(window));
                 }
                 catch (IOException ex)
