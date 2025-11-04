@@ -17,6 +17,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import model.Admin;
+import model.Profile;
 import model.User;
 
 /**
@@ -26,7 +28,7 @@ import model.User;
 public class VerifyUserWindowController implements Initializable {
 
     private Controller controller;
-    private User user;
+    private Profile profile;
 
     @FXML
     private Pane rightPane;
@@ -54,44 +56,45 @@ public class VerifyUserWindowController implements Initializable {
 
     @FXML
     public void confirmButton(ActionEvent event) {
-        user = User.getInstance();
+        if (profile instanceof User)
+        {
+            profile = User.getInstance();
+        }
+        else
+        {
+            profile = Admin.getInstance();
+        }
+
         String password = passwordPasswordField.getText().trim();
 
         if (password.isEmpty()) {
             errorLabel.setText("Enter your password.");
         } else {
-            try {
-                if (verifyPassword(user, password)) {
-                    try {
-                        Parent parentWindow = FXMLLoader.load(getClass().getResource("/view/VerifyActionWindow.fxml"));
-                        Stage actualWindow = (Stage) confirmBttn.getScene().getWindow();
-                        actualWindow.setScene(new Scene(parentWindow));
-                    } catch (IOException ex) {
-                        Logger.getLogger(LoginWindowController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    errorLabel.setText("Incorrect password.");
+            System.out.println(profile.getPassword());
+            System.out.println(profile.getPassword().equals(password));
+            if (profile.getPassword().equals(password)) {
+                try {
+                    Parent parentWindow = FXMLLoader.load(getClass().getResource("/view/VerifyActionWindow.fxml"));
+                    Stage actualWindow = (Stage) confirmBttn.getScene().getWindow();
+                    actualWindow.setScene(new Scene(parentWindow));
+                } catch (IOException ex) {
+                    Logger.getLogger(LoginWindowController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (OurException ex) {
-
+            } else {
+                errorLabel.setText("Incorrect password.");
             }
         }
     }
 
     @FXML
-    public void cancellButton(ActionEvent event) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+    public void cancellButton() {
+        Stage stage = (Stage) (cancelBttn.getScene().getWindow());
         stage.close();
-    }
-
-    public boolean verifyPassword(User user, String password) throws OurException
-    {
-        return user.getPassword().equals(password);
     }
     
     public void setUser() {
-        this.user = User.getInstance();
-        username.setText(user.getUsername());
+        this.profile = User.getInstance();
+        username.setText(this.profile.getUsername());
     }
     
     @Override

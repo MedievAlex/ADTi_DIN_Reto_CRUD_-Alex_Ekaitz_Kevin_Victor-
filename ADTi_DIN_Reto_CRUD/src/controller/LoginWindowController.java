@@ -5,7 +5,6 @@ import exception.ShowAlert;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,7 +21,6 @@ import javafx.stage.Stage;
 import javafx.scene.control.Alert;
 import model.Profile;
 import model.User;
-import pool.ConnectionPool;
 
 /**
  *
@@ -99,6 +97,7 @@ public class LoginWindowController implements Initializable
 
                     if (loggedIn instanceof User)
                     {
+                        // TODO: Charge the user from login
                         UserWindowController userController = loader.getController();
                         userController.setController(this.controller);
                     }
