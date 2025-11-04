@@ -88,37 +88,31 @@ public class LoginWindowController implements Initializable
 
             if (loggedIn != null)
             {
+                boolean isUser = loggedIn instanceof User;
+                String fxmlPath = isUser ? "/view/UserWindow.fxml" : "/view/AdminWindow.fxml";
+
                 try
                 {
-                    boolean isUser = loggedIn instanceof User;
-                    String fxmlPath = isUser ? "/view/UserWindow.fxml" : "/view/AdminWindow.fxml",
-                    title = isUser ? "User" : "Admin";
-
                     FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
                     Parent window = loader.load();
 
                     if (isUser)
                     {
-                        // TODO: Charge the user from login
-                        UserWindowController userController = loader.getController();
-                        userController.setController(this.controller);
+                        ((UserWindowController) loader.getController()).setController(this.controller);
                     }
                     else
                     {
-                        AdminWindowController adminController = loader.getController();
-                        adminController.setController(this.controller);
+                        ((AdminWindowController) loader.getController()).setController(this.controller);
                     }
 
                     Stage currentwindow = (Stage) logInBttn.getScene().getWindow();
-                    currentwindow.setTitle(title);
+                    currentwindow.setTitle(isUser ? "User" : "Admin");
                     currentwindow.setScene(new Scene(window));
                 }
                 catch (IOException ex)
                 {
                     ShowAlert.showAlert("Error", "Error trying to open the window: " + ex.getMessage(), Alert.AlertType.ERROR);
                 }
-                
-                ShowAlert.showAlert("Ok", "Login successfully!", Alert.AlertType.INFORMATION);
             }
             else
             {

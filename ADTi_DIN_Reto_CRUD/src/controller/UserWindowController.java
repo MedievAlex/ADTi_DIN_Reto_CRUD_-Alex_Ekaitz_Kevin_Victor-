@@ -16,19 +16,25 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.LoggedProfile;
+import model.Profile;
 import model.User;
 
 /**
  *
  * @author 2dami
  */
-public class UserWindowController implements Initializable {
+public class UserWindowController implements Initializable
+{
+
     private Controller controller;
     private Connection con;
     private User user;
-    
+
     private Label label;
     @FXML
     private Pane leftPane;
@@ -82,20 +88,20 @@ public class UserWindowController implements Initializable {
     private Label username;
     @FXML
     private Button logOutBttn;
-    
-    
+
     /**
      * Asigna el controlador principal.
+     *
      * @param controller
      */
     public void setController(Controller controller)
     {
         this.controller = controller;
-        user = User.getInstance();
+        user = (User) LoggedProfile.getInstance().getProfile();
         username.setText(user.getUsername());
         setData();
     }
-    
+
     public void setData()
     {
         username.setText(user.getUsername());
@@ -119,7 +125,7 @@ public class UserWindowController implements Initializable {
                 break;
         }
     }
-    
+
     private void configureCardNumber()
     {
         TextField[] cardFields =
@@ -165,11 +171,45 @@ public class UserWindowController implements Initializable {
             });
         }
     }
-    
+
+    public void deleteUser()
+    {
+        try
+        {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/VerifyUserWindow.fxml"));
+            Parent root = loader.load();
+
+            VerifyUserWindowController verifyController = loader.getController();
+            verifyController.setController(this.controller, -1);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Confirm");
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(deleteUserBttn.getScene().getWindow());
+
+            stage.setOnHidden(e ->
+            {
+                Profile currentProfile = LoggedProfile.getInstance().getProfile();
+                if (currentProfile == null)
+                {
+                    logOut();
+                }
+            });
+
+            stage.show();
+        }
+        catch (IOException ex)
+        {
+            ShowAlert.showAlert("Error", "Error trying to delete user: " + ex.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
     public void logOut()
     {
+        LoggedProfile.getInstance().clear();
         this.user = null;
-        User.clearInstance();
 
         try
         {
@@ -179,15 +219,13 @@ public class UserWindowController implements Initializable {
             loginController.setController(this.controller);
             Stage currentwindow = (Stage) logOutBttn.getScene().getWindow();
             currentwindow.setScene(new Scene(window));
-            
-            ShowAlert.showAlert("Ok", "Logout successfully", Alert.AlertType.INFORMATION);
         }
         catch (IOException ex)
         {
             ShowAlert.showAlert("Error", "Error trying to logout: " + ex.getMessage(), Alert.AlertType.ERROR);
         }
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {

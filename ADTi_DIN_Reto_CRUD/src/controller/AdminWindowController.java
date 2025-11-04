@@ -18,20 +18,25 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Admin;
+import model.LoggedProfile;
 import model.User;
 
 /**
  *
  * @author 2dami
  */
-public class AdminWindowController implements Initializable {
+public class AdminWindowController implements Initializable
+{
+
     private Controller controller;
     private Admin admin;
     private ArrayList<User> users;
+    private User selectedUser;
 
     private Label label;
     @FXML
@@ -79,7 +84,7 @@ public class AdminWindowController implements Initializable {
     @FXML
     private Label cardNumberLabel;
     @FXML
-    private ComboBox<String> usersComboBox;
+    private ComboBox<User> usersComboBox;
     @FXML
     private Button deleteUserBttn;
     @FXML
@@ -91,12 +96,14 @@ public class AdminWindowController implements Initializable {
 
     /**
      * Asigna el controlador principal.
+     *
      * @param controller
      */
     public void setController(Controller controller)
     {
         this.controller = controller;
-        admin = Admin.getInstance();
+
+        admin = (Admin) LoggedProfile.getInstance().getProfile();
         username.setText(admin.getUsername());
         getUsers();
     }
@@ -106,46 +113,119 @@ public class AdminWindowController implements Initializable {
         try
         {
             users = controller.getUsers();
+            usersComboBox.getItems().clear();
+            usersComboBox.getItems().addAll(users);
         }
         catch (OurException ex)
         {
             ShowAlert.showAlert("Error", "Error getting users: " + ex.getMessage(), Alert.AlertType.ERROR);
         }
-        
-        users.forEach(user -> usersComboBox.getItems().add(user.getUsername()));
     }
-    
+
+    private void clearUserFields()
+    {
+        usernameTextField.clear();
+        emailTextField.clear();
+        nameTextField.clear();
+        surnameTextField.clear();
+        phoneTextField.clear();
+        passwordPasswordField.clear();
+        cardNumber1TextField.clear();
+        cardNumber2TextField.clear();
+        cardNumber3TextField.clear();
+        cardNumber4TextField.clear();
+        maleRadioButton.setSelected(false);
+        femaleRadioButton.setSelected(false);
+        otherRadioButton.setSelected(false);
+        selectedUser = null;
+        usersComboBox.getSelectionModel().clearSelection();
+    }
+
+    private void refreshUserList()
+    {
+        getUsers();
+        clearUserFields();
+    }
+
+    private void loadUserData()
+    {
+        if (selectedUser != null)
+        {
+            usernameTextField.setText(selectedUser.getUsername());
+            emailTextField.setText(selectedUser.getEmail());
+            nameTextField.setText(selectedUser.getName());
+            surnameTextField.setText(selectedUser.getLastname());
+            phoneTextField.setText(selectedUser.getTelephone());
+            passwordPasswordField.setText(selectedUser.getPassword());
+
+            switch (selectedUser.getGender())
+            {
+                case MALE: maleRadioButton.setSelected(true);
+                    break;
+                case FEMALE: femaleRadioButton.setSelected(true);
+                    break;
+                case OTHER: otherRadioButton.setSelected(true);
+                    break;
+            }
+
+            if (selectedUser.getCard() != null && selectedUser.getCard().length() == 16)
+            {
+                cardNumber1TextField.setText(selectedUser.getCard().substring(0, 4));
+                cardNumber2TextField.setText(selectedUser.getCard().substring(4, 8));
+                cardNumber3TextField.setText(selectedUser.getCard().substring(8, 12));
+                cardNumber4TextField.setText(selectedUser.getCard().substring(12, 16));
+            }
+        }
+    }
+
     public void deleteUser()
     {
+        if (selectedUser == null)
+        {
+            ShowAlert.showAlert("Error", "Please select a user to delete", Alert.AlertType.ERROR);
+            return;
+        }
+
         try
         {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/VerifyUserWindow.fxml"));
+            Parent root = loader.load();
+
+            VerifyUserWindowController verifyController = loader.getController();
+            verifyController.setController(controller, selectedUser.getId());
+
             Stage stage = new Stage();
-            Parent root = FXMLLoader.load(VerifyUserWindowController.class.getResource("/view/VerifyUserWindow.fxml"));
             stage.setScene(new Scene(root));
+            stage.setTitle("Confirm");
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(deleteUserBttn.getScene().getWindow());
+            stage.setOnHiding(e ->
+            {
+                refreshUserList();
+            });
             stage.show();
-        } catch (IOException ex)
+        }
+        catch (IOException ex)
         {
             ShowAlert.showAlert("Error", "Error trying to deleting user: " + ex.getMessage(), Alert.AlertType.ERROR);
         }
     }
-    
+
     public void logOut()
     {
+        LoggedProfile.getInstance().clear();
         this.admin = null;
-        User.clearInstance();
+        this.selectedUser = null;
 
         try
         {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LoginWindow.fxml"));
             Parent window = loader.load();
             LoginWindowController loginController = loader.getController();
-            loginController.setController(this.controller);
+            loginController.setController(controller);
             Stage currentwindow = (Stage) logOutBttn.getScene().getWindow();
             currentwindow.setScene(new Scene(window));
-            
-            ShowAlert.showAlert("Ok", "Logout successfully", Alert.AlertType.INFORMATION);
         }
         catch (IOException ex)
         {
@@ -156,5 +236,13 @@ public class AdminWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+        usersComboBox.setOnAction(e ->
+        {
+            selectedUser = usersComboBox.getValue();
+            if (selectedUser != null)
+            {
+                loadUserData();
+            }
+        });
     }
 }
