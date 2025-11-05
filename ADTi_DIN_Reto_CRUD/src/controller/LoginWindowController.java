@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -44,34 +43,15 @@ public class LoginWindowController implements Initializable
     @FXML
     private Button logInBttn;
     @FXML
-    private Button signInBttn;
+    private Button signUpBttn;
 
     public void setController(Controller controller)
     {
         this.controller = controller;
     }
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb)
-    {
-        // TODO
-    }
-
-    public void test(ActionEvent event)
-    {
-        try
-        {
-            Parent ventana = FXMLLoader.load(getClass().getResource("/view/VerifyUserWindow.fxml"));
-            Stage currentventana = (Stage) logInBttn.getScene().getWindow();
-            currentventana.setScene(new Scene(ventana));
-        }
-        catch (IOException ex)
-        {
-        }
-    }
-
+    
     @FXML
-    private void handleLogin(ActionEvent event)
+    private void handleLogin()
     {
         String credential = credentialTextField.getText();
         String password = passwordPasswordField.getText();
@@ -124,5 +104,32 @@ public class LoginWindowController implements Initializable
         {
             ShowAlert.showAlert("Error", "Error in login: " + ex.getMessage(), Alert.AlertType.ERROR);
         }
+    }
+    
+    @FXML
+    public void openSignUp()
+    {
+        try
+        {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignUpWindow.fxml"));
+            Parent parentWindow = loader.load();
+
+            SignUpWindowController nextController = loader.getController();
+            nextController.setController(controller);
+
+            Stage actualWindow = (Stage) signUpBttn.getScene().getWindow();
+            actualWindow.setTitle("Sign Up");
+            actualWindow.setScene(new Scene(parentWindow));
+        }
+        catch (IOException ex)
+        {
+            ShowAlert.showAlert("Error", "Error opening Sign Up window: " + ex.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb)
+    {
+        // TODO
     }
 }

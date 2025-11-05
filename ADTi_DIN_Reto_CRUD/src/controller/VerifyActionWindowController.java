@@ -26,6 +26,7 @@ public class VerifyActionWindowController implements Initializable {
     private Controller controller;
     private Profile profile;
     private int userDelete;
+    private Runnable onUserDeletedCallback;
 
     @FXML
     private Pane rightPane;
@@ -53,6 +54,10 @@ public class VerifyActionWindowController implements Initializable {
         username.setText(profile.getUsername());
     }
     
+    public void setOnUserDeletedCallback(Runnable callback) {
+        onUserDeletedCallback = callback;
+    }
+    
     public void confirmButton() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/VerifyCaptchaWindow.fxml"));
@@ -60,6 +65,10 @@ public class VerifyActionWindowController implements Initializable {
             
             VerifyCaptchaWindowController nextController = loader.getController();
             nextController.setController(controller, userDelete);
+            
+            if (onUserDeletedCallback != null) {
+                nextController.setOnUserDeletedCallback(onUserDeletedCallback);
+            }
             
             Stage actualWindow = (Stage) confirmBttn.getScene().getWindow();
             actualWindow.setScene(new Scene(parentWindow));

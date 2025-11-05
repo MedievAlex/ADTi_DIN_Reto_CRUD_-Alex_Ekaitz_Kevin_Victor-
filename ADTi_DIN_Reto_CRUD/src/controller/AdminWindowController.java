@@ -193,6 +193,10 @@ public class AdminWindowController implements Initializable
 
             VerifyUserWindowController verifyController = loader.getController();
             verifyController.setController(controller, selectedUser.getId());
+            
+            verifyController.setOnUserDeletedCallback(() -> {
+                refreshUserList();
+            });
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
@@ -200,10 +204,6 @@ public class AdminWindowController implements Initializable
             stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(deleteUserBttn.getScene().getWindow());
-            stage.setOnHiding(e ->
-            {
-                refreshUserList();
-            });
             stage.show();
         }
         catch (IOException ex)

@@ -27,6 +27,7 @@ public class VerifyCaptchaWindowController implements Initializable
     private Controller controller;
     private Profile profile;
     private int code, userDelete;
+    private Runnable onUserDeletedCallback;
 
     @FXML
     private Pane rightPane;
@@ -62,6 +63,10 @@ public class VerifyCaptchaWindowController implements Initializable
         generateAndDisplayCode();
     }
 
+    public void setOnUserDeletedCallback(Runnable callback) {
+        onUserDeletedCallback = callback;
+    }
+
     public int randomCode()
     {
         Random random = new Random();
@@ -95,6 +100,10 @@ public class VerifyCaptchaWindowController implements Initializable
                 
                 if (success)
                 {
+                    if (onUserDeletedCallback != null) {
+                        onUserDeletedCallback.run();
+                    }
+                    
                     ShowAlert.showAlert("Correct", "User deleted successfully", Alert.AlertType.CONFIRMATION);
                 }
                 else

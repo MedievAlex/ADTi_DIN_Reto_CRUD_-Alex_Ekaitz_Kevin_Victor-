@@ -27,7 +27,10 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <Button fx:id="signInBttn" layoutX="84.0" layoutY="295.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="183.0" style="-fx-background-color: null;" text="If you have no account SIGN IN" />
+            <Button fx:id="signUpBttn" layoutX="73.0" layoutY="297.0" mnemonicParsing="false" onAction="#openSignUp" prefHeight="25.0" prefWidth="205.0" style="-fx-background-color: null;" text="If you have no account SIGN UP">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
          </children>
       </Pane>
    </children>

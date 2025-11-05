@@ -3,7 +3,6 @@ package controller;
 import exception.ShowAlert;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,7 +20,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.LoggedProfile;
-import model.Profile;
 import model.User;
 
 /**
@@ -32,7 +30,6 @@ public class UserWindowController implements Initializable
 {
 
     private Controller controller;
-    private Connection con;
     private User user;
 
     private Label label;
@@ -124,6 +121,14 @@ public class UserWindowController implements Initializable
                 otherRadioButton.setSelected(true);
                 break;
         }
+        
+        if (user.getCard() != null && user.getCard().length() == 16)
+            {
+                cardNumber1TextField.setText(user.getCard().substring(0, 4));
+                cardNumber2TextField.setText(user.getCard().substring(4, 8));
+                cardNumber3TextField.setText(user.getCard().substring(8, 12));
+                cardNumber4TextField.setText(user.getCard().substring(12, 16));
+            }
     }
 
     private void configureCardNumber()
@@ -181,6 +186,10 @@ public class UserWindowController implements Initializable
 
             VerifyUserWindowController verifyController = loader.getController();
             verifyController.setController(this.controller, -1);
+            
+            verifyController.setOnUserDeletedCallback(() -> {
+                logOut();
+            });
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
@@ -188,16 +197,6 @@ public class UserWindowController implements Initializable
             stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(deleteUserBttn.getScene().getWindow());
-
-            stage.setOnHidden(e ->
-            {
-                Profile currentProfile = LoggedProfile.getInstance().getProfile();
-                if (currentProfile == null)
-                {
-                    logOut();
-                }
-            });
-
             stage.show();
         }
         catch (IOException ex)

@@ -19,7 +19,7 @@
                   <Font name="System Italic" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="27.0" prefHeight="25.0" prefWidth="450.0" text="INSER YOUR PASSWORD">
+            <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="27.0" prefHeight="25.0" prefWidth="450.0" text="ENTER YOUR PASSWORD">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>

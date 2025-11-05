@@ -3,8 +3,6 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -27,6 +25,7 @@ public class VerifyUserWindowController implements Initializable {
     private Controller controller;
     private Profile profile;
     private int userDelete;
+    private Runnable onUserDeletedCallback;
 
     @FXML
     private Pane rightPane;
@@ -54,8 +53,11 @@ public class VerifyUserWindowController implements Initializable {
         this.userDelete = userDelete;
         
         profile = LoggedProfile.getInstance().getProfile();
-        
-        username.setText(this.profile.getUsername());
+        username.setText(profile.getUsername());
+    }
+
+    public void setOnUserDeletedCallback(Runnable callback) {
+        onUserDeletedCallback = callback;
     }
 
     @FXML
@@ -75,10 +77,13 @@ public class VerifyUserWindowController implements Initializable {
                 VerifyActionWindowController nextController = loader.getController();
                 nextController.setController(controller, userDelete);
                 
+                if (onUserDeletedCallback != null) {
+                    nextController.setOnUserDeletedCallback(onUserDeletedCallback);
+                }
+                
                 Stage actualWindow = (Stage) confirmBttn.getScene().getWindow();
                 actualWindow.setScene(new Scene(parentWindow));
             } catch (IOException ex) {
-                Logger.getLogger(VerifyUserWindowController.class.getName()).log(Level.SEVERE, null, ex);
                 errorLabel.setText("Error loading window.");
             }
         } else {
