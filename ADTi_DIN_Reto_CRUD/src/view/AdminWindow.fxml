@@ -11,8 +11,8 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="360.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminWindowController">
-    <children>
+<AnchorPane id="AnchorPane" prefHeight="360.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminWindowController">
+   <children>
       <Pane fx:id="leftPane" prefHeight="362.0" prefWidth="152.0" style="-fx-background-color: ACA9FF;">
          <children>
             <Label fx:id="usernameLabel" layoutX="26.0" layoutY="76.0" prefHeight="25.0" prefWidth="121.0" text="Username:">
@@ -55,8 +55,8 @@
       <Pane fx:id="rightPane" layoutX="151.0" prefHeight="362.0" prefWidth="350.0" style="-fx-background-color: EEEEEE;">
          <children>
             <ComboBox fx:id="usersComboBox" layoutX="16.0" layoutY="44.0" prefHeight="25.0" prefWidth="319.0" promptText="-- Choose an user --" />
-            <TextField fx:id="usernameTextField" layoutX="32.0" layoutY="76.0" prefHeight="25.0" prefWidth="286.0" promptText="exampleuser" />
-            <TextField fx:id="emailTextField" layoutX="32.0" layoutY="107.0" prefHeight="25.0" prefWidth="286.0" promptText="example@email.com" />
+            <TextField fx:id="usernameTextField" editable="false" layoutX="32.0" layoutY="76.0" prefHeight="25.0" prefWidth="286.0" promptText="exampleuser" />
+            <TextField fx:id="emailTextField" editable="false" layoutX="32.0" layoutY="107.0" prefHeight="25.0" prefWidth="286.0" promptText="example@email.com" />
             <TextField fx:id="nameTextField" layoutX="32.0" layoutY="169.0" prefHeight="25.0" prefWidth="128.0" promptText="name" />
             <TextField fx:id="surnameTextField" layoutX="190.0" layoutY="169.0" prefHeight="25.0" prefWidth="128.0" promptText="surname" />
             <TextField fx:id="phoneTextField" layoutX="32.0" layoutY="200.0" prefHeight="25.0" prefWidth="286.0" promptText="688 88 88 88" />
@@ -85,5 +85,5 @@
             </Button>
          </children>
       </Pane>
-    </children>
+   </children>
 </AnchorPane>
