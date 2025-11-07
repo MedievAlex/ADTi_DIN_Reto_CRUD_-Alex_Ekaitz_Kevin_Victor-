@@ -67,62 +67,54 @@ public class VerifyCaptchaWindowController implements Initializable
         onUserDeletedCallback = callback;
     }
 
-    public int randomCode()
-    {
-        Random random = new Random();
-        code = random.nextInt(9999 - 0 + 1) + 0;
-        return code;
-    }
-
     private void generateAndDisplayCode() {
-        code = randomCode();
+        code = new Random().nextInt(10000);
         codeLabel.setText(String.valueOf(code));
         errorLabel.setText("");
         codeTextField.clear();
     }
 
-    public void confirmButton()
+    @FXML
+    private void confirmButton()
     {
         String inputCode = codeTextField.getText().trim();
-        
-        if (inputCode.isEmpty()) {
+
+        if (inputCode.isEmpty())
+        {
             errorLabel.setText("Please enter the code.");
             return;
         }
-        
-        if (inputCode.equals(String.valueOf(code)))
-        {
-            try
-            {
-                boolean success;
-                
-                success = controller.deleteUser(userDelete != -1 ? userDelete : profile.getId());
-                
-                if (success)
-                {
-                    if (onUserDeletedCallback != null) {
-                        onUserDeletedCallback.run();
-                    }
-                    
-                    ShowAlert.showAlert("Correct", "User deleted successfully", Alert.AlertType.CONFIRMATION);
-                }
-                else
-                {
-                    ShowAlert.showAlert("Error", "Cannot delete the user", Alert.AlertType.ERROR);
-                }
-                
-                Stage stage = (Stage) confirmBttn.getScene().getWindow();
-                stage.close();
-            }
-            catch (OurException ex)
-            {
-                ShowAlert.showAlert("Error", "Error trying to delete the user: " + ex.getMessage(), Alert.AlertType.ERROR);
-            }
-        }
-        else
+
+        if (!inputCode.equals(String.valueOf(code)))
         {
             errorLabel.setText("Incorrect code. Try again.");
             generateAndDisplayCode();
+            return;
+        }
+
+        try
+        {
+            boolean success = controller.deleteUser(userDelete != -1 ? userDelete : profile.getId());
+
+            if (success)
+            {
+                if (onUserDeletedCallback != null)
+                {
+                    onUserDeletedCallback.run();
+                }
+
+                ShowAlert.showAlert("Success", "User deleted successfully.", Alert.AlertType.INFORMATION);
+
+                ((Stage) confirmBttn.getScene().getWindow()).close();
+            }
+            else
+            {
+                ShowAlert.showAlert("Error", "User could not be deleted.", Alert.AlertType.ERROR);
+            }
+        }
+        catch (OurException ex)
+        {
+            ShowAlert.showAlert("Error", ex.getMessage(), Alert.AlertType.ERROR);
         }
     }
 

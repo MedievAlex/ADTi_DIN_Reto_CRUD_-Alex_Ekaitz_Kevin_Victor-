@@ -27,10 +27,10 @@ import model.User;
  */
 public class LoginWindowController implements Initializable
 {
-
     private Controller controller;
     private Connection con;
-
+    
+    @FXML
     private Label label;
     @FXML
     private Pane leftPane;
@@ -58,7 +58,7 @@ public class LoginWindowController implements Initializable
 
         if (credential.isEmpty() || password.isEmpty())
         {
-            ShowAlert.showAlert("Error", "Please fill all the fields", Alert.AlertType.ERROR);
+            ShowAlert.showAlert("Error", "Please fill all the fields.", Alert.AlertType.ERROR);
             return;
         }
 
@@ -70,39 +70,35 @@ public class LoginWindowController implements Initializable
             {
                 boolean isUser = loggedIn instanceof User;
                 String fxmlPath = isUser ? "/view/UserWindow.fxml" : "/view/AdminWindow.fxml";
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+                Parent window = loader.load();
 
-                try
+                if (isUser)
                 {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-                    Parent window = loader.load();
-
-                    if (isUser)
-                    {
-                        ((UserWindowController) loader.getController()).setController(this.controller);
-                    }
-                    else
-                    {
-                        ((AdminWindowController) loader.getController()).setController(this.controller);
-                    }
-
-                    Stage currentwindow = (Stage) logInBttn.getScene().getWindow();
-                    currentwindow.setTitle(isUser ? "User" : "Admin");
-                    currentwindow.setScene(new Scene(window));
+                    ((UserWindowController) loader.getController()).setController(this.controller);
                 }
-                catch (IOException ex)
+                else
                 {
-                    ShowAlert.showAlert("Error", "Error trying to open the window: " + ex.getMessage(), Alert.AlertType.ERROR);
+                    ((AdminWindowController) loader.getController()).setController(this.controller);
                 }
+
+                Stage currentwindow = (Stage) logInBttn.getScene().getWindow();
+                currentwindow.setTitle(isUser ? "User" : "Admin");
+                currentwindow.setScene(new Scene(window));
             }
             else
             {
-                ShowAlert.showAlert("Error", "Incorrect credentials", Alert.AlertType.ERROR);
+                ShowAlert.showAlert("Error", "Incorrect credentials.", Alert.AlertType.ERROR);
             }
 
         }
         catch (OurException ex)
         {
-            ShowAlert.showAlert("Error", "Error in login: " + ex.getMessage(), Alert.AlertType.ERROR);
+            ShowAlert.showAlert("Error", ex.getMessage(), Alert.AlertType.ERROR);
+        }
+        catch (IOException ex)
+        {
+            ShowAlert.showAlert("Error", "Error opening window.", Alert.AlertType.ERROR);
         }
     }
     
@@ -123,7 +119,7 @@ public class LoginWindowController implements Initializable
         }
         catch (IOException ex)
         {
-            ShowAlert.showAlert("Error", "Error opening Sign Up window: " + ex.getMessage(), Alert.AlertType.ERROR);
+            ShowAlert.showAlert("Error", "Error opening Sign Up window.", Alert.AlertType.ERROR);
         }
     }
 

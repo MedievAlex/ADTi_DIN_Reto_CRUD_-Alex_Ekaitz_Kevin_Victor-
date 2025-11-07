@@ -93,6 +93,11 @@ public class SignUpWindowController implements Initializable {
         String name = nameTextField.getText();
         String lastname = lastnameTextField.getText();
         String telephone = telephoneTextField.getText();
+        String cardNumber = String.join("",
+                    cardNumber1TextField.getText().trim(),
+                    cardNumber2TextField.getText().trim(),
+                    cardNumber3TextField.getText().trim(),
+                    cardNumber4TextField.getText().trim());
     }
     
     @FXML
@@ -159,7 +164,7 @@ public class SignUpWindowController implements Initializable {
         }
         catch (IOException ex)
         {
-            ShowAlert.showAlert("Error", "Error opening Sign Up window: " + ex.getMessage(), Alert.AlertType.ERROR);
+            ShowAlert.showAlert("Error", "Error opening Sign Up window", Alert.AlertType.ERROR);
         }
     }
     

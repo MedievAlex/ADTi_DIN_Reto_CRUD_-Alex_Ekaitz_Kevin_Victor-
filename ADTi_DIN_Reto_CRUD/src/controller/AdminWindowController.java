@@ -23,6 +23,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Admin;
+import model.Gender;
 import model.LoggedProfile;
 import model.User;
 
@@ -37,7 +38,8 @@ public class AdminWindowController implements Initializable
     private Admin admin;
     private ArrayList<User> users;
     private User selectedUser;
-
+    
+    @FXML
     private Label label;
     @FXML
     private Pane leftPane;
@@ -50,9 +52,9 @@ public class AdminWindowController implements Initializable
     @FXML
     private TextField nameTextField;
     @FXML
-    private TextField surnameTextField;
+    private TextField lastnameTextField;
     @FXML
-    private TextField phoneTextField;
+    private TextField telephoneTextField;
     @FXML
     private PasswordField passwordPasswordField;
     @FXML
@@ -118,7 +120,7 @@ public class AdminWindowController implements Initializable
         }
         catch (OurException ex)
         {
-            ShowAlert.showAlert("Error", "Error getting users: " + ex.getMessage(), Alert.AlertType.ERROR);
+            ShowAlert.showAlert("Error", ex.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
@@ -127,8 +129,8 @@ public class AdminWindowController implements Initializable
         usernameTextField.clear();
         emailTextField.clear();
         nameTextField.clear();
-        surnameTextField.clear();
-        phoneTextField.clear();
+        lastnameTextField.clear();
+        telephoneTextField.clear();
         passwordPasswordField.clear();
         cardNumber1TextField.clear();
         cardNumber2TextField.clear();
@@ -154,8 +156,8 @@ public class AdminWindowController implements Initializable
             usernameTextField.setText(selectedUser.getUsername());
             emailTextField.setText(selectedUser.getEmail());
             nameTextField.setText(selectedUser.getName());
-            surnameTextField.setText(selectedUser.getLastname());
-            phoneTextField.setText(selectedUser.getTelephone());
+            lastnameTextField.setText(selectedUser.getLastname());
+            telephoneTextField.setText(selectedUser.getTelephone());
             passwordPasswordField.setText(selectedUser.getPassword());
 
             switch (selectedUser.getGender())
@@ -178,11 +180,71 @@ public class AdminWindowController implements Initializable
         }
     }
 
+    @FXML
+    public void saveChanges()
+    {
+        if (selectedUser == null)
+        {
+            ShowAlert.showAlert("Error", "Please select a user to update.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        String username = usernameTextField.getText().trim();
+        String email = emailTextField.getText().trim();
+        String name = nameTextField.getText().trim();
+        String lastname = lastnameTextField.getText().trim();
+        String phone = telephoneTextField.getText().trim();
+        String password = passwordPasswordField.getText().trim();
+
+        Gender gender = Gender.OTHER;
+        if (maleRadioButton.isSelected())
+        {
+            gender = Gender.MALE;
+        }
+        else if (femaleRadioButton.isSelected())
+        {
+            gender = Gender.FEMALE;
+        }
+
+        String card = cardNumber1TextField.getText()
+                + cardNumber2TextField.getText()
+                + cardNumber3TextField.getText()
+                + cardNumber4TextField.getText();
+
+        selectedUser.setUsername(username);
+        selectedUser.setEmail(email);
+        selectedUser.setName(name);
+        selectedUser.setLastname(lastname);
+        selectedUser.setTelephone(phone);
+        selectedUser.setPassword(password);
+        selectedUser.setGender(gender);
+        selectedUser.setCard(card);
+
+        try
+        {
+            boolean success = controller.updateUser(selectedUser);
+
+            if (success)
+            {
+                ShowAlert.showAlert("Success", "User updated successfully.", Alert.AlertType.INFORMATION);
+            }
+            else
+            {
+                ShowAlert.showAlert("Error", "Could not update user.", Alert.AlertType.ERROR);
+            }
+        }
+        catch (OurException ex)
+        {
+            ShowAlert.showAlert("Error", ex.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
     public void deleteUser()
     {
         if (selectedUser == null)
         {
-            ShowAlert.showAlert("Error", "Please select a user to delete", Alert.AlertType.ERROR);
+            ShowAlert.showAlert("Error", "Please select a user to delete.", Alert.AlertType.ERROR);
             return;
         }
 
@@ -193,8 +255,9 @@ public class AdminWindowController implements Initializable
 
             VerifyUserWindowController verifyController = loader.getController();
             verifyController.setController(controller, selectedUser.getId());
-            
-            verifyController.setOnUserDeletedCallback(() -> {
+
+            verifyController.setOnUserDeletedCallback(() ->
+            {
                 refreshUserList();
             });
 
@@ -208,10 +271,11 @@ public class AdminWindowController implements Initializable
         }
         catch (IOException ex)
         {
-            ShowAlert.showAlert("Error", "Error trying to deleting user: " + ex.getMessage(), Alert.AlertType.ERROR);
+            ShowAlert.showAlert("Error", "Error opening Confim window.", Alert.AlertType.ERROR);
         }
     }
 
+    @FXML
     public void logOut()
     {
         LoggedProfile.getInstance().clear();
@@ -229,7 +293,53 @@ public class AdminWindowController implements Initializable
         }
         catch (IOException ex)
         {
-            ShowAlert.showAlert("Error", "Error trying to logout: " + ex.getMessage(), Alert.AlertType.ERROR);
+            ShowAlert.showAlert("Error", "Error trying to logout.", Alert.AlertType.ERROR);
+        }
+    }
+    
+    private void configureCardNumber()
+    {
+        TextField[] cardFields =
+        {
+            cardNumber1TextField, cardNumber2TextField, cardNumber3TextField, cardNumber4TextField
+        };
+
+        for (int i = 0; i < cardFields.length; i++)
+        {
+            final TextField currentField = cardFields[i];
+            final TextField prevField = (i > 0) ? cardFields[i - 1] : null;
+            final TextField nextField = (i < cardFields.length - 1) ? cardFields[i + 1] : null;
+
+            currentField.textProperty().addListener((obs, oldValue, newValue) ->
+            {
+                // Filter for only numbers
+                if (!newValue.matches("\\d*"))
+                {
+                    currentField.setText(newValue.replaceAll("[^\\d]", ""));
+                    return;
+                }
+
+                // Filter for no more than 4 characters
+                if (newValue.length() > 4)
+                {
+                    currentField.setText(oldValue);
+                    return;
+                }
+
+                // Filter for change TextField when there are 4 characters
+                if (newValue.length() == 4 && nextField != null)
+                {
+                    nextField.requestFocus();
+                    nextField.positionCaret(nextField.getText().length()); // When change to the next TextField dont select all the content 
+                }
+
+                // Filter to change TextField when you deleted all the characters
+                if (newValue.isEmpty() && prevField != null)
+                {
+                    prevField.requestFocus();
+                    prevField.positionCaret(prevField.getText().length()); // When change to the previous TextField dont select all the content
+                }
+            });
         }
     }
 
@@ -244,5 +354,7 @@ public class AdminWindowController implements Initializable
                 loadUserData();
             }
         });
+        
+        configureCardNumber();
     }
 }

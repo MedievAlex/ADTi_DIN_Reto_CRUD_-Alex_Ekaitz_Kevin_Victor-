@@ -1,5 +1,6 @@
 package controller;
 
+import exception.OurException;
 import exception.ShowAlert;
 import java.io.IOException;
 import java.net.URL;
@@ -19,6 +20,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.Gender;
 import model.LoggedProfile;
 import model.User;
 
@@ -32,7 +34,6 @@ public class UserWindowController implements Initializable
     private Controller controller;
     private User user;
 
-    private Label label;
     @FXML
     private Pane leftPane;
     @FXML
@@ -60,9 +61,9 @@ public class UserWindowController implements Initializable
     @FXML
     private TextField nameTextField;
     @FXML
-    private TextField surnameTextField;
+    private TextField lastnameTextField;
     @FXML
-    private TextField phoneTextField;
+    private TextField telephoneTextField;
     @FXML
     private PasswordField passwordPasswordField;
     @FXML
@@ -106,8 +107,8 @@ public class UserWindowController implements Initializable
         emailTextField.setText(user.getEmail());
         passwordPasswordField.setText(user.getPassword());
         nameTextField.setText(user.getName());
-        surnameTextField.setText(user.getLastname());
-        phoneTextField.setText(String.valueOf(user.getTelephone()));
+        lastnameTextField.setText(user.getLastname());
+        telephoneTextField.setText(String.valueOf(user.getTelephone()));
 
         switch (user.getGender())
         {
@@ -176,7 +177,61 @@ public class UserWindowController implements Initializable
             });
         }
     }
+    
+    @FXML
+    public void saveChanges()
+    {
+        String username = usernameTextField.getText().trim();
+        String email = emailTextField.getText().trim();
+        String name = nameTextField.getText().trim();
+        String lastname = lastnameTextField.getText().trim();
+        String phone = telephoneTextField.getText().trim();
+        String password = passwordPasswordField.getText().trim();
 
+        Gender gender = Gender.OTHER;
+        if (maleRadioButton.isSelected())
+        {
+            gender = Gender.MALE;
+        }
+        else if (femaleRadioButton.isSelected())
+        {
+            gender = Gender.FEMALE;
+        }
+
+        String card = cardNumber1TextField.getText()
+                + cardNumber2TextField.getText()
+                + cardNumber3TextField.getText()
+                + cardNumber4TextField.getText();
+
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setName(name);
+        user.setLastname(lastname);
+        user.setTelephone(phone);
+        user.setPassword(password);
+        user.setGender(gender);
+        user.setCard(card);
+
+        try
+        {
+            boolean success = controller.updateUser(user);
+
+            if (success)
+            {
+                ShowAlert.showAlert("Success", "User updated successfully.", Alert.AlertType.INFORMATION);
+            }
+            else
+            {
+                ShowAlert.showAlert("Error", "Could not update user.", Alert.AlertType.ERROR);
+            }
+        }
+        catch (OurException ex)
+        {
+            ShowAlert.showAlert("Error", ex.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
     public void deleteUser()
     {
         try
@@ -204,11 +259,12 @@ public class UserWindowController implements Initializable
             ShowAlert.showAlert("Error", "Error trying to delete user: " + ex.getMessage(), Alert.AlertType.ERROR);
         }
     }
-
+    
+    @FXML
     public void logOut()
     {
         LoggedProfile.getInstance().clear();
-        this.user = null;
+        user = null;
 
         try
         {
