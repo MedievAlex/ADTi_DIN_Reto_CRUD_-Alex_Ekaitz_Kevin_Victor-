@@ -1,41 +1,33 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import exception.OurException;
-import java.io.IOException;
+import exception.ShowAlert;
 import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import model.Admin;
-import model.User;
+import model.LoggedProfile;
+import model.Profile;
 
 /**
  * FXML Controller class
  *
  * @author 2dami
  */
-public class VerifyCaptchaWindowController implements Initializable {
+public class VerifyCaptchaWindowController implements Initializable
+{
 
     private Controller controller;
-    private User user;
-    private int code;
+    private Profile profile;
+    private int code, userDelete;
+    private Runnable onUserDeletedCallback;
 
     @FXML
     private Pane rightPane;
@@ -55,57 +47,93 @@ public class VerifyCaptchaWindowController implements Initializable {
     private TextField codeTextField;
 
     /**
-     * Asigna el controlador principal.
+     * Is like a constructor.
      *
      * @param controller
+     * @param userDelete
      */
-    public void setController(Controller controller) {
+    public void setController(Controller controller, int userDelete)
+    {
         this.controller = controller;
+        this.userDelete = userDelete;
+        
+        profile = LoggedProfile.getInstance().getProfile();
+        username.setText(profile.getUsername());
+
+        generateAndDisplayCode();
     }
 
-    public int randomCode() {
+    public void setOnUserDeletedCallback(Runnable callback) {
+        onUserDeletedCallback = callback;
+    }
+
+    public int randomCode()
+    {
         Random random = new Random();
         code = random.nextInt(9999 - 0 + 1) + 0;
         return code;
     }
 
-    public void confirmButton(ActionEvent event) {
+    private void generateAndDisplayCode() {
+        code = randomCode();
+        codeLabel.setText(String.valueOf(code));
+        errorLabel.setText("");
+        codeTextField.clear();
+    }
 
-        if (codeTextField.getText().equals(String.valueOf(code))) {
-            try {
-                controller.deleteUser(user);
-                Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-                stage.close();
-                if(user != user){ // Compare with the static user
-                    try {
-                        Parent parentWindow = FXMLLoader.load(getClass().getResource("/view/AdminWindow.fxml"));
-                        Stage actualWindow = (Stage) confirmBttn.getScene().getWindow();
-                        actualWindow.setScene(new Scene(parentWindow));
-                    } catch (IOException ex) {
-                        Logger.getLogger(LoginWindowController.class.getName()).log(Level.SEVERE, null, ex);
+    public void confirmButton()
+    {
+        String inputCode = codeTextField.getText().trim();
+        
+        if (inputCode.isEmpty()) {
+            errorLabel.setText("Please enter the code.");
+            return;
+        }
+        
+        if (inputCode.equals(String.valueOf(code)))
+        {
+            try
+            {
+                boolean success;
+                
+                success = controller.deleteUser(userDelete != -1 ? userDelete : profile.getId());
+                
+                if (success)
+                {
+                    if (onUserDeletedCallback != null) {
+                        onUserDeletedCallback.run();
                     }
+                    
+                    ShowAlert.showAlert("Correct", "User deleted successfully", Alert.AlertType.CONFIRMATION);
                 }
-            } catch (OurException ex) {
-                Logger.getLogger(VerifyCaptchaWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                else
+                {
+                    ShowAlert.showAlert("Error", "Cannot delete the user", Alert.AlertType.ERROR);
+                }
+                
+                Stage stage = (Stage) confirmBttn.getScene().getWindow();
+                stage.close();
             }
-        } else {
+            catch (OurException ex)
+            {
+                ShowAlert.showAlert("Error", "Error trying to delete the user: " + ex.getMessage(), Alert.AlertType.ERROR);
+            }
+        }
+        else
+        {
             errorLabel.setText("Incorrect code. Try again.");
-            codeLabel.setText(String.valueOf(randomCode()));
+            generateAndDisplayCode();
         }
     }
 
-    public void cancellButton(ActionEvent event) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+    public void cancelButton()
+    {
+        Stage stage = (Stage) cancelBttn.getScene().getWindow();
         stage.close();
     }
 
-    public void setUser() {
-        this.user = User.getInstance();
-        username.setText(user.getUsername());
-    }
-    
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        setUser();
+    public void initialize(URL url, ResourceBundle rb)
+    {
     }
 }

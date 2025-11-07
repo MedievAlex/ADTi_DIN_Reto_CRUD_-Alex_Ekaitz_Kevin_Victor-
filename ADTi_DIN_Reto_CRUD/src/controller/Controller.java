@@ -68,8 +68,8 @@ public class Controller
         return dao.updateUser(user);
     }
     
-    public boolean deleteUser(User user) throws OurException
+    public boolean deleteUser(int id) throws OurException
     {
-        return dao.deleteUser(user);
+        return dao.deleteUser(id);
     }
 }

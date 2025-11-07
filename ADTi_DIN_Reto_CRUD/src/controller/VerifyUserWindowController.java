@@ -1,12 +1,8 @@
 package controller;
 
-import exception.OurException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,9 +13,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import model.Admin;
+import model.LoggedProfile;
 import model.Profile;
-import model.User;
 
 /**
  *
@@ -29,6 +24,8 @@ public class VerifyUserWindowController implements Initializable {
 
     private Controller controller;
     private Profile profile;
+    private int userDelete;
+    private Runnable onUserDeletedCallback;
 
     @FXML
     private Pane rightPane;
@@ -46,59 +43,61 @@ public class VerifyUserWindowController implements Initializable {
     private Label errorLabel;
 
     /**
-     * Asigna el controlador principal.
+     * Is like a constructor.
      *
      * @param controller
+     * @param userDelete
      */
-    public void setController(Controller controller) {
+    public void setController(Controller controller, int userDelete) {
         this.controller = controller;
+        this.userDelete = userDelete;
+        
+        profile = LoggedProfile.getInstance().getProfile();
+        username.setText(profile.getUsername());
+    }
+
+    public void setOnUserDeletedCallback(Runnable callback) {
+        onUserDeletedCallback = callback;
     }
 
     @FXML
-    public void confirmButton(ActionEvent event) {
-        if (profile instanceof User)
-        {
-            profile = User.getInstance();
-        }
-        else
-        {
-            profile = Admin.getInstance();
-        }
-
+    public void confirmButton() {
         String password = passwordPasswordField.getText().trim();
 
         if (password.isEmpty()) {
             errorLabel.setText("Enter your password.");
-        } else {
-            System.out.println(profile.getPassword());
-            System.out.println(profile.getPassword().equals(password));
-            if (profile.getPassword().equals(password)) {
-                try {
-                    Parent parentWindow = FXMLLoader.load(getClass().getResource("/view/VerifyActionWindow.fxml"));
-                    Stage actualWindow = (Stage) confirmBttn.getScene().getWindow();
-                    actualWindow.setScene(new Scene(parentWindow));
-                } catch (IOException ex) {
-                    Logger.getLogger(LoginWindowController.class.getName()).log(Level.SEVERE, null, ex);
+            return;
+        }
+        
+        if (profile.getPassword().equals(password)) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/VerifyActionWindow.fxml"));
+                Parent parentWindow = loader.load();
+                
+                VerifyActionWindowController nextController = loader.getController();
+                nextController.setController(controller, userDelete);
+                
+                if (onUserDeletedCallback != null) {
+                    nextController.setOnUserDeletedCallback(onUserDeletedCallback);
                 }
-            } else {
-                errorLabel.setText("Incorrect password.");
+                
+                Stage actualWindow = (Stage) confirmBttn.getScene().getWindow();
+                actualWindow.setScene(new Scene(parentWindow));
+            } catch (IOException ex) {
+                errorLabel.setText("Error loading window.");
             }
+        } else {
+            errorLabel.setText("Incorrect password.");
         }
     }
 
     @FXML
-    public void cancellButton() {
-        Stage stage = (Stage) (cancelBttn.getScene().getWindow());
+    public void cancelButton() {
+        Stage stage = (Stage) cancelBttn.getScene().getWindow();
         stage.close();
-    }
-    
-    public void setUser() {
-        this.profile = User.getInstance();
-        username.setText(this.profile.getUsername());
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        setUser();
     }
 }

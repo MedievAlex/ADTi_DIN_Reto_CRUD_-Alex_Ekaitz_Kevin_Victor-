@@ -2,28 +2,19 @@ package model;
 
 public class Admin extends Profile
 {
-    private static Admin instance;
+
     private String a_current_account;
 
-    private Admin()
+    public Admin(int p_id, String p_email, String p_username, String p_password, String p_name, String p_lastname, String p_telephone, String a_current_account)
     {
-        super();
-        this.a_current_account = "";
+        super(p_id, p_email, p_username, p_password, p_name, p_lastname, p_telephone);
+        this.a_current_account = a_current_account;
     }
 
-    public static Admin getInstance()
+    public Admin(String p_email, String p_username, String p_password, String p_name, String p_lastname, String p_telephone, String a_current_account)
     {
-        if (instance == null)
-        {
-            instance = new Admin();
-        }
-        
-        return instance;
-    }
-    
-    public static void clearInstance()
-    {
-        instance = null;
+        super(p_email, p_username, p_password, p_name, p_lastname, p_telephone);
+        this.a_current_account = a_current_account;
     }
 
     public String getCurrent_account()

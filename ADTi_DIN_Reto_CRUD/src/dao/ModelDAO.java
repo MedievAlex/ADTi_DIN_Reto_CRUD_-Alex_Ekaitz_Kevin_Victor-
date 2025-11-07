@@ -14,7 +14,7 @@ public interface ModelDAO {
     
     public boolean updateUser(User user) throws OurException;
     
-    public boolean deleteUser(User user) throws OurException;
+    public boolean deleteUser(int id) throws OurException;
     
     public Profile login(String credential, String password) throws OurException;
     
