@@ -1,5 +1,6 @@
--- THINGS TO DO --
+-- DISTRIBUCION DE TAREAS ADTi --
 
-[ ] Preguntar a Jon sobre el aguantar la conexión durante un tiempo
-
-[ ] Entre ventanas hay que pasar el Profile y en cada ventana si es necesario verificar si es admin o usuario.
+- ALEX: 15%
+- EKAITZ: 55%
+- KEVIN: 15%
+- VICTOR: 15%
