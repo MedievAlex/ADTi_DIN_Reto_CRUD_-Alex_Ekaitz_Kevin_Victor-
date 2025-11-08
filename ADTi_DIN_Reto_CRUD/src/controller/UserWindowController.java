@@ -30,7 +30,6 @@ import model.User;
  */
 public class UserWindowController implements Initializable
 {
-
     private Controller controller;
     private User user;
 
@@ -86,12 +85,10 @@ public class UserWindowController implements Initializable
     private Label username;
     @FXML
     private Button logOutBttn;
+    
+    private final String ERROR_STYLE = "-fx-border-color: red; -fx-border-width: 2px;";
+    private final String NORMAL_STYLE = "-fx-border-color: null;";
 
-    /**
-     * Asigna el controlador principal.
-     *
-     * @param controller
-     */
     public void setController(Controller controller)
     {
         this.controller = controller;
@@ -132,6 +129,200 @@ public class UserWindowController implements Initializable
             }
     }
 
+    @FXML
+    public void saveChanges()
+    {
+        if (!validateFields()) {
+            ShowAlert.showAlert("Validation Error", 
+                "Please fill all required fields correctly:\n\n" +
+                "- Telephone must be exactly 9 digits\n" +
+                "- Password must be at least 8 characters with uppercase, lowercase and numbers\n" +
+                "- Card must be exactly 16 digits",
+                Alert.AlertType.ERROR);
+            return;
+        }
+
+        String username = usernameTextField.getText().trim();
+        String email = emailTextField.getText().trim();
+        String name = nameTextField.getText().trim();
+        String lastname = lastnameTextField.getText().trim();
+        String telephone = telephoneTextField.getText().trim();
+        String password = passwordPasswordField.getText().trim();
+
+        Gender gender = Gender.OTHER;
+        if (maleRadioButton.isSelected())
+        {
+            gender = Gender.MALE;
+        }
+        else if (femaleRadioButton.isSelected())
+        {
+            gender = Gender.FEMALE;
+        }
+
+        String card = cardNumber1TextField.getText()
+                + cardNumber2TextField.getText()
+                + cardNumber3TextField.getText()
+                + cardNumber4TextField.getText();
+
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setName(name);
+        user.setLastname(lastname);
+        user.setTelephone(telephone);
+        user.setPassword(password);
+        user.setGender(gender);
+        user.setCard(card);
+
+        try
+        {
+            boolean success = controller.updateUser(user);
+
+            if (success)
+            {
+                LoggedProfile.getInstance().setProfile(user);
+
+                ShowAlert.showAlert("Success", "User updated successfully.", Alert.AlertType.INFORMATION);
+                
+                resetFieldStyles();
+            }
+            else
+            {
+                ShowAlert.showAlert("Error", "Could not update user.", Alert.AlertType.ERROR);
+            }
+        }
+        catch (OurException ex)
+        {
+            ShowAlert.showAlert("Error", ex.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
+    public void deleteUser()
+    {
+        try
+        {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/VerifyUserWindow.fxml"));
+            Parent root = loader.load();
+
+            VerifyUserWindowController verifyController = loader.getController();
+            verifyController.setController(this.controller, -1);
+            
+            verifyController.setOnUserDeletedCallback(() -> {
+                logOut();
+            });
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Confirm");
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(deleteUserBttn.getScene().getWindow());
+            stage.show();
+        }
+        catch (IOException ex)
+        {
+            ShowAlert.showAlert("Error", "Could not delete user.", Alert.AlertType.ERROR);
+        }
+    }
+    
+    @FXML
+    public void logOut()
+    {
+        LoggedProfile.getInstance().clear();
+        user = null;
+
+        try
+        {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LoginWindow.fxml"));
+            Parent window = loader.load();
+            LoginWindowController loginController = loader.getController();
+            loginController.setController(this.controller);
+            Stage currentwindow = (Stage) logOutBttn.getScene().getWindow();
+            currentwindow.setScene(new Scene(window));
+        }
+        catch (IOException ex)
+        {
+            ShowAlert.showAlert("Error", "Could not logout.", Alert.AlertType.ERROR);
+        }
+    }
+    
+    private boolean validateFields() {
+        boolean isValid = true;
+        
+        resetFieldStyles();
+
+        if (nameTextField.getText().trim().isEmpty()) {
+            nameTextField.setStyle(ERROR_STYLE);
+            isValid = false;
+        }
+
+        if (lastnameTextField.getText().trim().isEmpty()) {
+            lastnameTextField.setStyle(ERROR_STYLE);
+            isValid = false;
+        }
+
+        if (telephoneTextField.getText().trim().isEmpty() || !isValidTelephone(telephoneTextField.getText().trim())) {
+            telephoneTextField.setStyle(ERROR_STYLE);
+            isValid = false;
+        }
+
+        if (passwordPasswordField.getText().trim().isEmpty() || !isValidPassword(passwordPasswordField.getText().trim())) {
+            passwordPasswordField.setStyle(ERROR_STYLE);
+            isValid = false;
+        }
+
+        String card = cardNumber1TextField.getText() + cardNumber2TextField.getText() + 
+                     cardNumber3TextField.getText() + cardNumber4TextField.getText();
+
+        if (card.isEmpty() || card.length() != 16) {
+            cardNumber1TextField.setStyle(ERROR_STYLE);
+            cardNumber2TextField.setStyle(ERROR_STYLE);
+            cardNumber3TextField.setStyle(ERROR_STYLE);
+            cardNumber4TextField.setStyle(ERROR_STYLE);
+            isValid = false;
+        }
+        
+        return isValid;
+    }
+    
+    private void resetFieldStyles() {
+        usernameTextField.setStyle(NORMAL_STYLE);
+        emailTextField.setStyle(NORMAL_STYLE);
+        nameTextField.setStyle(NORMAL_STYLE);
+        lastnameTextField.setStyle(NORMAL_STYLE);
+        telephoneTextField.setStyle(NORMAL_STYLE);
+        passwordPasswordField.setStyle(NORMAL_STYLE);
+        cardNumber1TextField.setStyle(NORMAL_STYLE);
+        cardNumber2TextField.setStyle(NORMAL_STYLE);
+        cardNumber3TextField.setStyle(NORMAL_STYLE);
+        cardNumber4TextField.setStyle(NORMAL_STYLE);
+    }
+    
+    private boolean isValidTelephone(String telephone) {
+        return telephone.matches("^[0-9]{9}$");
+    }
+    
+    private boolean isValidPassword(String password) {
+        return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$");
+    }
+    
+    private void configureTelephone()
+    {
+        telephoneTextField.textProperty().addListener((obs, oldValue, newValue) ->
+        {
+            if (!newValue.matches("\\d*"))
+            {
+                telephoneTextField.setText(newValue.replaceAll("[^\\d]", ""));
+                return;
+            }
+
+            if (newValue.length() > 9)
+            {
+                telephoneTextField.setText(oldValue);
+            }
+        });
+    }
+    
     private void configureCardNumber()
     {
         TextField[] cardFields =
@@ -177,113 +368,11 @@ public class UserWindowController implements Initializable
             });
         }
     }
-    
-    @FXML
-    public void saveChanges()
-    {
-        String username = usernameTextField.getText().trim();
-        String email = emailTextField.getText().trim();
-        String name = nameTextField.getText().trim();
-        String lastname = lastnameTextField.getText().trim();
-        String phone = telephoneTextField.getText().trim();
-        String password = passwordPasswordField.getText().trim();
-
-        Gender gender = Gender.OTHER;
-        if (maleRadioButton.isSelected())
-        {
-            gender = Gender.MALE;
-        }
-        else if (femaleRadioButton.isSelected())
-        {
-            gender = Gender.FEMALE;
-        }
-
-        String card = cardNumber1TextField.getText()
-                + cardNumber2TextField.getText()
-                + cardNumber3TextField.getText()
-                + cardNumber4TextField.getText();
-
-        user.setUsername(username);
-        user.setEmail(email);
-        user.setName(name);
-        user.setLastname(lastname);
-        user.setTelephone(phone);
-        user.setPassword(password);
-        user.setGender(gender);
-        user.setCard(card);
-
-        try
-        {
-            boolean success = controller.updateUser(user);
-
-            if (success)
-            {
-                ShowAlert.showAlert("Success", "User updated successfully.", Alert.AlertType.INFORMATION);
-            }
-            else
-            {
-                ShowAlert.showAlert("Error", "Could not update user.", Alert.AlertType.ERROR);
-            }
-        }
-        catch (OurException ex)
-        {
-            ShowAlert.showAlert("Error", ex.getMessage(), Alert.AlertType.ERROR);
-        }
-    }
-
-    @FXML
-    public void deleteUser()
-    {
-        try
-        {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/VerifyUserWindow.fxml"));
-            Parent root = loader.load();
-
-            VerifyUserWindowController verifyController = loader.getController();
-            verifyController.setController(this.controller, -1);
-            
-            verifyController.setOnUserDeletedCallback(() -> {
-                logOut();
-            });
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Confirm");
-            stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(deleteUserBttn.getScene().getWindow());
-            stage.show();
-        }
-        catch (IOException ex)
-        {
-            ShowAlert.showAlert("Error", "Error trying to delete user: " + ex.getMessage(), Alert.AlertType.ERROR);
-        }
-    }
-    
-    @FXML
-    public void logOut()
-    {
-        LoggedProfile.getInstance().clear();
-        user = null;
-
-        try
-        {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LoginWindow.fxml"));
-            Parent window = loader.load();
-            LoginWindowController loginController = loader.getController();
-            loginController.setController(this.controller);
-            Stage currentwindow = (Stage) logOutBttn.getScene().getWindow();
-            currentwindow.setScene(new Scene(window));
-        }
-        catch (IOException ex)
-        {
-            ShowAlert.showAlert("Error", "Error trying to logout: " + ex.getMessage(), Alert.AlertType.ERROR);
-        }
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
         configureCardNumber();
+        configureTelephone();
     }
 }
