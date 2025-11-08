@@ -73,7 +73,7 @@ public class VerifyActionWindowController implements Initializable {
             Stage actualWindow = (Stage) confirmBttn.getScene().getWindow();
             actualWindow.setScene(new Scene(parentWindow));
         } catch (IOException ex) {
-            ShowAlert.showAlert("Error", "Error trying to continue: " + ex.getMessage(), Alert.AlertType.ERROR);
+            ShowAlert.showAlert("Error", "Unable to open verification window.", Alert.AlertType.ERROR);
         }
     }
     

@@ -23,13 +23,10 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Admin;
+import model.Gender;
 import model.LoggedProfile;
 import model.User;
 
-/**
- *
- * @author 2dami
- */
 public class AdminWindowController implements Initializable
 {
 
@@ -38,105 +35,69 @@ public class AdminWindowController implements Initializable
     private ArrayList<User> users;
     private User selectedUser;
 
-    private Label label;
     @FXML
     private Pane leftPane;
     @FXML
     private Pane rightPane;
     @FXML
-    private TextField usernameTextField;
+    private Label label;
     @FXML
-    private TextField emailTextField;
-    @FXML
-    private TextField nameTextField;
-    @FXML
-    private TextField surnameTextField;
-    @FXML
-    private TextField phoneTextField;
+    private TextField usernameTextField, emailTextField, nameTextField, lastnameTextField, telephoneTextField;
     @FXML
     private PasswordField passwordPasswordField;
     @FXML
-    private RadioButton maleRadioButton;
+    private RadioButton maleRadioButton, femaleRadioButton, otherRadioButton;
     @FXML
-    private RadioButton femaleRadioButton;
+    private TextField cardNumber1TextField, cardNumber2TextField, cardNumber3TextField, cardNumber4TextField;
     @FXML
-    private RadioButton otherRadioButton;
-    @FXML
-    private TextField cardNumber1TextField;
-    @FXML
-    private TextField cardNumber2TextField;
-    @FXML
-    private TextField cardNumber3TextField;
-    @FXML
-    private TextField cardNumber4TextField;
-    @FXML
-    private Label usernameLabel;
-    @FXML
-    private Label passwordLabel;
-    @FXML
-    private Label nameLabel;
-    @FXML
-    private Label telephoneLabel;
-    @FXML
-    private Label genderLabel;
-    @FXML
-    private Label emailLabel;
-    @FXML
-    private Label cardNumberLabel;
+    private Label usernameLabel, passwordLabel, nameLabel, telephoneLabel, genderLabel, emailLabel, cardNumberLabel;
     @FXML
     private ComboBox<User> usersComboBox;
     @FXML
-    private Button deleteUserBttn;
-    @FXML
-    private Button saveChangesBttn;
+    private Button deleteUserBttn, saveChangesBttn, logOutBttn;
     @FXML
     private Label username;
-    @FXML
-    private Button logOutBttn;
 
-    /**
-     * Asigna el controlador principal.
-     *
-     * @param controller
-     */
+    private final String ERROR_STYLE = "-fx-border-color: red; -fx-border-width: 2px;";
+    private final String NORMAL_STYLE = "-fx-border-color: null;";
+
     public void setController(Controller controller)
     {
         this.controller = controller;
-
         admin = (Admin) LoggedProfile.getInstance().getProfile();
         username.setText(admin.getUsername());
         getUsers();
     }
 
-    public void getUsers()
+    private void getUsers()
     {
         try
         {
             users = controller.getUsers();
-            usersComboBox.getItems().clear();
-            usersComboBox.getItems().addAll(users);
+            usersComboBox.getItems().setAll(users);
         }
         catch (OurException ex)
         {
-            ShowAlert.showAlert("Error", "Error getting users: " + ex.getMessage(), Alert.AlertType.ERROR);
+            ShowAlert.showAlert("Error", ex.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
     private void clearUserFields()
     {
-        usernameTextField.clear();
-        emailTextField.clear();
-        nameTextField.clear();
-        surnameTextField.clear();
-        phoneTextField.clear();
-        passwordPasswordField.clear();
-        cardNumber1TextField.clear();
-        cardNumber2TextField.clear();
-        cardNumber3TextField.clear();
-        cardNumber4TextField.clear();
+        TextField[] textFields =
+        {
+            usernameTextField, emailTextField, nameTextField, lastnameTextField, telephoneTextField,
+            passwordPasswordField, cardNumber1TextField, cardNumber2TextField, cardNumber3TextField, cardNumber4TextField
+        };
+        for (TextField tf : textFields)
+        {
+            tf.clear();
+        }
+
         maleRadioButton.setSelected(false);
         femaleRadioButton.setSelected(false);
         otherRadioButton.setSelected(false);
+
         selectedUser = null;
         usersComboBox.getSelectionModel().clearSelection();
     }
@@ -149,40 +110,94 @@ public class AdminWindowController implements Initializable
 
     private void loadUserData()
     {
-        if (selectedUser != null)
+        if (selectedUser == null)
         {
-            usernameTextField.setText(selectedUser.getUsername());
-            emailTextField.setText(selectedUser.getEmail());
-            nameTextField.setText(selectedUser.getName());
-            surnameTextField.setText(selectedUser.getLastname());
-            phoneTextField.setText(selectedUser.getTelephone());
-            passwordPasswordField.setText(selectedUser.getPassword());
+            return;
+        }
 
-            switch (selectedUser.getGender())
-            {
-                case MALE: maleRadioButton.setSelected(true);
-                    break;
-                case FEMALE: femaleRadioButton.setSelected(true);
-                    break;
-                case OTHER: otherRadioButton.setSelected(true);
-                    break;
-            }
+        usernameTextField.setText(selectedUser.getUsername());
+        emailTextField.setText(selectedUser.getEmail());
+        nameTextField.setText(selectedUser.getName());
+        lastnameTextField.setText(selectedUser.getLastname());
+        telephoneTextField.setText(selectedUser.getTelephone());
+        passwordPasswordField.setText(selectedUser.getPassword());
 
-            if (selectedUser.getCard() != null && selectedUser.getCard().length() == 16)
-            {
-                cardNumber1TextField.setText(selectedUser.getCard().substring(0, 4));
-                cardNumber2TextField.setText(selectedUser.getCard().substring(4, 8));
-                cardNumber3TextField.setText(selectedUser.getCard().substring(8, 12));
-                cardNumber4TextField.setText(selectedUser.getCard().substring(12, 16));
-            }
+        switch (selectedUser.getGender())
+        {
+            case MALE:
+                maleRadioButton.setSelected(true);
+                break;
+            case FEMALE:
+                femaleRadioButton.setSelected(true);
+                break;
+            case OTHER:
+                otherRadioButton.setSelected(true);
+                break;
+        }
+
+        if (selectedUser.getCard() != null && selectedUser.getCard().length() == 16)
+        {
+            cardNumber1TextField.setText(selectedUser.getCard().substring(0, 4));
+            cardNumber2TextField.setText(selectedUser.getCard().substring(4, 8));
+            cardNumber3TextField.setText(selectedUser.getCard().substring(8, 12));
+            cardNumber4TextField.setText(selectedUser.getCard().substring(12, 16));
         }
     }
 
+    @FXML
+    public void saveChanges()
+    {
+        if (selectedUser == null)
+        {
+            ShowAlert.showAlert("Error", "Please select a user to update.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        if (!validateFields())
+        {
+            ShowAlert.showAlert("Validation Error",
+                    "Please fill all required fields correctly:\n\n"
+                    + "- Telephone must be exactly 9 digits\n"
+                    + "- Password must be at least 8 characters with uppercase, lowercase and numbers\n"
+                    + "- Card must be exactly 16 digits",
+                    Alert.AlertType.ERROR);
+            return;
+        }
+
+        selectedUser.setName(nameTextField.getText().trim());
+        selectedUser.setLastname(lastnameTextField.getText().trim());
+        selectedUser.setTelephone(telephoneTextField.getText().trim());
+        selectedUser.setPassword(passwordPasswordField.getText().trim());
+        selectedUser.setGender(maleRadioButton.isSelected() ? Gender.MALE : femaleRadioButton.isSelected() ? Gender.FEMALE : Gender.OTHER);
+        selectedUser.setCard(cardNumber1TextField.getText() + cardNumber2TextField.getText()
+                + cardNumber3TextField.getText() + cardNumber4TextField.getText());
+
+        try
+        {
+            boolean success = controller.updateUser(selectedUser);
+
+            if (success)
+            {
+                ShowAlert.showAlert("Success", "User updated successfully.", Alert.AlertType.INFORMATION);
+                resetFieldStyles();
+            }
+            else
+            {
+                ShowAlert.showAlert("Error", "Could not update user.", Alert.AlertType.ERROR);
+            }
+        }
+        catch (OurException ex)
+        {
+            ShowAlert.showAlert("Error", ex.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
     public void deleteUser()
     {
         if (selectedUser == null)
         {
-            ShowAlert.showAlert("Error", "Please select a user to delete", Alert.AlertType.ERROR);
+            ShowAlert.showAlert("Error", "Please select a user to delete.", Alert.AlertType.ERROR);
             return;
         }
 
@@ -190,13 +205,9 @@ public class AdminWindowController implements Initializable
         {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/VerifyUserWindow.fxml"));
             Parent root = loader.load();
-
             VerifyUserWindowController verifyController = loader.getController();
             verifyController.setController(controller, selectedUser.getId());
-            
-            verifyController.setOnUserDeletedCallback(() -> {
-                refreshUserList();
-            });
+            verifyController.setOnUserDeletedCallback(this::refreshUserList);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
@@ -208,15 +219,16 @@ public class AdminWindowController implements Initializable
         }
         catch (IOException ex)
         {
-            ShowAlert.showAlert("Error", "Error trying to deleting user: " + ex.getMessage(), Alert.AlertType.ERROR);
+            ShowAlert.showAlert("Error", "Error opening Confirm window.", Alert.AlertType.ERROR);
         }
     }
 
+    @FXML
     public void logOut()
     {
         LoggedProfile.getInstance().clear();
-        this.admin = null;
-        this.selectedUser = null;
+        admin = null;
+        selectedUser = null;
 
         try
         {
@@ -229,7 +241,136 @@ public class AdminWindowController implements Initializable
         }
         catch (IOException ex)
         {
-            ShowAlert.showAlert("Error", "Error trying to logout: " + ex.getMessage(), Alert.AlertType.ERROR);
+            ShowAlert.showAlert("Error", "Error trying to logout.", Alert.AlertType.ERROR);
+        }
+    }
+
+    private boolean validateFields()
+    {
+        boolean isValid = true;
+        resetFieldStyles();
+        if (nameTextField.getText().trim().isEmpty())
+        {
+            nameTextField.setStyle(ERROR_STYLE);
+            isValid = false;
+        }
+
+        if (lastnameTextField.getText().trim().isEmpty())
+        {
+            lastnameTextField.setStyle(ERROR_STYLE);
+            isValid = false;
+        }
+
+        if (telephoneTextField.getText().trim().isEmpty() || !isValidTelephone(telephoneTextField.getText().trim()))
+        {
+            telephoneTextField.setStyle(ERROR_STYLE);
+            isValid = false;
+        }
+
+        if (passwordPasswordField.getText().trim().isEmpty() || !isValidPassword(passwordPasswordField.getText().trim()))
+        {
+            passwordPasswordField.setStyle(ERROR_STYLE);
+            isValid = false;
+        }
+
+        String card = cardNumber1TextField.getText() + cardNumber2TextField.getText()
+                + cardNumber3TextField.getText() + cardNumber4TextField.getText();
+        if (card.isEmpty() || card.length() != 16)
+        {
+            cardNumber1TextField.setStyle(ERROR_STYLE);
+            cardNumber2TextField.setStyle(ERROR_STYLE);
+            cardNumber3TextField.setStyle(ERROR_STYLE);
+            cardNumber4TextField.setStyle(ERROR_STYLE);
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    private void resetFieldStyles()
+    {
+        usernameTextField.setStyle(NORMAL_STYLE);
+        emailTextField.setStyle(NORMAL_STYLE);
+        nameTextField.setStyle(NORMAL_STYLE);
+        lastnameTextField.setStyle(NORMAL_STYLE);
+        telephoneTextField.setStyle(NORMAL_STYLE);
+        passwordPasswordField.setStyle(NORMAL_STYLE);
+        cardNumber1TextField.setStyle(NORMAL_STYLE);
+        cardNumber2TextField.setStyle(NORMAL_STYLE);
+        cardNumber3TextField.setStyle(NORMAL_STYLE);
+        cardNumber4TextField.setStyle(NORMAL_STYLE);
+    }
+
+    private boolean isValidTelephone(String telephone)
+    {
+        return telephone.matches("^[0-9]{9}$");
+    }
+
+    private boolean isValidPassword(String password)
+    {
+        return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$");
+    }
+    
+    private void configureTelephone()
+    {
+        telephoneTextField.textProperty().addListener((obs, oldValue, newValue) ->
+        {
+            if (!newValue.matches("\\d*"))
+            {
+                telephoneTextField.setText(newValue.replaceAll("[^\\d]", ""));
+                return;
+            }
+
+            if (newValue.length() > 9)
+            {
+                telephoneTextField.setText(oldValue);
+            }
+        });
+    }
+
+    private void configureCardNumber()
+    {
+        TextField[] cardFields =
+        {
+            cardNumber1TextField, cardNumber2TextField, cardNumber3TextField, cardNumber4TextField
+        };
+
+        for (int i = 0; i < cardFields.length; i++)
+        {
+            final TextField currentField = cardFields[i];
+            final TextField prevField = (i > 0) ? cardFields[i - 1] : null;
+            final TextField nextField = (i < cardFields.length - 1) ? cardFields[i + 1] : null;
+
+            currentField.textProperty().addListener((obs, oldValue, newValue) ->
+            {
+                // Filter for only numbers
+                if (!newValue.matches("\\d*"))
+                {
+                    currentField.setText(newValue.replaceAll("[^\\d]", ""));
+                    return;
+                }
+
+                // Filter for no more than 4 characters
+                if (newValue.length() > 4)
+                {
+                    currentField.setText(oldValue);
+                    return;
+                }
+
+                // Filter for change TextField when there are 4 characters
+                if (newValue.length() == 4 && nextField != null)
+                {
+                    nextField.requestFocus();
+                    nextField.positionCaret(nextField.getText().length()); // When change to the next TextField dont select all the content 
+                }
+
+                // Filter to change TextField when you deleted all the characters
+                if (newValue.isEmpty() && prevField != null)
+                {
+                    prevField.requestFocus();
+                    prevField.positionCaret(prevField.getText().length()); // When change to the previous TextField dont select all the content
+                }
+            });
         }
     }
 
@@ -239,10 +380,9 @@ public class AdminWindowController implements Initializable
         usersComboBox.setOnAction(e ->
         {
             selectedUser = usersComboBox.getValue();
-            if (selectedUser != null)
-            {
-                loadUserData();
-            }
+            loadUserData();
         });
+        configureCardNumber();
+        configureTelephone();
     }
 }

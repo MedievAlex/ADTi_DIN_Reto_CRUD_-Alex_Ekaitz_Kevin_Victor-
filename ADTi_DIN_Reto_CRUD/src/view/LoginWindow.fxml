@@ -21,8 +21,14 @@
          </children></Pane>
       <Pane fx:id="rightPane" layoutX="151.0" prefHeight="362.0" prefWidth="350.0" style="-fx-background-color: EEEEEE;">
          <children>
-            <TextField fx:id="credentialTextField" layoutX="58.0" layoutY="138.0" prefHeight="25.0" prefWidth="260.0" promptText="exampleuser / example@email.com" />
-            <PasswordField fx:id="passwordPasswordField" layoutX="58.0" layoutY="200.0" prefHeight="25.0" prefWidth="260.0" promptText="password" />
+            <TextField fx:id="credentialTextField" layoutX="58.0" layoutY="138.0" prefHeight="25.0" prefWidth="260.0" promptText="exampleuser / example@email.com">
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor></TextField>
+            <PasswordField fx:id="passwordPasswordField" layoutX="58.0" layoutY="200.0" prefHeight="25.0" prefWidth="260.0" promptText="password">
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor></PasswordField>
             <Button fx:id="logInBttn" layoutX="135.0" layoutY="257.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="25.0" prefWidth="81.0" style="-fx-background-radius: 10px;" text="LOG IN">
                <cursor>
                   <Cursor fx:constant="HAND" />

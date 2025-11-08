@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import dao.DBImplementation;
 import dao.ModelDAO;
+import exception.ErrorMessages;
 import exception.OurException;
 import model.Profile;
 import model.User;
@@ -20,9 +21,8 @@ import javafx.scene.image.Image;
 public class Controller
 {
     private final ModelDAO dao;
-    
     /**
-    * Constructor del Controller
+    *
      * @throws exception.OurException
     */
     public Controller() throws OurException
@@ -30,10 +30,10 @@ public class Controller
         try {
             dao = new DBImplementation();
         } catch (Exception ex) {
-            throw new OurException("Error initializing database connection: " + ex.getMessage());
+            throw new OurException(ErrorMessages.DATABASE);
         }
     }
-    
+
     public void showWindow(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LoginWindow.fxml"));
         Parent root = loader.load();
@@ -47,12 +47,12 @@ public class Controller
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
         stage.show();
     }
-    
+
     public User register(User user) throws OurException
     {
         return dao.register(user);
     }
-    
+
     public Profile login(String credential, String password) throws OurException
     {
         return dao.login(credential, password);
@@ -62,12 +62,12 @@ public class Controller
     {
         return dao.getUsers();
     }
-    
+
     public boolean updateUser(User user) throws OurException
     {
         return dao.updateUser(user);
     }
-    
+
     public boolean deleteUser(int id) throws OurException
     {
         return dao.deleteUser(id);
