@@ -9,7 +9,7 @@ package exception;
  * with meaningful messages that can be displayed to users or logged for debugging.
  */
 public class OurException extends Exception {
-private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 	
     /**
      * Constructs a new OurException with the specified detail message. The
@@ -19,7 +19,7 @@ private static final long serialVersionUID = 1L;
      * @param mensaje the detail message that explains the reason for the
      * exception
      */
-	public OurException(String mensaje) {
+    public OurException(String mensaje) {
         super(mensaje);
     }
 }

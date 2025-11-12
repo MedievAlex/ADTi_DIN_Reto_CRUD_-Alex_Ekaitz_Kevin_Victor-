@@ -74,6 +74,7 @@ public abstract class Profile
      */
     public Profile(String p_email, String p_username, String p_password, String p_name, String p_lastname, String p_telephone)
     {
+        this.p_id = -1;
         this.p_email = p_email;
         this.p_username = p_username;
         this.p_password = p_password;
