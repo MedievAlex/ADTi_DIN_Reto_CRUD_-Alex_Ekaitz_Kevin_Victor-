@@ -21,6 +21,15 @@ import javafx.stage.Stage;
 import model.Gender;
 import model.User;
 
+/**
+ * Controller class for the User Registration Window interface.
+ * This class handles the complete user registration process, including form validation,
+ * data collection, and user account creation. It provides a comprehensive interface
+ * for new users to create accounts with proper validation for all required fields.
+ * 
+ * The controller implements JavaFX Initializable interface to properly
+ * initialize the UI components and set up input validation handlers.
+ */
 public class SignUpWindowController implements Initializable
 {
 
@@ -78,11 +87,36 @@ public class SignUpWindowController implements Initializable
     private final String ERROR_STYLE = "-fx-border-color: red; -fx-border-width: 2px;";
     private final String NORMAL_STYLE = "-fx-border-color: null;";
 
+    /**
+     * Sets the main controller for this registration window controller.
+     * This method establishes the connection to the main application controller
+     * that handles business logic and user registration operations.
+     *
+     * @param controller the main application controller that manages business logic
+     *                   and data operations
+     */
     public void setController(Controller controller)
     {
         this.controller = controller;
     }
 
+    /**
+     * Handles the user registration process when the sign up button is clicked.
+     * This method validates all input fields, collects user data, creates a new User object,
+     * and attempts to register the user through the main controller. Upon successful registration,
+     * the user is redirected to the login screen.
+     * 
+     * The method performs comprehensive validation including:
+     * 
+     *   Field completeness checks
+     *   Email format validation
+     *   elephone number format validation
+     *   Password strength requirements
+     *   Credit card number validation
+     * ¡
+     *
+     * @throws OurException if the registration process fails due to duplicate users, validation errors, or database constraints
+     */
     @FXML
     public void handleSignUp()
     {
@@ -140,6 +174,15 @@ public class SignUpWindowController implements Initializable
         }
     }
 
+    /**
+     * Navigates back to the login window.
+     * This method loads the login interface and transitions the current window
+     * to display the login screen, typically used after successful registration
+     * or when the user chooses to return to login.
+     *
+     * @throws IOException if there is an error loading the Login window FXML file
+     *         or if the resource cannot be found
+     */
     @FXML
     public void openLogin()
     {
@@ -159,7 +202,15 @@ public class SignUpWindowController implements Initializable
             ShowAlert.showAlert("Error", "Error opening Login window.", Alert.AlertType.ERROR);
         }
     }
-    
+    /**
+     * Validates all input fields in the registration form.
+     * This method checks each required field for proper formatting, completeness,
+     * and content according to business rules, applying visual error styling
+     * to invalid fields.
+     *
+     * @return true if all fields pass validation, false if any validation
+     *         rule is violated
+     */
     private boolean validateFields()
     {
         boolean isValid = true;
@@ -216,6 +267,11 @@ public class SignUpWindowController implements Initializable
         return isValid;
     }
     
+    /**
+     * Resets the visual style of all input fields to their normal state.
+     * This method removes any error styling applied during validation
+     * and restores the default appearance of all form fields.
+     */
     private void resetFieldStyles()
     {
         usernameTextField.setStyle(NORMAL_STYLE);
@@ -230,21 +286,55 @@ public class SignUpWindowController implements Initializable
         cardNumber4TextField.setStyle(NORMAL_STYLE);
     }
     
+    /**
+     * Validates an email address format.
+     * This method checks if the provided email string matches the standard
+     * email format pattern including local part, @ symbol, domain, and top-level domain.
+     *
+     * @param email the email address string to validate
+     * @return true if the email address matches the required format,
+     *         false otherwise
+     */
     private boolean isValidEmail(String email)
     {
         return email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
     }
 
+    /**
+     * Validates a telephone number format.
+     * This method checks if the provided telephone string contains
+     * exactly 9 numeric digits.
+     *
+     * @param telephone the telephone number string to validate
+     * @return true if the telephone number matches the required format,
+     *         false otherwise
+     */
     private boolean isValidTelephone(String telephone)
     {
         return telephone.matches("^[0-9]{9}$");
     }
 
+    /**
+     * Validates a password according to security requirements.
+     * This method checks if the password meets the minimum security
+     * standards including length, character diversity, and complexity.
+     * The password must contain at least 8 characters, including
+     * one uppercase letter, one lowercase letter, and one number.
+     *
+     * @param password the password string to validate
+     * @return true if the password meets all security requirements,
+     *         false otherwise
+     */
     private boolean isValidPassword(String password)
     {
         return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$");
     }
     
+    /**
+     * Configures the telephone text field with input validation and formatting.
+     * This method adds a text change listener that restricts input to numeric
+     * characters only and enforces a maximum length of 9 digits for telephone numbers.
+     */
     private void configureTelephone()
     {
         telephoneTextField.textProperty().addListener((obs, oldValue, newValue) ->
@@ -262,6 +352,12 @@ public class SignUpWindowController implements Initializable
         });
     }
     
+    /**
+     * Configures the credit card number text fields with input validation and navigation.
+     * This method sets up text change listeners for all four card number segments
+     * that enforce numeric-only input, limit each segment to 4 characters, and
+     * provide automatic navigation between segments when filled or emptied.
+     */
     private void configureCardNumber()
     {
         TextField[] cardFields =
@@ -308,6 +404,16 @@ public class SignUpWindowController implements Initializable
         }
     }
 
+    /**
+     * Initializes the controller class and sets up input validation handlers.
+     * This method is automatically called after the FXML file has been loaded
+     * and configures the input validation for telephone and credit card number fields.
+     *
+     * @param url the location used to resolve relative paths for the root object,
+     *            or null if the location is not known
+     * @param rb the resources used to localize the root object, or null if
+     *           the root object was not localized
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {

@@ -18,9 +18,15 @@ import model.LoggedProfile;
 import model.Profile;
 
 /**
- * FXML Controller class
+ * Controller class for the Verification Action Window interface.
+ * This class handles the initial step of user verification process for sensitive operations,
+ * particularly user account deletion. It serves as an intermediate confirmation screen
+ * before proceeding to more rigorous security verification.
+ * 
+ * The controller implements JavaFX Initializable interface to properly
+ * initialize the UI components and manage the verification workflow.
  *
- * @author 2dami
+ * @author Kevin, Alex, Victor, Ekaitz
  */
 public class VerifyActionWindowController implements Initializable {
     private Controller controller;
@@ -42,9 +48,15 @@ public class VerifyActionWindowController implements Initializable {
     private Label textLabel;
       
     /**
-     * Is like a constructor.
-     * @param controller
-     * @param userDelete
+     * Initializes the controller with necessary dependencies and user data.
+     * This method sets up the main controller reference, identifies the user to be deleted,
+     * and displays the current user's username in the interface. It functions similarly
+     * to a constructor for the controller setup.
+     *
+     * @param controller the main application controller that manages business logic
+     *                   and data operations
+     * @param userDelete the unique identifier of the user to be deleted, or -1 if
+     *                   deleting the currently logged-in user
      */
     public void setController(Controller controller, int userDelete) {
         this.controller = controller;
@@ -54,10 +66,26 @@ public class VerifyActionWindowController implements Initializable {
         username.setText(profile.getUsername());
     }
     
+    /**
+     * Sets the callback function to be executed after successful user deletion.
+     * This method allows the parent controller to specify actions that should
+     * be performed once the user deletion process is completed successfully,
+     * such as navigation or UI updates.
+     *
+     * @param callback the runnable function to execute after user deletion
+     */
     public void setOnUserDeletedCallback(Runnable callback) {
         onUserDeletedCallback = callback;
     }
     
+    /**
+     * Handles the confirmation action when the confirm button is clicked.
+     * This method navigates to the CAPTCHA verification window for additional
+     * security validation before proceeding with the user deletion operation.
+     * It transfers the callback function to the next verification step.
+     *
+     * @throws IOException if there is an error loading the CAPTCHA verification window FXML file or if the resource cannot be found
+     */
     public void confirmButton() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/VerifyCaptchaWindow.fxml"));
@@ -77,11 +105,27 @@ public class VerifyActionWindowController implements Initializable {
         }
     }
     
+    /**
+     * Handles the cancellation action when the cancel button is clicked.
+     * This method closes the verification window without performing any
+     * further actions, effectively aborting the verification process.
+     */
     public void cancelButton() {
         Stage stage = (Stage) cancelBttn.getScene().getWindow();
         stage.close();
     }
     
+    /**
+     * Initializes the controller class after the FXML file has been loaded.
+     * This method is automatically called by JavaFX after the FXML document
+     * has been processed and can be used to set up additional UI components
+     * or event handlers that are not defined in the FXML file.
+     *
+     * @param url the location used to resolve relative paths for the root object,
+     *            or null if the location is not known
+     * @param rb the resources used to localize the root object, or null if
+     *           the root object was not localized
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }

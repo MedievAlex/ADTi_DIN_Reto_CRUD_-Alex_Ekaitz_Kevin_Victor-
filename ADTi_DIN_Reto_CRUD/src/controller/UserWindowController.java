@@ -25,8 +25,16 @@ import model.LoggedProfile;
 import model.User;
 
 /**
+ * Controller class for the User Window interface.
+ * This class handles the user profile management functionality, allowing users
+ * to view and update their personal information, change passwords, and manage
+ * account settings. It provides a comprehensive interface for users to maintain
+ * their profile data with proper validation and security measures.
+ * 
+ * The controller implements JavaFX Initializable interface to properly
+ * initialize the UI components and set up input validation handlers.
  *
- * @author 2dami
+ * @author Kevin, Alex, Victor, Ekaitz
  */
 public class UserWindowController implements Initializable
 {
@@ -89,6 +97,15 @@ public class UserWindowController implements Initializable
     private final String ERROR_STYLE = "-fx-border-color: red; -fx-border-width: 2px;";
     private final String NORMAL_STYLE = "-fx-border-color: null;";
 
+    /**
+     * Sets the main controller and initializes the user interface with current user data.
+     * This method configures the controller reference, retrieves the currently
+     * logged-in user profile from the LoggedProfile singleton, displays the
+     * username, and populates all form fields with the user's current information.
+     *
+     * @param controller the main application controller that manages business logic
+     *                   and data operations
+     */
     public void setController(Controller controller)
     {
         this.controller = controller;
@@ -97,6 +114,13 @@ public class UserWindowController implements Initializable
         setData();
     }
 
+    /**
+     * Populates the form fields with the current user's data.
+     * This method loads all user information from the User object into the
+     * corresponding form fields, including personal details, contact information,
+     * and payment card data. It also sets the appropriate gender radio button
+     * based on the user's stored gender preference.
+     */
     public void setData()
     {
         username.setText(user.getUsername());
@@ -129,6 +153,15 @@ public class UserWindowController implements Initializable
             }
     }
 
+    /**
+     * Saves the changes made to the user's profile information.
+     * This method validates all input fields, updates the user object
+     * with the modified data, and persists the changes to the system.
+     * Upon successful update, the logged-in profile is refreshed and
+     * a success message is displayed.
+     *
+     * @throws OurException if the update operation fails due to validation errors, database constraints, or data access issues
+     */
     @FXML
     public void saveChanges()
     {
@@ -196,6 +229,12 @@ public class UserWindowController implements Initializable
         }
     }
 
+    /**
+     * Initiates the user account deletion process by opening a verification window.
+     * This method opens a confirmation dialog that requires additional verification
+     * before permanently deleting the user's account. Upon successful deletion,
+     * the user is automatically logged out through a callback mechanism.
+     */
     @FXML
     public void deleteUser()
     {
@@ -225,6 +264,12 @@ public class UserWindowController implements Initializable
         }
     }
     
+    /**
+     * Logs out the current user and returns to the login screen.
+     * This method clears the logged-in profile, resets user references,
+     * and navigates back to the login window. If an error occurs during
+     * the logout process, an error alert is displayed to the user.
+     */
     @FXML
     public void logOut()
     {
@@ -246,6 +291,15 @@ public class UserWindowController implements Initializable
         }
     }
     
+    /**
+     * Validates all input fields in the user profile form.
+     * This method checks each required field for proper formatting, completeness,
+     * and content according to business rules, applying visual error styling
+     * to invalid fields.
+     *
+     * @return true if all fields pass validation, false if any validation
+     *         rule is violated
+     */
     private boolean validateFields() {
         boolean isValid = true;
         
@@ -285,6 +339,11 @@ public class UserWindowController implements Initializable
         return isValid;
     }
     
+    /**
+     * Resets the visual style of all input fields to their normal state.
+     * This method removes any error styling applied during validation
+     * and restores the default appearance of all form fields.
+     */
     private void resetFieldStyles() {
         usernameTextField.setStyle(NORMAL_STYLE);
         emailTextField.setStyle(NORMAL_STYLE);
@@ -298,14 +357,39 @@ public class UserWindowController implements Initializable
         cardNumber4TextField.setStyle(NORMAL_STYLE);
     }
     
+    /**
+     * Validates a telephone number format.
+     * This method checks if the provided telephone string contains
+     * exactly 9 numeric digits.
+     *
+     * @param telephone the telephone number string to validate
+     * @return true if the telephone number matches the required format,
+     *         false otherwise
+     */
     private boolean isValidTelephone(String telephone) {
         return telephone.matches("^[0-9]{9}$");
     }
     
+    /**
+     * Validates a password according to security requirements.
+     * This method checks if the password meets the minimum security
+     * standards including length, character diversity, and complexity.
+     * The password must contain at least 8 characters, including
+     * one uppercase letter, one lowercase letter, and one number.
+     *
+     * @param password the password string to validate
+     * @return true if the password meets all security requirements,
+     *         false otherwise
+     */
     private boolean isValidPassword(String password) {
         return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$");
     }
     
+    /**
+     * Configures the telephone text field with input validation and formatting.
+     * This method adds a text change listener that restricts input to numeric
+     * characters only and enforces a maximum length of 9 digits for telephone numbers.
+     */
     private void configureTelephone()
     {
         telephoneTextField.textProperty().addListener((obs, oldValue, newValue) ->
@@ -323,6 +407,12 @@ public class UserWindowController implements Initializable
         });
     }
     
+    /**
+     * Configures the credit card number text fields with input validation and navigation.
+     * This method sets up text change listeners for all four card number segments
+     * that enforce numeric-only input, limit each segment to 4 characters, and
+     * provide automatic navigation between segments when filled or emptied.
+     */
     private void configureCardNumber()
     {
         TextField[] cardFields =
@@ -369,6 +459,16 @@ public class UserWindowController implements Initializable
         }
     }
 
+    /**
+     * Initializes the controller class and sets up input validation handlers.
+     * This method is automatically called after the FXML file has been loaded
+     * and configures the input validation for telephone and credit card number fields.
+     *
+     * @param url the location used to resolve relative paths for the root object,
+     *            or null if the location is not known
+     * @param rb the resources used to localize the root object, or null if
+     *           the root object was not localized
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
