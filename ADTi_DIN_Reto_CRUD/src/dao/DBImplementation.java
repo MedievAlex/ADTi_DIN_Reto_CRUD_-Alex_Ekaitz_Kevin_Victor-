@@ -285,6 +285,54 @@ public class DBImplementation implements ModelDAO
         }
         return exists;
     }
+    
+    private Connection waitForConnection(ConnectionThread thread) throws InterruptedException, OurException
+    {
+        int attempts = 0;
+
+        while (!thread.isReady() && attempts < 50)
+        {
+            Thread.sleep(10);
+            attempts++;
+        }
+
+        if (!thread.isReady())
+        {
+            throw new OurException(ErrorMessages.TIMEOUT);
+        }
+
+        return thread.getConnection();
+    }
+
+    private void rollBack(Connection con) throws OurException
+    {
+        try
+        {
+            if (con != null)
+            {
+                con.rollback();
+            }
+        }
+        catch (SQLException ex)
+        {
+            throw new OurException(ErrorMessages.ROLLBACK);
+        }
+    }
+
+    private void resetAutoCommit(Connection con) throws OurException
+    {
+        try
+        {
+            if (con != null)
+            {
+                con.setAutoCommit(true);
+            }
+        }
+        catch (SQLException ex)
+        {
+            throw new OurException(ErrorMessages.RESET_AUTOCOMMIT);
+        }
+    }
 
     /**
      * SQL Public Methods
@@ -408,54 +456,6 @@ public class DBImplementation implements ModelDAO
         } finally
         {
             thread.releaseConnection();
-        }
-    }
-
-    private Connection waitForConnection(ConnectionThread thread) throws InterruptedException, OurException
-    {
-        int attempts = 0;
-
-        while (!thread.isReady() && attempts < 50)
-        {
-            Thread.sleep(10);
-            attempts++;
-        }
-
-        if (!thread.isReady())
-        {
-            throw new OurException(ErrorMessages.TIMEOUT);
-        }
-
-        return thread.getConnection();
-    }
-
-    private void rollBack(Connection con) throws OurException
-    {
-        try
-        {
-            if (con != null)
-            {
-                con.rollback();
-            }
-        }
-        catch (SQLException ex)
-        {
-            throw new OurException(ErrorMessages.ROLLBACK);
-        }
-    }
-
-    private void resetAutoCommit(Connection con) throws OurException
-    {
-        try
-        {
-            if (con != null)
-            {
-                con.setAutoCommit(true);
-            }
-        }
-        catch (SQLException ex)
-        {
-            throw new OurException(ErrorMessages.RESET_AUTOCOMMIT);
         }
     }
 }
