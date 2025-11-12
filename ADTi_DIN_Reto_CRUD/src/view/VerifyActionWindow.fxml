@@ -16,12 +16,12 @@
                   <Font name="System Italic" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="39.0" prefHeight="25.0" prefWidth="450.0" text="ARE YOU SURE YOU WANT TO DELETE THE PORFILE">
+            <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="39.0" prefHeight="25.0" prefWidth="450.0" text="ARE YOU SURE YOU WANT TO DELETE THE PROFILE?">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Label fx:id="textLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="65.0" prefHeight="51.0" prefWidth="450.0" text="This action is ireversible. The profile and its data will be deleted forever and it will not be able to restore it." textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+            <Label fx:id="textLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="65.0" prefHeight="51.0" prefWidth="450.0" text="This action is irreversible. The profile and its data will be deleted forever and it will not be able to restore it." textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
                <font>
                   <Font size="15.0" />
                </font>

@@ -84,7 +84,6 @@ public class VerifyActionWindowController implements Initializable {
      * security validation before proceeding with the user deletion operation.
      * It transfers the callback function to the next verification step.
      *
-     * @throws IOException if there is an error loading the CAPTCHA verification window FXML file or if the resource cannot be found
      */
     public void confirmButton() {
         try {

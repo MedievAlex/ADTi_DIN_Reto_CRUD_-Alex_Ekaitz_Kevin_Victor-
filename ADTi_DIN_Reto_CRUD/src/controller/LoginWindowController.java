@@ -139,8 +139,6 @@ public class LoginWindowController implements Initializable
      * <p>The method loads the Sign Up window FXML file, sets up the corresponding
      * controller, and transitions the current window to display the registration form.</p>
      *
-     * @throws IOException if there is an error loading the Sign Up window FXML file
-     *         or if the resource cannot be found
      */
     @FXML
     public void openSignUp()

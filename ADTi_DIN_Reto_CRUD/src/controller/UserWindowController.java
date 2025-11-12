@@ -160,13 +160,12 @@ public class UserWindowController implements Initializable
      * Upon successful update, the logged-in profile is refreshed and
      * a success message is displayed.
      *
-     * @throws OurException if the update operation fails due to validation errors, database constraints, or data access issues
      */
     @FXML
     public void saveChanges()
     {
         if (!validateFields()) {
-            ShowAlert.showAlert("Validation Error", 
+            ShowAlert.showAlert("Validation Error",
                 "Please fill all required fields correctly:\n\n" +
                 "- Telephone must be exactly 9 digits\n" +
                 "- Password must be at least 8 characters with uppercase, lowercase and numbers\n" +
@@ -215,7 +214,7 @@ public class UserWindowController implements Initializable
                 LoggedProfile.getInstance().setProfile(user);
 
                 ShowAlert.showAlert("Success", "User updated successfully.", Alert.AlertType.INFORMATION);
-                
+
                 resetFieldStyles();
             }
             else
@@ -245,7 +244,7 @@ public class UserWindowController implements Initializable
 
             VerifyUserWindowController verifyController = loader.getController();
             verifyController.setController(this.controller, -1);
-            
+
             verifyController.setOnUserDeletedCallback(() -> {
                 logOut();
             });
@@ -263,7 +262,7 @@ public class UserWindowController implements Initializable
             ShowAlert.showAlert("Error", "Could not delete user.", Alert.AlertType.ERROR);
         }
     }
-    
+
     /**
      * Logs out the current user and returns to the login screen.
      * This method clears the logged-in profile, resets user references,
@@ -290,7 +289,7 @@ public class UserWindowController implements Initializable
             ShowAlert.showAlert("Error", "Could not logout.", Alert.AlertType.ERROR);
         }
     }
-    
+
     /**
      * Validates all input fields in the user profile form.
      * This method checks each required field for proper formatting, completeness,
@@ -302,7 +301,7 @@ public class UserWindowController implements Initializable
      */
     private boolean validateFields() {
         boolean isValid = true;
-        
+
         resetFieldStyles();
 
         if (nameTextField.getText().trim().isEmpty()) {
@@ -325,8 +324,8 @@ public class UserWindowController implements Initializable
             isValid = false;
         }
 
-        String card = cardNumber1TextField.getText() + cardNumber2TextField.getText() + 
-                     cardNumber3TextField.getText() + cardNumber4TextField.getText();
+        String card = cardNumber1TextField.getText() + cardNumber2TextField.getText() +
+                    cardNumber3TextField.getText() + cardNumber4TextField.getText();
 
         if (card.isEmpty() || card.length() != 16) {
             cardNumber1TextField.setStyle(ERROR_STYLE);
@@ -335,10 +334,10 @@ public class UserWindowController implements Initializable
             cardNumber4TextField.setStyle(ERROR_STYLE);
             isValid = false;
         }
-        
+
         return isValid;
     }
-    
+
     /**
      * Resets the visual style of all input fields to their normal state.
      * This method removes any error styling applied during validation
@@ -356,7 +355,7 @@ public class UserWindowController implements Initializable
         cardNumber3TextField.setStyle(NORMAL_STYLE);
         cardNumber4TextField.setStyle(NORMAL_STYLE);
     }
-    
+
     /**
      * Validates a telephone number format.
      * This method checks if the provided telephone string contains
@@ -369,7 +368,7 @@ public class UserWindowController implements Initializable
     private boolean isValidTelephone(String telephone) {
         return telephone.matches("^[0-9]{9}$");
     }
-    
+
     /**
      * Validates a password according to security requirements.
      * This method checks if the password meets the minimum security
@@ -384,7 +383,7 @@ public class UserWindowController implements Initializable
     private boolean isValidPassword(String password) {
         return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$");
     }
-    
+
     /**
      * Configures the telephone text field with input validation and formatting.
      * This method adds a text change listener that restricts input to numeric
@@ -406,7 +405,7 @@ public class UserWindowController implements Initializable
             }
         });
     }
-    
+
     /**
      * Configures the credit card number text fields with input validation and navigation.
      * This method sets up text change listeners for all four card number segments
@@ -446,7 +445,7 @@ public class UserWindowController implements Initializable
                 if (newValue.length() == 4 && nextField != null)
                 {
                     nextField.requestFocus();
-                    nextField.positionCaret(nextField.getText().length()); // When change to the next TextField dont select all the content 
+                    nextField.positionCaret(nextField.getText().length()); // When change to the next TextField dont select all the content
                 }
 
                 // Filter to change TextField when you deleted all the characters
