@@ -203,7 +203,7 @@ public class AdminWindowTest extends ApplicationTest
         assertEquals("Test", nameTextField.getText());
         assertEquals("User", lastnameTextField.getText());
         assertEquals("123456789", telephoneTextField.getText());
-        assertEquals("password", passwordField.getText());
+        assertEquals("Ab123456", passwordField.getText());
     }
 
     /**

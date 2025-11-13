@@ -23,7 +23,7 @@ public class MockModelDAO implements ModelDAO
      */
     public MockModelDAO()
     {
-        this.mockUser = new User(1, "test@test.com", "testuser", "password",
+        this.mockUser = new User(1, "test@test.com", "testuser", "Ab123456",
                 "Test", "User", "123456789", Gender.MALE, "1234567890123456");
         this.mockProfile = mockUser;
         this.mockUsers = new ArrayList<>();

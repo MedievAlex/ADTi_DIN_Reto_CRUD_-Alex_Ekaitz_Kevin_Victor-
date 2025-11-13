@@ -30,10 +30,10 @@ public class ConnectionPool
         DATASOURCE.setDriverClassName(configFile.getString("Driver"));
 
         // Pool parameters
-        DATASOURCE.setInitialSize(1);      // Start connections
-        DATASOURCE.setMaxTotal(2);        // Max total connextions
-        DATASOURCE.setMinIdle(1);          // Min inactive connections
-        DATASOURCE.setMaxIdle(2);          // Max inactive connections
+        DATASOURCE.setInitialSize(2);      // Start connections
+        DATASOURCE.setMaxTotal(4);        // Max total connextions
+        DATASOURCE.setMinIdle(2);          // Min inactive connections
+        DATASOURCE.setMaxIdle(4);          // Max inactive connections
         DATASOURCE.setMaxWaitMillis(10000); // Max wait time for a connection
     }
 
