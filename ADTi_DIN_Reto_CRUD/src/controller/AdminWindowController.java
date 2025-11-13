@@ -169,7 +169,6 @@ public class AdminWindowController implements Initializable
     /**
      * Saves the changes made to the selected user's profile. This method validates all input fields, updates the user object with the modified data, and persists the changes to the system. If validation fails or the update operation encounters an error, appropriate alert messages are displayed to the administrator.
      *
-     * @throws OurException if an error occurs during the user update process
      */
     @FXML
     public void saveChanges()
