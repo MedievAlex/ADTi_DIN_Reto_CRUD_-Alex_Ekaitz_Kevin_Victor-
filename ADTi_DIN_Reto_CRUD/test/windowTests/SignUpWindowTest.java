@@ -7,11 +7,7 @@ import exception.OurException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.User;
@@ -25,14 +21,42 @@ import static org.junit.Assert.*;
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 
+/**
+ * Automated UI tests for the SignUpWindow JavaFX interface.
+ * <p>
+ * This class uses TestFX and JUnit to verify that all components of the sign-up interface are loaded, user interactions (like typing, selecting radio buttons, and navigating between login and sign-up views) work correctly, and that input constraints and error handling are enforced.
+ * <p>
+ * A MockModelDAO simulates database interactions, and LoggedProfile singleton is used to manage the current user state.
+ */
 public class SignUpWindowTest extends ApplicationTest
 {
 
+    /**
+     * Controller instance for the SignUpWindow, used to manipulate UI components during tests.
+     */
     private SignUpWindowController signUpController;
+
+    /**
+     * Real controller instance that handles application logic and data interactions.
+     */
     private Controller realController;
+
+    /**
+     * Mock DAO object to simulate database operations and exceptions.
+     */
     private MockModelDAO mockDAO;
+
+    /**
+     * Mock user instance used to populate fields and test sign-up functionality.
+     */
     private User mockUser;
 
+    /**
+     * Initializes the JavaFX stage for testing the SignUpWindow interface. Loads the FXML, sets the scene, initializes controllers, and prepares a mock user for tests.
+     *
+     * @param stage the JavaFX stage used to display the sign-up window
+     * @throws Exception if FXML loading or initialization fails
+     */
     @Override
     public void start(Stage stage) throws Exception
     {
@@ -52,6 +76,9 @@ public class SignUpWindowTest extends ApplicationTest
         stage.show();
     }
 
+    /**
+     * Prepares the testing environment before each test case. Clears the logged-in profile and resets the mock DAO behavior.
+     */
     @Before
     public void setUp()
     {
@@ -60,6 +87,9 @@ public class SignUpWindowTest extends ApplicationTest
         mockDAO.setMockUser(null);
     }
 
+    /**
+     * Verifies that all main UI components are loaded correctly, including text fields, labels, radio buttons, card fields, and buttons. Also checks that the placeholder texts and labels are correct.
+     */
     @Test
     public void testAllComponentsAreLoaded()
     {
@@ -140,6 +170,9 @@ public class SignUpWindowTest extends ApplicationTest
         assertEquals("Card Number:", cardNumberLabel.getText());
     }
 
+    /**
+     * Verifies that typing into text fields works correctly.
+     */
     @Test
     public void testTextFieldWriting()
     {
@@ -153,6 +186,9 @@ public class SignUpWindowTest extends ApplicationTest
         verifyThat("#passwordPasswordField", hasText("Password123"));
     }
 
+    /**
+     * Tests clicking the sign-up button with empty input fields. Ensures the interface handles empty submission without exceptions.
+     */
     @Test
     public void testSignUpWithEmptyFields()
     {
@@ -160,6 +196,9 @@ public class SignUpWindowTest extends ApplicationTest
         pressEscape();
     }
 
+    /**
+     * Tests signing up with invalid or incomplete data. Verifies that the interface handles invalid input correctly.
+     */
     @Test
     public void testSignUpWithInvalidData()
     {
@@ -179,6 +218,9 @@ public class SignUpWindowTest extends ApplicationTest
         pressEscape();
     }
 
+    /**
+     * Tests the behavior when the DAO throws an exception during sign-up.
+     */
     @Test
     public void testSignUpWithException()
     {
@@ -200,6 +242,9 @@ public class SignUpWindowTest extends ApplicationTest
         pressEscape();
     }
 
+    /**
+     * Tests navigation from sign-up to login screen and back.
+     */
     @Test
     public void testNavigateToLoginAndBack()
     {
@@ -218,6 +263,9 @@ public class SignUpWindowTest extends ApplicationTest
         assertEquals("If you have an account LOG IN", loginButton.getText());
     }
 
+    /**
+     * Tests a successful sign-up process with valid input and mock user.
+     */
     @Test
     public void testSuccessfulSignUp()
     {
@@ -237,7 +285,6 @@ public class SignUpWindowTest extends ApplicationTest
         clickOn("#maleRadioButton");
 
         clickOn("#signUpBttn");
-
         pressEscape();
 
         Label usernameLabel = lookup("#username").query();
@@ -245,6 +292,9 @@ public class SignUpWindowTest extends ApplicationTest
         assertEquals("testuser", usernameLabel.getText());
     }
 
+    /**
+     * Verifies that radio button selection is mutually exclusive and works correctly.
+     */
     @Test
     public void testRadioButtonSelection()
     {
@@ -268,6 +318,9 @@ public class SignUpWindowTest extends ApplicationTest
         assertTrue(otherRadio.isSelected());
     }
 
+    /**
+     * Tests automatic focus/navigation between card number text fields.
+     */
     @Test
     public void testCardNumberAutoNavigation()
     {
@@ -281,6 +334,9 @@ public class SignUpWindowTest extends ApplicationTest
         verifyThat("#cardNumber4TextField", hasText(""));
     }
 
+    /**
+     * Verifies that non-numeric characters are filtered from the telephone field.
+     */
     @Test
     public void testTelephoneNumberFiltersNonNumeric()
     {
@@ -288,6 +344,9 @@ public class SignUpWindowTest extends ApplicationTest
         verifyThat("#telephoneTextField", hasText("123456"));
     }
 
+    /**
+     * Verifies that the telephone field enforces a maximum length of 9 digits.
+     */
     @Test
     public void testTelephoneNumberMaxLength()
     {
@@ -295,6 +354,9 @@ public class SignUpWindowTest extends ApplicationTest
         verifyThat("#telephoneTextField", hasText("123456789"));
     }
 
+    /**
+     * Verifies that non-numeric characters are filtered from card number fields.
+     */
     @Test
     public void testCardNumberFiltersNonNumeric()
     {
@@ -302,6 +364,9 @@ public class SignUpWindowTest extends ApplicationTest
         verifyThat("#cardNumber1TextField", hasText("1234"));
     }
 
+    /**
+     * Verifies that the card number fields enforce a maximum length of 4 digits.
+     */
     @Test
     public void testCardNumberMaxLength()
     {
@@ -309,6 +374,9 @@ public class SignUpWindowTest extends ApplicationTest
         verifyThat("#cardNumber1TextField", hasText("1234"));
     }
 
+    /**
+     * Helper method to simulate pressing the ESCAPE key. Used to close dialogs or popups during tests.
+     */
     private void pressEscape()
     {
         try
@@ -317,7 +385,7 @@ public class SignUpWindowTest extends ApplicationTest
             push(javafx.scene.input.KeyCode.ESCAPE);
             sleep(500);
         }
-        catch (Exception e)
+        catch (Exception ignored)
         {
         }
     }

@@ -7,10 +7,7 @@ import exception.OurException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.User;
@@ -24,15 +21,47 @@ import static org.junit.Assert.*;
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 
+/**
+ * Automated UI tests for the LoginWindow JavaFX interface.
+ * <p>
+ * This class uses TestFX and JUnit to verify that all components of the login interface are loaded correctly, input fields accept data, navigation to sign-up window functions, and login attempts (successful or failed) behave as expected.
+ * <p>
+ * MockModelDAO simulates backend responses, while LoggedProfile singleton manages the current user session.
+ */
 public class LoginWindowTest extends ApplicationTest
 {
 
+    /**
+     * Controller for the LoginWindow, used to access and manipulate UI elements.
+     */
     private LoginWindowController loginController;
+
+    /**
+     * Main controller handling application logic and data interactions.
+     */
     private Controller realController;
+
+    /**
+     * Mock DAO to simulate database operations and exceptions.
+     */
     private MockModelDAO mockDAO;
+
+    /**
+     * Mock user used for testing successful login scenarios.
+     */
     private User mockUser;
+
+    /**
+     * Mock admin used for testing successful admin login scenarios.
+     */
     private User mockAdmin;
 
+    /**
+     * Initializes the JavaFX stage for testing the LoginWindow. Loads FXML, sets the scene, and prepares mock users for login tests.
+     *
+     * @param stage the JavaFX stage to display the login window
+     * @throws Exception if FXML loading fails
+     */
     @Override
     public void start(Stage stage) throws Exception
     {
@@ -54,6 +83,9 @@ public class LoginWindowTest extends ApplicationTest
         stage.show();
     }
 
+    /**
+     * Sets up the testing environment before each test. Clears the logged-in profile and resets the mock DAO behavior.
+     */
     @Before
     public void setUp()
     {
@@ -62,6 +94,9 @@ public class LoginWindowTest extends ApplicationTest
         mockDAO.setShouldThrowException(false, null);
     }
 
+    /**
+     * Verifies that all main UI components are loaded, including text fields, password fields, buttons, and panes.
+     */
     @Test
     public void testAllComponentsAreLoaded()
     {
@@ -85,6 +120,9 @@ public class LoginWindowTest extends ApplicationTest
         assertEquals("If you have no account SIGN UP", signUpButton.getText());
     }
 
+    /**
+     * Verifies that typing into credential and password fields works correctly.
+     */
     @Test
     public void testTextFieldWriting()
     {
@@ -95,6 +133,9 @@ public class LoginWindowTest extends ApplicationTest
         verifyThat("#passwordPasswordField", hasText("mypassword123"));
     }
 
+    /**
+     * Tests login attempt with empty fields and ensures no exceptions occur.
+     */
     @Test
     public void testLoginWithEmptyFields()
     {
@@ -102,6 +143,9 @@ public class LoginWindowTest extends ApplicationTest
         pressEscape();
     }
 
+    /**
+     * Tests login attempt with invalid credentials. Verifies proper handling of failed login attempts.
+     */
     @Test
     public void testLoginWithInvalidCredentials()
     {
@@ -113,6 +157,9 @@ public class LoginWindowTest extends ApplicationTest
         pressEscape();
     }
 
+    /**
+     * Tests behavior when the DAO throws an exception during login.
+     */
     @Test
     public void testLoginWithException()
     {
@@ -124,6 +171,9 @@ public class LoginWindowTest extends ApplicationTest
         pressEscape();
     }
 
+    /**
+     * Tests navigation from login window to sign-up window and back. Ensures text fields are cleared when returning to login.
+     */
     @Test
     public void testNavigateToSignUpAndBack()
     {
@@ -137,18 +187,9 @@ public class LoginWindowTest extends ApplicationTest
         verifyThat("#passwordPasswordField", hasText(""));
     }
 
-    @Test
-    public void testFieldsPersistInSameWindow()
-    {
-        clickOn("#credentialTextField").write("testuser");
-        clickOn("#passwordPasswordField").write("password123");
-
-        clickOn("#credentialTextField");
-
-        verifyThat("#credentialTextField", hasText("testuser"));
-        verifyThat("#passwordPasswordField", hasText("password123"));
-    }
-
+    /**
+     * Tests successful login with a standard user. Verifies that the LoggedProfile singleton reflects the logged-in user.
+     */
     @Test
     public void testSuccessfulUserLogin()
     {
@@ -165,6 +206,9 @@ public class LoginWindowTest extends ApplicationTest
         assertEquals("testuser", usernameField.getText());
     }
 
+    /**
+     * Tests successful login with an admin user. Verifies that the LoggedProfile singleton reflects the logged-in admin.
+     */
     @Test
     public void testSuccessfulAdminLogin()
     {
@@ -181,6 +225,9 @@ public class LoginWindowTest extends ApplicationTest
         assertEquals("adminuser", usernameField.getText());
     }
 
+    /**
+     * Helper method to simulate pressing the ESCAPE key. Used to dismiss dialogs or alerts during tests.
+     */
     private void pressEscape()
     {
         try
@@ -189,7 +236,7 @@ public class LoginWindowTest extends ApplicationTest
             push(javafx.scene.input.KeyCode.ESCAPE);
             sleep(500);
         }
-        catch (Exception e)
+        catch (Exception ignored)
         {
         }
     }

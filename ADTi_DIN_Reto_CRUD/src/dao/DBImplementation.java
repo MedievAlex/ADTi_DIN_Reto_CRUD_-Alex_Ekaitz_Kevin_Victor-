@@ -15,14 +15,9 @@ import model.User;
 import pool.ConnectionThread;
 
 /**
- * Database implementation of the ModelDAO interface.
- * This class provides the concrete implementation for all data access operations
- * including user registration, authentication, profile management, and administrative
- * functions. It handles database connections, SQL execution, transaction management,
- * and error handling for the entire application data layer.
- * 
- * The class implements connection pooling with timeout mechanisms and ensures
- * proper transaction handling for atomic operations.
+ * Database implementation of the ModelDAO interface. This class provides the concrete implementation for all data access operations including user registration, authentication, profile management, and administrative functions. It handles database connections, SQL execution, transaction management, and error handling for the entire application data layer.
+ *
+ * The class implements connection pooling with timeout mechanisms and ensures proper transaction handling for atomic operations.
  *
  * @author Kevin, Alex, Victor, Ekaitz
  */
@@ -56,16 +51,12 @@ public class DBImplementation implements ModelDAO
     private final String SQLDELETE_USER = "DELETE FROM db_profile WHERE P_ID = ?";
 
     /**
-     * Inserts a new user into the database with transaction support.
-     * This method performs an atomic operation that inserts user data into both
-     * the profile and user tables within a single transaction. If any part fails,
-     * the entire transaction is rolled back.
+     * Inserts a new user into the database with transaction support. This method performs an atomic operation that inserts user data into both the profile and user tables within a single transaction. If any part fails, the entire transaction is rolled back.
      *
      * @param con the database connection to use for the operation
      * @param user the User object containing all user data to be inserted
      * @return the generated user ID if insertion is successful, -1 otherwise
-     * @throws OurException if the insertion fails due to SQL errors, constraint
-     *         violations, or transaction issues
+     * @throws OurException if the insertion fails due to SQL errors, constraint violations, or transaction issues
      */
     private int insert(Connection con, User user) throws OurException
     {
@@ -129,9 +120,7 @@ public class DBImplementation implements ModelDAO
     }
 
     /**
-     * Retrieves all users from the database.
-     * This method executes a query to fetch all user records with their complete
-     * profile information including personal details and preferences.
+     * Retrieves all users from the database. This method executes a query to fetch all user records with their complete profile information including personal details and preferences.
      *
      * @param con the database connection to use for the operation
      * @return an ArrayList containing all User objects from the database
@@ -171,15 +160,12 @@ public class DBImplementation implements ModelDAO
     }
 
     /**
-     * Updates an existing user's information in the database with transaction support.
-     * This method performs an atomic operation that updates user data in both
-     * the profile and user tables within a single transaction.
+     * Updates an existing user's information in the database with transaction support. This method performs an atomic operation that updates user data in both the profile and user tables within a single transaction.
      *
      * @param con the database connection to use for the operation
      * @param user the User object containing updated user data
      * @return true if the update operation was successful, false otherwise
-     * @throws OurException if the update fails due to SQL errors, constraint
-     *         violations, or transaction issues
+     * @throws OurException if the update fails due to SQL errors, constraint violations, or transaction issues
      */
     private boolean update(Connection con, User user) throws OurException
     {
@@ -226,15 +212,12 @@ public class DBImplementation implements ModelDAO
     }
 
     /**
-     * Deletes a user from the database by their unique identifier.
-     * This method removes a user record from the system based on the provided user ID.
+     * Deletes a user from the database by their unique identifier. This method removes a user record from the system based on the provided user ID.
      *
      * @param con the database connection to use for the operation
      * @param userId the unique identifier of the user to be deleted
-     * @return true if the deletion was successful, false if no user was found
-     *         with the specified ID
-     * @throws OurException if the deletion operation fails due to SQL errors
-     *         or database constraints
+     * @return true if the deletion was successful, false if no user was found with the specified ID
+     * @throws OurException if the deletion operation fails due to SQL errors or database constraints
      */
     private boolean delete(Connection con, int userId) throws OurException
     {
@@ -250,18 +233,13 @@ public class DBImplementation implements ModelDAO
     }
 
     /**
-     * Authenticates a user by verifying credentials against the database.
-     * This method checks if the provided credential (email or username) and password
-     * match an existing user record and returns the appropriate profile type
-     * (User or Admin) upon successful authentication.
+     * Authenticates a user by verifying credentials against the database. This method checks if the provided credential (email or username) and password match an existing user record and returns the appropriate profile type (User or Admin) upon successful authentication.
      *
      * @param con the database connection to use for the operation
      * @param credential the user's email or username for identification
      * @param password the user's password for authentication
-     * @return the authenticated user's Profile object (User or Admin) if credentials
-     *         are valid, null otherwise
-     * @throws OurException if the authentication process fails due to SQL errors
-     *         or data retrieval issues
+     * @return the authenticated user's Profile object (User or Admin) if credentials are valid, null otherwise
+     * @throws OurException if the authentication process fails due to SQL errors or data retrieval issues
      */
     private Profile loginProfile(Connection con, String credential, String password) throws OurException
     {
@@ -317,15 +295,12 @@ public class DBImplementation implements ModelDAO
     }
 
     /**
-     * Checks if the provided email or username already exists in the database.
-     * This method verifies the uniqueness of user credentials during registration
-     * to prevent duplicate accounts.
+     * Checks if the provided email or username already exists in the database. This method verifies the uniqueness of user credentials during registration to prevent duplicate accounts.
      *
      * @param con the database connection to use for the operation
      * @param email the email address to check for existence
      * @param username the username to check for existence
-     * @return a HashMap indicating which credentials already exist with keys
-     *         "email" and "username" and boolean values
+     * @return a HashMap indicating which credentials already exist with keys "email" and "username" and boolean values
      * @throws OurException if the verification process fails due to SQL errors
      */
     private HashMap<String, Boolean> checkCredentialsExistence(Connection con, String email, String username) throws OurException
@@ -360,11 +335,9 @@ public class DBImplementation implements ModelDAO
         }
         return exists;
     }
-    
+
     /**
-     * Waits for a database connection to become available with timeout protection.
-     * This method implements a polling mechanism to wait for a connection thread
-     * to become ready, preventing indefinite blocking.
+     * Waits for a database connection to become available with timeout protection. This method implements a polling mechanism to wait for a connection thread to become ready, preventing indefinite blocking.
      *
      * @param thread the ConnectionThread instance to wait for
      * @return the established database connection
@@ -390,9 +363,7 @@ public class DBImplementation implements ModelDAO
     }
 
     /**
-     * Rolls back the current database transaction.
-     * This method provides safe transaction rollback with proper error handling
-     * for scenarios where database operations fail.
+     * Rolls back the current database transaction. This method provides safe transaction rollback with proper error handling for scenarios where database operations fail.
      *
      * @param con the database connection to roll back the transaction on
      * @throws OurException if the rollback operation fails
@@ -413,9 +384,7 @@ public class DBImplementation implements ModelDAO
     }
 
     /**
-     * Resets the auto-commit mode of the database connection to true.
-     * This method ensures that the connection returns to its default auto-commit
-     * state after transaction operations are completed.
+     * Resets the auto-commit mode of the database connection to true. This method ensures that the connection returns to its default auto-commit state after transaction operations are completed.
      *
      * @param con the database connection to reset
      * @throws OurException if resetting auto-commit fails
@@ -436,17 +405,12 @@ public class DBImplementation implements ModelDAO
     }
 
     /**
-     * Authenticates a user with the provided credentials.
-     * This method verifies user identity by checking the provided credential
-     * and password against stored user data and sets the logged-in profile
-     * upon successful authentication.
+     * Authenticates a user with the provided credentials. This method verifies user identity by checking the provided credential and password against stored user data and sets the logged-in profile upon successful authentication.
      *
      * @param credential the user's username or email address used for identification
      * @param password the user's password for authentication
-     * @return the authenticated user's Profile object containing user information
-     *         and access privileges, or null if authentication fails
-     * @throws OurException if authentication fails due to database errors
-     *         or system issues
+     * @return the authenticated user's Profile object containing user information and access privileges, or null if authentication fails
+     * @throws OurException if authentication fails due to database errors or system issues
      */
     @Override
     public Profile login(String credential, String password) throws OurException
@@ -467,14 +431,11 @@ public class DBImplementation implements ModelDAO
     }
 
     /**
-     * Registers a new user in the system with duplicate credential checking.
-     * This method validates credential uniqueness, creates a new user account,
-     * and returns the registered user with their system-generated identifier.
+     * Registers a new user in the system with duplicate credential checking. This method validates credential uniqueness, creates a new user account, and returns the registered user with their system-generated identifier.
      *
      * @param user the User object containing all registration information
      * @return the registered User object with the generated ID and system-assigned values
-     * @throws OurException if registration fails due to duplicate credentials,
-     *         database constraints, or system errors
+     * @throws OurException if registration fails due to duplicate credentials, database constraints, or system errors
      */
     @Override
     public User register(User user) throws OurException
@@ -521,13 +482,10 @@ public class DBImplementation implements ModelDAO
     }
 
     /**
-     * Retrieves a list of all users from the system.
-     * This method provides access to the complete user database, typically used
-     * by administrative interfaces for user management operations.
+     * Retrieves a list of all users from the system. This method provides access to the complete user database, typically used by administrative interfaces for user management operations.
      *
      * @return an ArrayList containing all User objects in the system
-     * @throws OurException if the user retrieval operation fails due to
-     *         database connectivity issues or data access errors
+     * @throws OurException if the user retrieval operation fails due to database connectivity issues or data access errors
      */
     @Override
     public ArrayList<User> getUsers() throws OurException
@@ -550,15 +508,11 @@ public class DBImplementation implements ModelDAO
     }
 
     /**
-     * Updates an existing user's information in the system.
-     * This method persists changes made to a user's profile data, ensuring
-     * that modifications are saved to the database.
+     * Updates an existing user's information in the system. This method persists changes made to a user's profile data, ensuring that modifications are saved to the database.
      *
      * @param user the User object containing updated information to be saved
-     * @return true if the update operation was successful, false if no changes
-     *         were made or the operation did not affect any records
-     * @throws OurException if the update operation fails due to validation errors,
-     *         database constraints violations, or data access issues
+     * @return true if the update operation was successful, false if no changes were made or the operation did not affect any records
+     * @throws OurException if the update operation fails due to validation errors, database constraints violations, or data access issues
      */
     @Override
     public boolean updateUser(User user) throws OurException
@@ -581,15 +535,11 @@ public class DBImplementation implements ModelDAO
     }
 
     /**
-     * Deletes a user from the system by their unique identifier.
-     * This method permanently removes a user record from the database
-     * based on the provided user ID.
+     * Deletes a user from the system by their unique identifier. This method permanently removes a user record from the database based on the provided user ID.
      *
      * @param id the unique identifier of the user to be deleted
-     * @return true if the deletion was successful, false if no user was found
-     *         with the specified ID or the operation did not affect any records
-     * @throws OurException if the deletion operation fails due to database
-     *         constraints, referential integrity issues, or data access errors
+     * @return true if the deletion was successful, false if no user was found with the specified ID or the operation did not affect any records
+     * @throws OurException if the deletion operation fails due to database constraints, referential integrity issues, or data access errors
      */
     @Override
     public boolean deleteUser(int id) throws OurException

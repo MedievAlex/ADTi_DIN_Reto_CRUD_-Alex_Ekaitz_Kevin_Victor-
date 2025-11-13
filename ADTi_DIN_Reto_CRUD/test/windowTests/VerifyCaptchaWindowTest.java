@@ -19,20 +19,44 @@ import org.testfx.framework.junit.ApplicationTest;
 import static org.junit.Assert.*;
 
 /**
- * Test class for VerifyCaptchaWindow.
- * This class uses TestFX to validate that all components are loaded correctly,
- * and that the behavior of the confirmation and cancellation actions
- * works as expected.
+ * Test class for the VerifyCaptchaWindow JavaFX interface.
+ * <p>
+ * This class validates the behavior of the captcha verification window, which is used to confirm sensitive actions (e.g., account deletion) through a one-time code. It ensures that all UI components are loaded correctly, handles empty or incorrect code submissions, confirms correct code entry, and verifies that the cancel button works.
+ * <p>
+ * Uses TestFX for UI interaction simulation and MockModelDAO to mock database operations.
  */
-public class VerifyCaptchaWindowTest extends ApplicationTest {
+public class VerifyCaptchaWindowTest extends ApplicationTest
+{
 
+    /**
+     * Controller for the VerifyCaptchaWindow used to access UI elements.
+     */
     private VerifyCaptchaWindowController captchaController;
+
+    /**
+     * Main application controller for business logic and data access.
+     */
     private Controller realController;
+
+    /**
+     * Mock DAO to simulate database operations and exceptions.
+     */
     private MockModelDAO mockDAO;
+
+    /**
+     * Mock user used for testing captcha verification.
+     */
     private User mockUser;
 
+    /**
+     * Initializes the JavaFX stage for the VerifyCaptchaWindow. Loads FXML, sets the scene, and sets a mock user as the logged-in profile.
+     *
+     * @param stage the JavaFX stage to display the captcha verification window
+     * @throws Exception if FXML loading fails
+     */
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) throws Exception
+    {
         mockDAO = new MockModelDAO();
         realController = new Controller(mockDAO);
 
@@ -51,15 +75,23 @@ public class VerifyCaptchaWindowTest extends ApplicationTest {
         stage.show();
     }
 
+    /**
+     * Sets up the testing environment before each test. Clears the logged-in profile and resets the mock DAO.
+     */
     @Before
-    public void setUp() {
+    public void setUp()
+    {
         LoggedProfile.getInstance().clear();
         mockDAO.setShouldThrowException(false, null);
         mockDAO.setMockUser(null);
     }
 
+    /**
+     * Checks that all components of the VerifyCaptchaWindow are loaded and initialized correctly.
+     */
     @Test
-    public void testAllComponentsAreLoaded() {
+    public void testAllComponentsAreLoaded()
+    {
         Pane rightPane = lookup("#rightPane").query();
         TextField codeTextField = lookup("#codeTextField").query();
         Label usernameLabel = lookup("#username").query();
@@ -86,15 +118,23 @@ public class VerifyCaptchaWindowTest extends ApplicationTest {
         assertFalse(codeLabel.getText().isEmpty());
     }
 
+    /**
+     * Verifies that clicking confirm with an empty code field displays the appropriate error message.
+     */
     @Test
-    public void testConfirmWithEmptyField() {
+    public void testConfirmWithEmptyField()
+    {
         clickOn("#confirmBttn");
         Label errorLabel = lookup("#errorLabel").query();
         assertEquals("Please enter the code.", errorLabel.getText());
     }
 
+    /**
+     * Verifies that entering an incorrect code displays an error message.
+     */
     @Test
-    public void testConfirmWithIncorrectCode() {
+    public void testConfirmWithIncorrectCode()
+    {
         String wrongCode = "9999";
         clickOn("#codeTextField").write(wrongCode);
         clickOn("#confirmBttn");
@@ -103,8 +143,12 @@ public class VerifyCaptchaWindowTest extends ApplicationTest {
         assertEquals("Incorrect code. Try again.", errorLabel.getText());
     }
 
+    /**
+     * Verifies that entering the correct code allows proceeding to the next step.
+     */
     @Test
-    public void testConfirmWithCorrectCode() {
+    public void testConfirmWithCorrectCode()
+    {
         Label codeLabel = lookup("#codeLabel").query();
         String correctCode = codeLabel.getText();
 
@@ -114,11 +158,18 @@ public class VerifyCaptchaWindowTest extends ApplicationTest {
         pressEscape();
     }
 
+    /**
+     * Verifies that clicking the cancel button closes or dismisses the window without errors.
+     */
     @Test
-    public void testCancelButton() {
+    public void testCancelButton()
+    {
         clickOn("#cancelBttn");
     }
-    
+
+    /**
+     * Utility method to simulate pressing the ESCAPE key, typically to close windows.
+     */
     private void pressEscape()
     {
         try
@@ -127,7 +178,7 @@ public class VerifyCaptchaWindowTest extends ApplicationTest {
             push(javafx.scene.input.KeyCode.ESCAPE);
             sleep(500);
         }
-        catch (Exception e)
+        catch (Exception ignored)
         {
         }
     }

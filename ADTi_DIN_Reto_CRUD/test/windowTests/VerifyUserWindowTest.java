@@ -20,14 +20,42 @@ import dao.MockModelDAO;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test class for the VerifyUserWindow JavaFX interface.
+ * <p>
+ * This class verifies the behavior of the user verification window where users must confirm their password before performing sensitive actions, such as account deletion. It checks that UI components are loaded, password verification works, and the cancel button functions correctly.
+ * <p>
+ * Uses TestFX for JavaFX UI testing and a MockModelDAO to simulate database operations.
+ */
 public class VerifyUserWindowTest extends ApplicationTest
 {
 
+    /**
+     * Controller for the VerifyUserWindow, used to access and manipulate UI elements.
+     */
     private VerifyUserWindowController verifyController;
+
+    /**
+     * Main controller handling application logic and data interactions.
+     */
     private Controller realController;
+
+    /**
+     * Mock DAO to simulate database operations and exceptions.
+     */
     private MockModelDAO mockDAO;
+
+    /**
+     * Mock user used for testing verification actions.
+     */
     private User mockUser;
 
+    /**
+     * Initializes the JavaFX stage for testing the VerifyUserWindow. Loads FXML, sets the scene, and sets a mock user as the logged-in profile.
+     *
+     * @param stage the JavaFX stage to display the verification window
+     * @throws Exception if FXML loading fails
+     */
     @Override
     public void start(Stage stage) throws Exception
     {
@@ -49,6 +77,9 @@ public class VerifyUserWindowTest extends ApplicationTest
         stage.show();
     }
 
+    /**
+     * Sets up the testing environment before each test. Clears the logged-in profile and resets the mock DAO.
+     */
     @Before
     public void setUp()
     {
@@ -57,6 +88,9 @@ public class VerifyUserWindowTest extends ApplicationTest
         mockDAO.setMockUser(null);
     }
 
+    /**
+     * Verifies that all UI components are loaded and contain correct default values.
+     */
     @Test
     public void testAllComponentsAreLoaded()
     {
@@ -84,6 +118,9 @@ public class VerifyUserWindowTest extends ApplicationTest
         assertEquals("", errorLabel.getText());
     }
 
+    /**
+     * Tests that entering an incorrect password displays the appropriate error message.
+     */
     @Test
     public void testConfirmWithIncorrectPassword()
     {
@@ -94,6 +131,9 @@ public class VerifyUserWindowTest extends ApplicationTest
         assertEquals("Incorrect password.", errorLabel.getText());
     }
 
+    /**
+     * Tests that entering the correct password allows navigation to the next verification step.
+     */
     @Test
     public void testConfirmWithCorrectPassword()
     {
@@ -107,6 +147,9 @@ public class VerifyUserWindowTest extends ApplicationTest
         assertEquals("ARE YOU SURE YOU WANT TO DELETE THE PROFILE?", textLabel.getText());
     }
 
+    /**
+     * Verifies that clicking the cancel button closes or dismisses the window without errors.
+     */
     @Test
     public void testCancelButton()
     {

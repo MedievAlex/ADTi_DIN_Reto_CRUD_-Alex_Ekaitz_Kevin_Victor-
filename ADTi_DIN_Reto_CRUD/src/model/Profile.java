@@ -1,18 +1,15 @@
 package model;
 
-
 /**
- * Abstract base class representing a user profile in the system.
- * This class defines the common attributes and behavior shared by all types
- * of user profiles, including both regular users and administrators.
- * 
- * Profile serves as the foundation for user identity management and provides
- * the core personal information storage and retrieval functionality for the application.
+ * Abstract base class representing a user profile in the system. This class defines the common attributes and behavior shared by all types of user profiles, including both regular users and administrators.
+ *
+ * Profile serves as the foundation for user identity management and provides the core personal information storage and retrieval functionality for the application.
  *
  * @author Kevin, Alex, Victor, Ekaitz
  */
 public abstract class Profile
 {
+
     protected int p_id;
     protected String p_email;
     protected String p_username;
@@ -20,13 +17,12 @@ public abstract class Profile
     protected String p_name;
     protected String p_lastname;
     protected String p_telephone;
-    
+
     /**
-     * Default constructor that initializes all profile attributes to empty values.
-     * The ID is set to -1 to indicate an unpersisted profile that hasn't been
-     * assigned a database identifier yet.
+     * Default constructor that initializes all profile attributes to empty values. The ID is set to -1 to indicate an unpersisted profile that hasn't been assigned a database identifier yet.
      */
-    public Profile() {
+    public Profile()
+    {
         this.p_id = -1;
         this.p_email = "";
         this.p_username = "";
@@ -35,11 +31,9 @@ public abstract class Profile
         this.p_lastname = "";
         this.p_telephone = "";
     }
-    
+
     /**
-     * Constructs a Profile with all attributes including the database ID.
-     * This constructor is typically used when loading existing profile data
-     * from persistent storage where the ID has already been assigned.
+     * Constructs a Profile with all attributes including the database ID. This constructor is typically used when loading existing profile data from persistent storage where the ID has already been assigned.
      *
      * @param p_id the unique identifier for the profile
      * @param p_email the email address associated with the profile
@@ -59,11 +53,9 @@ public abstract class Profile
         this.p_lastname = p_lastname;
         this.p_telephone = p_telephone;
     }
-    
+
     /**
-     * Constructs a Profile without the database ID.
-     * This constructor is typically used when creating new profiles that haven't
-     * been persisted to the database yet and will receive an ID upon saving.
+     * Constructs a Profile without the database ID. This constructor is typically used when creating new profiles that haven't been persisted to the database yet and will receive an ID upon saving.
      *
      * @param p_email the email address associated with the profile
      * @param p_username the username used for authentication
@@ -82,7 +74,7 @@ public abstract class Profile
         this.p_lastname = p_lastname;
         this.p_telephone = p_telephone;
     }
-    
+
     /**
      * Returns the unique identifier of the profile.
      *
@@ -92,7 +84,7 @@ public abstract class Profile
     {
         return p_id;
     }
-    
+
     /**
      * Sets the unique identifier for the profile.
      *
@@ -224,9 +216,7 @@ public abstract class Profile
     }
 
     /**
-     * Returns a string representation of the profile containing all attributes.
-     * This method provides a comprehensive textual representation of the profile
-     * including all personal information and credentials.
+     * Returns a string representation of the profile containing all attributes. This method provides a comprehensive textual representation of the profile including all personal information and credentials.
      *
      * @return a string containing all profile attributes
      */
@@ -238,9 +228,7 @@ public abstract class Profile
     }
 
     /**
-     * Abstract method for displaying profile information in a customized format.
-     * Concrete subclasses must implement this method to provide their own
-     * specific representation of profile data.
+     * Abstract method for displaying profile information in a customized format. Concrete subclasses must implement this method to provide their own specific representation of profile data.
      *
      * @return a formatted string representation of the profile
      */
