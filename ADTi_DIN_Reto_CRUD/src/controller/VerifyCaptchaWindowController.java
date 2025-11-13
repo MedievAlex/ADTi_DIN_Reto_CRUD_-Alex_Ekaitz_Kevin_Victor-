@@ -70,7 +70,6 @@ public class VerifyCaptchaWindowController implements Initializable
     private void generateAndDisplayCode() {
         code = new Random().nextInt(10000);
         codeLabel.setText(String.valueOf(code));
-        errorLabel.setText("");
         codeTextField.clear();
     }
 

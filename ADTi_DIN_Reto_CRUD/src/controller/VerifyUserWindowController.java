@@ -82,6 +82,8 @@ public class VerifyUserWindowController implements Initializable {
                 }
                 
                 Stage actualWindow = (Stage) confirmBttn.getScene().getWindow();
+                actualWindow.setTitle("Verify your Action");
+                actualWindow.setResizable(false);
                 actualWindow.setScene(new Scene(parentWindow));
             } catch (IOException ex) {
                 errorLabel.setText("Error loading window.");

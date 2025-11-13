@@ -110,6 +110,7 @@ public class LoginWindowController implements Initializable
 
             Stage actualWindow = (Stage) signUpBttn.getScene().getWindow();
             actualWindow.setTitle("Sign Up");
+            actualWindow.setResizable(false);
             actualWindow.setScene(new Scene(parentWindow));
         }
         catch (IOException ex)

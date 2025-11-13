@@ -43,7 +43,8 @@ public class Controller
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        stage.setTitle("Login");
+        stage.setTitle("Log In");
+        stage.setResizable(false);
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
         stage.show();
     }
