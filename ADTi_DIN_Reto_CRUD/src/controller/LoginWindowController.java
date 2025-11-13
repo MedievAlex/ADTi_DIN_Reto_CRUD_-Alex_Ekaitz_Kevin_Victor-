@@ -20,11 +20,15 @@ import model.Profile;
 import model.User;
 
 /**
+ * Controller class for the Login Window interface. This class handles user authentication and navigation between the login screen and other application windows. It manages the login process, validates user credentials, and redirects users to appropriate interfaces based on their profile type (User or Admin).
  *
- * @author 2dami
+ * The controller implements JavaFX Initializable interface to properly initialize the UI components and set up event handlers for user interactions.
+ *
+ * @author Kevin, Alex, Victor, Ekaitz
  */
 public class LoginWindowController implements Initializable
 {
+
     private Controller controller;
 
     @FXML
@@ -40,11 +44,32 @@ public class LoginWindowController implements Initializable
     @FXML
     private Button signUpBttn;
 
+    /**
+     * Sets the main controller for this login window controller. This method establishes the connection to the main application controller that handles business logic and data operations.
+     *
+     * @param controller the main application controller that manages business logic and data operations
+     */
     public void setController(Controller controller)
     {
         this.controller = controller;
     }
-    
+
+    /**
+     * Handles the user login process when the login button is clicked. This method validates input fields, authenticates user credentials through the main controller, and navigates to the appropriate user interface (User Window or Admin Window) based on the authenticated profile type.
+     *
+     * <p>
+     * The method performs the following steps:
+     * <ol>
+     * <li>Validates that both credential and password fields are not empty</li>
+     * <li>Attempts authentication through the main controller</li>
+     * <li>Redirects to User Window for regular users or Admin Window for administrators</li>
+     * <li>Displays appropriate error messages for authentication failures or exceptions</li>
+     * </ol>
+     * </p>
+     *
+     * @throws OurException if authentication fails due to invalid credentials or system errors
+     * @throws IOException if there is an error loading the destination window FXML file
+     */
     @FXML
     private void handleLogin()
     {
@@ -96,7 +121,14 @@ public class LoginWindowController implements Initializable
             ShowAlert.showAlert("Error", "Error opening window.", Alert.AlertType.ERROR);
         }
     }
-    
+
+    /**
+     * Opens the Sign Up window for new user registration. This method navigates from the login screen to the user registration interface, allowing new users to create accounts in the system.
+     *
+     * <p>
+     * The method loads the Sign Up window FXML file, sets up the corresponding controller, and transitions the current window to display the registration form.</p>
+     *
+     */
     @FXML
     public void openSignUp()
     {
@@ -119,6 +151,12 @@ public class LoginWindowController implements Initializable
         }
     }
 
+    /**
+     * Initializes the controller class after the FXML file has been loaded. This method is automatically called by JavaFX after the FXML document has been processed and can be used to set up additional UI components or event handlers that are not defined in the FXML file.
+     *
+     * @param url the location used to resolve relative paths for the root object, or null if the location is not known
+     * @param rb the resources used to localize the root object, or null if the root object was not localized
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
