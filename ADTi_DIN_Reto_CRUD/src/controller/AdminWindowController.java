@@ -237,6 +237,8 @@ public class AdminWindowController implements Initializable
             LoginWindowController loginController = loader.getController();
             loginController.setController(controller);
             Stage currentwindow = (Stage) logOutBttn.getScene().getWindow();
+            currentwindow.setTitle("Logi In");
+            currentwindow.setResizable(false);
             currentwindow.setScene(new Scene(window));
         }
         catch (IOException ex)

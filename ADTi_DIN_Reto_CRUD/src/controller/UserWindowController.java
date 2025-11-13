@@ -213,7 +213,8 @@ public class UserWindowController implements Initializable
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
-            stage.setTitle("Confirm");
+            stage.setTitle("Verify User");
+            stage.setResizable(false);
             stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(deleteUserBttn.getScene().getWindow());
