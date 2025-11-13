@@ -22,8 +22,8 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Label fx:id="errorLabel" alignment="CENTER" layoutX="18.0" layoutY="53.0" prefHeight="17.0" prefWidth="434.0" textFill="#ea0101" wrapText="true" />
-            <Label fx:id="codeLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="70.0" prefHeight="25.0" prefWidth="480.0" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+            <Label fx:id="errorLabel" alignment="CENTER" layoutX="10.0" layoutY="52.0" prefHeight="21.0" prefWidth="480.0" textFill="#ea0101" wrapText="true" />
+            <Label fx:id="codeLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="73.0" prefHeight="17.0" prefWidth="480.0" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
                <font>
                   <Font size="15.0" />
                </font>

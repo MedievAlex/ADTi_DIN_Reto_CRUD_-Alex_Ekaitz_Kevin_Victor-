@@ -19,7 +19,7 @@
                </image>
             </ImageView>
          </children></Pane>
-      <Pane fx:id="rightPane" layoutX="179.0" prefHeight="456.0" prefWidth="470.0" style="-fx-background-color: EEEEEE;">
+      <Pane fx:id="rightPane" layoutX="179.0" prefHeight="456.0" prefWidth="470.0" style="-fx-background-color: EEEEEE;" AnchorPane.topAnchor="0.0">
          <children>
             <TextField fx:id="credentialTextField" layoutX="75.0" layoutY="181.0" prefHeight="40.0" prefWidth="320.0" promptText="exampleuser / example@email.com">
                <cursor>
