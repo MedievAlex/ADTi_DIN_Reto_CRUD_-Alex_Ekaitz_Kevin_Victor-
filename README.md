@@ -6,8 +6,8 @@ Guide:
 	3. Press Run Project button
 
 Work division:
-	Kevin -> 15% (Admin window, start of DBImplementation)
-	Alex -> 15% (Login window, , start of DBImplementation, general window styles)
+	Kevin -> 15% (Login window, start of DBImplementation)
+	Alex -> 15% (The three verification windows, start of DBImplementation, general window styles)
 	Victor -> 15% (SignUp window, start of DBImplementation)
-	Ekaitz -> 55% (User window, add/complete/change all DBImplementation logic,
+	Ekaitz -> 55% (User and Admin windows, add/complete/change all DBImplementation logic,
 					threads logic, connection pool, structure the project)
